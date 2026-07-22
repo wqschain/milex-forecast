@@ -1,89 +1,262 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
 .app {
+  height: 100svh;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 32px 24px 64px;
+  padding: 20px 28px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .app__header {
   text-align: center;
-  margin-bottom: 24px;
+  flex-shrink: 0;
 }
 
 .app__header h1 {
-  font-size: 32px;
-  margin-bottom: 12px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: 0.2px;
+  margin-bottom: 8px;
 }
 
 .app__header p {
   color: var(--text);
-  max-width: 640px;
+  max-width: 620px;
   margin: 0 auto;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Thin factual strip: legend + dataset coverage, briefing-note in tone */
+.data-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 24px;
+  padding: 8px 16px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.data-strip__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.legend-swatch--data {
+  background: var(--ink);
+}
+
+.legend-swatch--no-data {
+  background-color: var(--no-data-fill);
+  background-image: repeating-linear-gradient(45deg, #cabf9d 0, #cabf9d 1px, transparent 1px, transparent 4px);
+  border: 1px solid var(--border-strong);
+}
+
+.data-strip__stat {
+  color: var(--text-muted);
+}
+
+.data-strip__stat .mono {
+  color: var(--text);
 }
 
 .world-map {
   position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
   width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--card-bg);
+  background-color: var(--bg);
+  /* Very subtle coordinate-grid texture: reads as chart paper behind the
+     map, not a decorative pattern - kept low-contrast on purpose. */
+  background-image: linear-gradient(rgba(35, 32, 26, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(35, 32, 26, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+.world-map svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes country-pulse {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.country-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: country-pulse 420ms ease-out;
+}
+
+/* Fact ticker: cycles through short, factual one-line findings below the
+   map, wire-service style rendered as a simple ruled strip. */
+.fact-ticker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border-strong);
+  font-family: var(--font-ui);
+  font-size: 12.5px;
   overflow: hidden;
+}
+
+.fact-ticker__label {
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  font-size: 10.5px;
+  flex-shrink: 0;
+}
+
+.fact-ticker__divider {
+  width: 1px;
+  height: 14px;
+  background: var(--border-strong);
+  flex-shrink: 0;
+}
+
+.fact-ticker__text {
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: fact-ticker-in 400ms ease;
+}
+
+@keyframes fact-ticker-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .country-tooltip {
   position: absolute;
   pointer-events: none;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
   padding: 8px 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 6px 16px rgba(35, 32, 26, 0.18);
   z-index: 10;
   white-space: nowrap;
 }
 
 .country-tooltip__name {
+  font-family: var(--font-display);
   font-weight: 600;
   color: var(--text-h);
   margin-bottom: 2px;
 }
 
 .country-tooltip__stat {
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+}
+
+.country-tooltip__value {
+  color: var(--ink);
 }
 
 .country-tooltip__year {
-  color: #8b8b93;
+  color: var(--text-muted);
 }
 
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(35, 32, 26, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
   padding: 16px;
+  animation: modal-backdrop-in 220ms ease-out;
 }
 
 .modal {
   position: relative;
   width: 100%;
   max-width: 480px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 28px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 30px;
+  box-shadow: 0 20px 50px rgba(35, 32, 26, 0.22);
+  animation: modal-in 380ms cubic-bezier(0.19, 1, 0.22, 1);
+  transform-origin: center;
+}
+
+@keyframes modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modal__close {
   position: absolute;
-  top: 12px;
-  right: 16px;
+  top: 14px;
+  right: 18px;
   background: none;
   border: none;
-  color: var(--text);
-  font-size: 24px;
+  color: var(--text-muted);
+  font-size: 22px;
   line-height: 1;
   cursor: pointer;
 }
@@ -93,49 +266,98 @@
 }
 
 .modal__title {
-  font-size: 22px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
   margin-bottom: 8px;
 }
 
 .modal__subtitle {
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 13.5px;
   color: var(--text);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
+}
+
+.modal__known-value {
+  color: var(--ink);
 }
 
 .modal__slider-label {
   display: block;
-  font-size: 14px;
+  font-family: var(--font-ui);
+  font-size: 13.5px;
   margin-bottom: 8px;
+}
+
+.modal__slider-years {
+  color: var(--accent);
 }
 
 .modal__slider {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
+  accent-color: var(--accent);
 }
 
+/* Fixed to the chart's own height + legend + a reserved line for the error
+   message, via min-height rather than absolute positioning, so switching
+   between loading, error, and done states never resizes the modal *and*
+   the error text never overlaps the legend beneath the chart. */
 .modal__results {
-  min-height: 60px;
+  min-height: 266px;
+}
+
+.modal__status {
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  color: var(--text-muted);
 }
 
 .modal__error {
-  color: #f87171;
+  color: var(--danger);
 }
 
-.modal__table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
+.modal__error--overlay {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 12.5px;
 }
 
-.modal__table th,
-.modal__table td {
-  text-align: left;
-  padding: 6px 8px;
-  border-bottom: 1px solid var(--border);
+.forecast-chart {
+  transition: opacity 200ms ease;
 }
 
-.modal__table th {
-  color: #8b8b93;
-  font-weight: 500;
+.forecast-chart--loading {
+  opacity: 0.4;
+}
+
+.forecast-chart__legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 4px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.forecast-chart__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.forecast-chart__swatch {
+  width: 14px;
+  height: 2px;
+  display: inline-block;
+}
+
+.forecast-chart__swatch--observed {
+  background: var(--ink);
+}
+
+.forecast-chart__swatch--forecast {
+  background: repeating-linear-gradient(to right, var(--accent) 0, var(--accent) 4px, transparent 4px, transparent 7px);
 }

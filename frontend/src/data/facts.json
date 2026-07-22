@@ -1,0 +1,10 @@
+[
+  "TÜRKIYE — data volatility ~5x average, traced to the lira losing 80%+ of its value since 2018, not a policy change",
+  "NORTH KOREA — excluded from the dataset: no reliable spending data reported for the study period",
+  "MODEL SELECTION — no single approach wins universally; Prophet outperformed on 27 of 31 countries",
+  "TUNING — at default sensitivity, linear regression beat Prophet on every country tested",
+  "UKRAINE 2022 — the spending spike fell in the test period; both models were blind to it",
+  "MEXICO — model trend projects spending rising from 0.7% to 1.2% of GDP by 2030",
+  "NORWAY — model trend projects spending falling from 3.3% to 1.3% of GDP by 2030",
+  "UKRAINE — model trend projects spending rising from 39.6% to 62.9% of GDP by 2030"
+]

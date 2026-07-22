@@ -4,18 +4,29 @@ import worldTopology from "world-atlas/countries-110m.json";
 import { countryDataByMapName } from "../data/countryData";
 import CountryTooltip from "./CountryTooltip";
 
-const HIGHLIGHT_FILL = "#3f7cac";
-const HIGHLIGHT_HOVER_FILL = "#2d5d82";
-const NO_DATA_FILL = "#3a3a3a";
+// Ink-navy marks countries with real historical data + a trained model;
+// kept deliberately muted so it reads as "measured," not as a UI accent
+// color. The reserved accent color (see App.css) is used only for
+// forecasted/projected values, never here.
+const HIGHLIGHT_FILL = "#1f3a5c";
+const HIGHLIGHT_HOVER_FILL = "#2c4f78";
+const HIGHLIGHT_CLICK_FILL = "#3a6088";
+const NO_DATA_FILL = "url(#no-data-hatch)";
+// Dark enough to stay visible against the light no-data hatch (the majority
+// of countries), while still reading as a thin separator against the ink
+// navy fill of the highlighted ones.
+const STROKE = "#4a4030";
+
+const TRANSITION = "fill 250ms ease";
 
 const GEOGRAPHY_STYLE = {
-  default: { stroke: "#1e1e1e", strokeWidth: 0.5, outline: "none" },
-  hover: { stroke: "#1e1e1e", strokeWidth: 0.5, outline: "none" },
-  pressed: { stroke: "#1e1e1e", strokeWidth: 0.5, outline: "none" },
+  default: { stroke: STROKE, strokeWidth: 0.5, outline: "none", transition: TRANSITION },
+  hover: { stroke: STROKE, strokeWidth: 0.5, outline: "none", transition: TRANSITION },
+  pressed: { stroke: STROKE, strokeWidth: 0.5, outline: "none", transition: TRANSITION },
 };
 
-function geographyStyle(hasData) {
-  const fill = hasData ? HIGHLIGHT_FILL : NO_DATA_FILL;
+function geographyStyle(hasData, isClicked) {
+  const fill = hasData ? (isClicked ? HIGHLIGHT_CLICK_FILL : HIGHLIGHT_FILL) : NO_DATA_FILL;
   const hoverFill = hasData ? HIGHLIGHT_HOVER_FILL : NO_DATA_FILL;
   const cursor = hasData ? "pointer" : "default";
   return {
@@ -27,6 +38,7 @@ function geographyStyle(hasData) {
 
 export default function WorldMap({ onSelectCountry }) {
   const [hovered, setHovered] = useState(null); // { data, x, y } | null
+  const [pulsingKey, setPulsingKey] = useState(null);
   const containerRef = useRef(null);
 
   function pointerPosition(evt) {
@@ -37,16 +49,25 @@ export default function WorldMap({ onSelectCountry }) {
   return (
     <div className="world-map" ref={containerRef}>
       <ComposableMap projectionConfig={{ scale: 147 }}>
+        <defs>
+          <pattern id="no-data-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="6" height="6" fill="#e8e0cc" />
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#cabf9d" strokeWidth="1.5" />
+          </pattern>
+        </defs>
         <Geographies geography={worldTopology}>
           {({ geographies }) =>
             geographies.map((geo) => {
               const data = countryDataByMapName.get(geo.properties.name);
               const hasData = Boolean(data);
+              const isClicked = geo.rsmKey === pulsingKey;
 
               return (
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
+                  className={isClicked ? "country-pulse" : undefined}
+                  onAnimationEnd={() => setPulsingKey(null)}
                   onMouseEnter={(evt) => {
                     if (!hasData || !containerRef.current) return;
                     setHovered({ data, ...pointerPosition(evt) });
@@ -58,9 +79,10 @@ export default function WorldMap({ onSelectCountry }) {
                   onMouseLeave={() => setHovered(null)}
                   onClick={() => {
                     if (!hasData) return;
+                    setPulsingKey(geo.rsmKey);
                     onSelectCountry(data);
                   }}
-                  style={geographyStyle(hasData)}
+                  style={geographyStyle(hasData, isClicked)}
                 />
               );
             })

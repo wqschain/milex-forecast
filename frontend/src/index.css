@@ -1,12 +1,39 @@
 :root {
-  --text: #d4d4d8;
-  --text-h: #f4f4f5;
-  --bg: #121212;
-  --border: #2e2e33;
-  --card-bg: #1c1c22;
+  /* Warm off-white/cream, printed-page backgrounds - never stark white */
+  --bg: #f6f1e6;
+  --bg-elevated: #efe8d8;
+  --bg-raised: #fbf8f1;
 
-  font: 16px/145% system-ui, "Segoe UI", Roboto, sans-serif;
-  color-scheme: dark;
+  --border: #ddd2b6;
+  --border-strong: #c7ba99;
+
+  --text: #4a4436;
+  --text-h: #23201a;
+  --text-muted: #8a7f65;
+
+  /* Ink-navy: observed / historical / measured data */
+  --ink: #1f3a5c;
+  --ink-hover: #2c4f78;
+  --ink-light: #3f5f85;
+
+  /* Non-highlighted countries: warm, light - hatch pattern base, not a
+     jarring neutral gray */
+  --no-data-fill: #e8e0cc;
+
+  /* Reserved accent: marks projected/forecasted values specifically, nothing
+     else - a muted burgundy, distinct from the ink-navy "observed" tone */
+  --accent: #7d3644;
+  --accent-dim: #a86773;
+
+  --danger: #a6403d;
+
+  --font-body: "Source Serif 4", Georgia, "Iowan Old Style", serif;
+  --font-display: "Roboto Slab", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-ui: system-ui, "Segoe UI", Roboto, sans-serif;
+
+  font: 16px/155% var(--font-body);
+  color-scheme: light;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -28,4 +55,17 @@ h2 {
   font-weight: 600;
   color: var(--text-h);
   margin: 0;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }

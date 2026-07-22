@@ -1,126 +1,5759 @@
 {
   "United States of America": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.03117
+    "latestSpending": 0.03117,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.05154
+      },
+      {
+        "year": 1981,
+        "spending": 0.05647
+      },
+      {
+        "year": 1982,
+        "spending": 0.06814
+      },
+      {
+        "year": 1983,
+        "spending": 0.06321
+      },
+      {
+        "year": 1984,
+        "spending": 0.06236
+      },
+      {
+        "year": 1985,
+        "spending": 0.06453
+      },
+      {
+        "year": 1986,
+        "spending": 0.06627
+      },
+      {
+        "year": 1987,
+        "spending": 0.0642
+      },
+      {
+        "year": 1988,
+        "spending": 0.06071
+      },
+      {
+        "year": 1989,
+        "spending": 0.05871
+      },
+      {
+        "year": 1990,
+        "spending": 0.05605
+      },
+      {
+        "year": 1991,
+        "spending": 0.04883
+      },
+      {
+        "year": 1992,
+        "spending": 0.0497
+      },
+      {
+        "year": 1993,
+        "spending": 0.04604
+      },
+      {
+        "year": 1994,
+        "spending": 0.04215
+      },
+      {
+        "year": 1995,
+        "spending": 0.0386
+      },
+      {
+        "year": 1996,
+        "spending": 0.03555
+      },
+      {
+        "year": 1997,
+        "spending": 0.03406
+      },
+      {
+        "year": 1998,
+        "spending": 0.03202
+      },
+      {
+        "year": 1999,
+        "spending": 0.03086
+      },
+      {
+        "year": 2000,
+        "spending": 0.03112
+      },
+      {
+        "year": 2001,
+        "spending": 0.03124
+      },
+      {
+        "year": 2002,
+        "spending": 0.03448
+      },
+      {
+        "year": 2003,
+        "spending": 0.03827
+      },
+      {
+        "year": 2004,
+        "spending": 0.04016
+      },
+      {
+        "year": 2005,
+        "spending": 0.04089
+      },
+      {
+        "year": 2006,
+        "spending": 0.04041
+      },
+      {
+        "year": 2007,
+        "spending": 0.04073
+      },
+      {
+        "year": 2008,
+        "spending": 0.04447
+      },
+      {
+        "year": 2009,
+        "spending": 0.04876
+      },
+      {
+        "year": 2010,
+        "spending": 0.04904
+      },
+      {
+        "year": 2011,
+        "spending": 0.04822
+      },
+      {
+        "year": 2012,
+        "spending": 0.04462
+      },
+      {
+        "year": 2013,
+        "spending": 0.04024
+      },
+      {
+        "year": 2014,
+        "spending": 0.03679
+      },
+      {
+        "year": 2015,
+        "spending": 0.03464
+      },
+      {
+        "year": 2016,
+        "spending": 0.03403
+      },
+      {
+        "year": 2017,
+        "spending": 0.03298
+      },
+      {
+        "year": 2018,
+        "spending": 0.03304
+      },
+      {
+        "year": 2019,
+        "spending": 0.03409
+      },
+      {
+        "year": 2020,
+        "spending": 0.03642
+      },
+      {
+        "year": 2021,
+        "spending": 0.03398
+      },
+      {
+        "year": 2022,
+        "spending": 0.03303
+      },
+      {
+        "year": 2023,
+        "spending": 0.03294
+      },
+      {
+        "year": 2024,
+        "spending": 0.0343
+      },
+      {
+        "year": 2025,
+        "spending": 0.03117
+      }
+    ]
   },
   "Canada": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.01627
+    "latestSpending": 0.01627,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.01764
+      },
+      {
+        "year": 1981,
+        "spending": 0.0171
+      },
+      {
+        "year": 1982,
+        "spending": 0.01954
+      },
+      {
+        "year": 1983,
+        "spending": 0.02081
+      },
+      {
+        "year": 1984,
+        "spending": 0.02117
+      },
+      {
+        "year": 1985,
+        "spending": 0.02097
+      },
+      {
+        "year": 1986,
+        "spending": 0.02109
+      },
+      {
+        "year": 1987,
+        "spending": 0.02063
+      },
+      {
+        "year": 1988,
+        "spending": 0.01987
+      },
+      {
+        "year": 1989,
+        "spending": 0.01935
+      },
+      {
+        "year": 1990,
+        "spending": 0.01959
+      },
+      {
+        "year": 1991,
+        "spending": 0.01895
+      },
+      {
+        "year": 1992,
+        "spending": 0.01862
+      },
+      {
+        "year": 1993,
+        "spending": 0.01822
+      },
+      {
+        "year": 1994,
+        "spending": 0.01697
+      },
+      {
+        "year": 1995,
+        "spending": 0.01554
+      },
+      {
+        "year": 1996,
+        "spending": 0.01404
+      },
+      {
+        "year": 1997,
+        "spending": 0.01246
+      },
+      {
+        "year": 1998,
+        "spending": 0.01256
+      },
+      {
+        "year": 1999,
+        "spending": 0.01242
+      },
+      {
+        "year": 2000,
+        "spending": 0.01114
+      },
+      {
+        "year": 2001,
+        "spending": 0.01133
+      },
+      {
+        "year": 2002,
+        "spending": 0.01117
+      },
+      {
+        "year": 2003,
+        "spending": 0.01112
+      },
+      {
+        "year": 2004,
+        "spending": 0.01104
+      },
+      {
+        "year": 2005,
+        "spending": 0.01107
+      },
+      {
+        "year": 2006,
+        "spending": 0.01123
+      },
+      {
+        "year": 2007,
+        "spending": 0.01186
+      },
+      {
+        "year": 2008,
+        "spending": 0.01246
+      },
+      {
+        "year": 2009,
+        "spending": 0.01378
+      },
+      {
+        "year": 2010,
+        "spending": 0.01194
+      },
+      {
+        "year": 2011,
+        "spending": 0.01193
+      },
+      {
+        "year": 2012,
+        "spending": 0.01118
+      },
+      {
+        "year": 2013,
+        "spending": 0.01002
+      },
+      {
+        "year": 2014,
+        "spending": 0.01092
+      },
+      {
+        "year": 2015,
+        "spending": 0.01171
+      },
+      {
+        "year": 2016,
+        "spending": 0.01143
+      },
+      {
+        "year": 2017,
+        "spending": 0.01297
+      },
+      {
+        "year": 2018,
+        "spending": 0.01251
+      },
+      {
+        "year": 2019,
+        "spending": 0.0122
+      },
+      {
+        "year": 2020,
+        "spending": 0.01417
+      },
+      {
+        "year": 2021,
+        "spending": 0.01221
+      },
+      {
+        "year": 2022,
+        "spending": 0.01142
+      },
+      {
+        "year": 2023,
+        "spending": 0.01315
+      },
+      {
+        "year": 2024,
+        "spending": 0.01349
+      },
+      {
+        "year": 2025,
+        "spending": 0.01627
+      }
+    ]
   },
   "Mexico": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.00737
+    "latestSpending": 0.00737,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.00416
+      },
+      {
+        "year": 1981,
+        "spending": 0.00513
+      },
+      {
+        "year": 1982,
+        "spending": 0.00495
+      },
+      {
+        "year": 1983,
+        "spending": 0.00523
+      },
+      {
+        "year": 1984,
+        "spending": 0.0066
+      },
+      {
+        "year": 1985,
+        "spending": 0.00676
+      },
+      {
+        "year": 1986,
+        "spending": 0.00635
+      },
+      {
+        "year": 1987,
+        "spending": 0.0058
+      },
+      {
+        "year": 1988,
+        "spending": 0.00536
+      },
+      {
+        "year": 1989,
+        "spending": 0.00517
+      },
+      {
+        "year": 1990,
+        "spending": 0.00433
+      },
+      {
+        "year": 1991,
+        "spending": 0.00435
+      },
+      {
+        "year": 1992,
+        "spending": 0.00469
+      },
+      {
+        "year": 1993,
+        "spending": 0.004
+      },
+      {
+        "year": 1994,
+        "spending": 0.00476
+      },
+      {
+        "year": 1995,
+        "spending": 0.00411
+      },
+      {
+        "year": 1996,
+        "spending": 0.00436
+      },
+      {
+        "year": 1997,
+        "spending": 0.00417
+      },
+      {
+        "year": 1998,
+        "spending": 0.00406
+      },
+      {
+        "year": 1999,
+        "spending": 0.0042
+      },
+      {
+        "year": 2000,
+        "spending": 0.00409
+      },
+      {
+        "year": 2001,
+        "spending": 0.00406
+      },
+      {
+        "year": 2002,
+        "spending": 0.00391
+      },
+      {
+        "year": 2003,
+        "spending": 0.00387
+      },
+      {
+        "year": 2004,
+        "spending": 0.00348
+      },
+      {
+        "year": 2005,
+        "spending": 0.0034
+      },
+      {
+        "year": 2006,
+        "spending": 0.00297
+      },
+      {
+        "year": 2007,
+        "spending": 0.00383
+      },
+      {
+        "year": 2008,
+        "spending": 0.00373
+      },
+      {
+        "year": 2009,
+        "spending": 0.00478
+      },
+      {
+        "year": 2010,
+        "spending": 0.00433
+      },
+      {
+        "year": 2011,
+        "spending": 0.00447
+      },
+      {
+        "year": 2012,
+        "spending": 0.00456
+      },
+      {
+        "year": 2013,
+        "spending": 0.00488
+      },
+      {
+        "year": 2014,
+        "spending": 0.00495
+      },
+      {
+        "year": 2015,
+        "spending": 0.00451
+      },
+      {
+        "year": 2016,
+        "spending": 0.0048
+      },
+      {
+        "year": 2017,
+        "spending": 0.00425
+      },
+      {
+        "year": 2018,
+        "spending": 0.00465
+      },
+      {
+        "year": 2019,
+        "spending": 0.00509
+      },
+      {
+        "year": 2020,
+        "spending": 0.00718
+      },
+      {
+        "year": 2021,
+        "spending": 0.00659
+      },
+      {
+        "year": 2022,
+        "spending": 0.00686
+      },
+      {
+        "year": 2023,
+        "spending": 0.0066
+      },
+      {
+        "year": 2024,
+        "spending": 0.01125
+      },
+      {
+        "year": 2025,
+        "spending": 0.00737
+      }
+    ]
   },
   "Brazil": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.01054
+    "latestSpending": 0.01054,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.01138
+      },
+      {
+        "year": 1981,
+        "spending": 0.01143
+      },
+      {
+        "year": 1982,
+        "spending": 0.01304
+      },
+      {
+        "year": 1983,
+        "spending": 0.01255
+      },
+      {
+        "year": 1984,
+        "spending": 0.012
+      },
+      {
+        "year": 1985,
+        "spending": 0.0143
+      },
+      {
+        "year": 1986,
+        "spending": 0.0122
+      },
+      {
+        "year": 1987,
+        "spending": 0.01744
+      },
+      {
+        "year": 1988,
+        "spending": 0.02118
+      },
+      {
+        "year": 1989,
+        "spending": 0.02686
+      },
+      {
+        "year": 1990,
+        "spending": 0.02364
+      },
+      {
+        "year": 1991,
+        "spending": 0.01963
+      },
+      {
+        "year": 1992,
+        "spending": 0.01522
+      },
+      {
+        "year": 1993,
+        "spending": 0.01928
+      },
+      {
+        "year": 1994,
+        "spending": 0.02016
+      },
+      {
+        "year": 1995,
+        "spending": 0.01862
+      },
+      {
+        "year": 1996,
+        "spending": 0.01655
+      },
+      {
+        "year": 1997,
+        "spending": 0.01578
+      },
+      {
+        "year": 1998,
+        "spending": 0.01662
+      },
+      {
+        "year": 1999,
+        "spending": 0.01645
+      },
+      {
+        "year": 2000,
+        "spending": 0.01731
+      },
+      {
+        "year": 2001,
+        "spending": 0.01952
+      },
+      {
+        "year": 2002,
+        "spending": 0.01896
+      },
+      {
+        "year": 2003,
+        "spending": 0.01503
+      },
+      {
+        "year": 2004,
+        "spending": 0.01461
+      },
+      {
+        "year": 2005,
+        "spending": 0.01524
+      },
+      {
+        "year": 2006,
+        "spending": 0.01481
+      },
+      {
+        "year": 2007,
+        "spending": 0.01466
+      },
+      {
+        "year": 2008,
+        "spending": 0.01442
+      },
+      {
+        "year": 2009,
+        "spending": 0.01539
+      },
+      {
+        "year": 2010,
+        "spending": 0.01539
+      },
+      {
+        "year": 2011,
+        "spending": 0.01412
+      },
+      {
+        "year": 2012,
+        "spending": 0.01379
+      },
+      {
+        "year": 2013,
+        "spending": 0.01329
+      },
+      {
+        "year": 2014,
+        "spending": 0.0133
+      },
+      {
+        "year": 2015,
+        "spending": 0.01366
+      },
+      {
+        "year": 2016,
+        "spending": 0.01348
+      },
+      {
+        "year": 2017,
+        "spending": 0.01414
+      },
+      {
+        "year": 2018,
+        "spending": 0.0147
+      },
+      {
+        "year": 2019,
+        "spending": 0.01383
+      },
+      {
+        "year": 2020,
+        "spending": 0.01327
+      },
+      {
+        "year": 2021,
+        "spending": 0.01149
+      },
+      {
+        "year": 2022,
+        "spending": 0.01052
+      },
+      {
+        "year": 2023,
+        "spending": 0.00994
+      },
+      {
+        "year": 2024,
+        "spending": 0.00959
+      },
+      {
+        "year": 2025,
+        "spending": 0.01054
+      }
+    ]
   },
   "Argentina": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.00563
+    "latestSpending": 0.00563,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.03099
+      },
+      {
+        "year": 1981,
+        "spending": 0.03465
+      },
+      {
+        "year": 1982,
+        "spending": 0.02705
+      },
+      {
+        "year": 1983,
+        "spending": 0.02739
+      },
+      {
+        "year": 1984,
+        "spending": 0.02162
+      },
+      {
+        "year": 1985,
+        "spending": 0.023
+      },
+      {
+        "year": 1986,
+        "spending": 0.02314
+      },
+      {
+        "year": 1987,
+        "spending": 0.02284
+      },
+      {
+        "year": 1988,
+        "spending": 0.02125
+      },
+      {
+        "year": 1989,
+        "spending": 0.0188
+      },
+      {
+        "year": 1990,
+        "spending": 0.01451
+      },
+      {
+        "year": 1991,
+        "spending": 0.01507
+      },
+      {
+        "year": 1992,
+        "spending": 0.01421
+      },
+      {
+        "year": 1993,
+        "spending": 0.01423
+      },
+      {
+        "year": 1994,
+        "spending": 0.01457
+      },
+      {
+        "year": 1995,
+        "spending": 0.01473
+      },
+      {
+        "year": 1996,
+        "spending": 0.01241
+      },
+      {
+        "year": 1997,
+        "spending": 0.0114
+      },
+      {
+        "year": 1998,
+        "spending": 0.01136
+      },
+      {
+        "year": 1999,
+        "spending": 0.0122
+      },
+      {
+        "year": 2000,
+        "spending": 0.01149
+      },
+      {
+        "year": 2001,
+        "spending": 0.01184
+      },
+      {
+        "year": 2002,
+        "spending": 0.01092
+      },
+      {
+        "year": 2003,
+        "spending": 0.01061
+      },
+      {
+        "year": 2004,
+        "spending": 0.00883
+      },
+      {
+        "year": 2005,
+        "spending": 0.00847
+      },
+      {
+        "year": 2006,
+        "spending": 0.00788
+      },
+      {
+        "year": 2007,
+        "spending": 0.00793
+      },
+      {
+        "year": 2008,
+        "spending": 0.00763
+      },
+      {
+        "year": 2009,
+        "spending": 0.00887
+      },
+      {
+        "year": 2010,
+        "spending": 0.00815
+      },
+      {
+        "year": 2011,
+        "spending": 0.00764
+      },
+      {
+        "year": 2012,
+        "spending": 0.00785
+      },
+      {
+        "year": 2013,
+        "spending": 0.00838
+      },
+      {
+        "year": 2014,
+        "spending": 0.00878
+      },
+      {
+        "year": 2015,
+        "spending": 0.0085
+      },
+      {
+        "year": 2016,
+        "spending": 0.00809
+      },
+      {
+        "year": 2017,
+        "spending": 0.00848
+      },
+      {
+        "year": 2018,
+        "spending": 0.00732
+      },
+      {
+        "year": 2019,
+        "spending": 0.007
+      },
+      {
+        "year": 2020,
+        "spending": 0.00734
+      },
+      {
+        "year": 2021,
+        "spending": 0.00632
+      },
+      {
+        "year": 2022,
+        "spending": 0.00685
+      },
+      {
+        "year": 2023,
+        "spending": 0.00752
+      },
+      {
+        "year": 2024,
+        "spending": 0.00655
+      },
+      {
+        "year": 2025,
+        "spending": 0.00563
+      }
+    ]
   },
   "Colombia": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.03202
+    "latestSpending": 0.03202,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.0183
+      },
+      {
+        "year": 1981,
+        "spending": 0.01755
+      },
+      {
+        "year": 1982,
+        "spending": 0.01714
+      },
+      {
+        "year": 1983,
+        "spending": 0.0222
+      },
+      {
+        "year": 1984,
+        "spending": 0.02326
+      },
+      {
+        "year": 1985,
+        "spending": 0.02054
+      },
+      {
+        "year": 1986,
+        "spending": 0.01945
+      },
+      {
+        "year": 1987,
+        "spending": 0.01983
+      },
+      {
+        "year": 1988,
+        "spending": 0.02199
+      },
+      {
+        "year": 1989,
+        "spending": 0.02188
+      },
+      {
+        "year": 1990,
+        "spending": 0.0186
+      },
+      {
+        "year": 1991,
+        "spending": 0.01853
+      },
+      {
+        "year": 1992,
+        "spending": 0.02107
+      },
+      {
+        "year": 1993,
+        "spending": 0.02525
+      },
+      {
+        "year": 1994,
+        "spending": 0.02508
+      },
+      {
+        "year": 1995,
+        "spending": 0.02832
+      },
+      {
+        "year": 1996,
+        "spending": 0.04445
+      },
+      {
+        "year": 1997,
+        "spending": 0.02802
+      },
+      {
+        "year": 1998,
+        "spending": 0.03441
+      },
+      {
+        "year": 1999,
+        "spending": 0.03763
+      },
+      {
+        "year": 2000,
+        "spending": 0.03032
+      },
+      {
+        "year": 2001,
+        "spending": 0.03324
+      },
+      {
+        "year": 2002,
+        "spending": 0.03417
+      },
+      {
+        "year": 2003,
+        "spending": 0.03464
+      },
+      {
+        "year": 2004,
+        "spending": 0.03465
+      },
+      {
+        "year": 2005,
+        "spending": 0.03375
+      },
+      {
+        "year": 2006,
+        "spending": 0.03296
+      },
+      {
+        "year": 2007,
+        "spending": 0.03286
+      },
+      {
+        "year": 2008,
+        "spending": 0.03737
+      },
+      {
+        "year": 2009,
+        "spending": 0.03887
+      },
+      {
+        "year": 2010,
+        "spending": 0.03637
+      },
+      {
+        "year": 2011,
+        "spending": 0.03077
+      },
+      {
+        "year": 2012,
+        "spending": 0.03156
+      },
+      {
+        "year": 2013,
+        "spending": 0.03272
+      },
+      {
+        "year": 2014,
+        "spending": 0.03108
+      },
+      {
+        "year": 2015,
+        "spending": 0.0311
+      },
+      {
+        "year": 2016,
+        "spending": 0.03071
+      },
+      {
+        "year": 2017,
+        "spending": 0.03208
+      },
+      {
+        "year": 2018,
+        "spending": 0.03033
+      },
+      {
+        "year": 2019,
+        "spending": 0.03146
+      },
+      {
+        "year": 2020,
+        "spending": 0.03534
+      },
+      {
+        "year": 2021,
+        "spending": 0.03196
+      },
+      {
+        "year": 2022,
+        "spending": 0.02796
+      },
+      {
+        "year": 2023,
+        "spending": 0.02943
+      },
+      {
+        "year": 2024,
+        "spending": 0.03313
+      },
+      {
+        "year": 2025,
+        "spending": 0.03202
+      }
+    ]
   },
   "United Kingdom": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.02353
+    "latestSpending": 0.02353,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.0502
+      },
+      {
+        "year": 1981,
+        "spending": 0.04984
+      },
+      {
+        "year": 1982,
+        "spending": 0.05381
+      },
+      {
+        "year": 1983,
+        "spending": 0.05397
+      },
+      {
+        "year": 1984,
+        "spending": 0.05508
+      },
+      {
+        "year": 1985,
+        "spending": 0.05321
+      },
+      {
+        "year": 1986,
+        "spending": 0.0506
+      },
+      {
+        "year": 1987,
+        "spending": 0.04687
+      },
+      {
+        "year": 1988,
+        "spending": 0.04214
+      },
+      {
+        "year": 1989,
+        "spending": 0.04041
+      },
+      {
+        "year": 1990,
+        "spending": 0.03983
+      },
+      {
+        "year": 1991,
+        "spending": 0.04117
+      },
+      {
+        "year": 1992,
+        "spending": 0.03865
+      },
+      {
+        "year": 1993,
+        "spending": 0.03591
+      },
+      {
+        "year": 1994,
+        "spending": 0.03382
+      },
+      {
+        "year": 1995,
+        "spending": 0.02838
+      },
+      {
+        "year": 1996,
+        "spending": 0.02706
+      },
+      {
+        "year": 1997,
+        "spending": 0.02542
+      },
+      {
+        "year": 1998,
+        "spending": 0.02482
+      },
+      {
+        "year": 1999,
+        "spending": 0.02407
+      },
+      {
+        "year": 2000,
+        "spending": 0.02354
+      },
+      {
+        "year": 2001,
+        "spending": 0.02386
+      },
+      {
+        "year": 2002,
+        "spending": 0.02471
+      },
+      {
+        "year": 2003,
+        "spending": 0.02539
+      },
+      {
+        "year": 2004,
+        "spending": 0.0248
+      },
+      {
+        "year": 2005,
+        "spending": 0.02416
+      },
+      {
+        "year": 2006,
+        "spending": 0.02361
+      },
+      {
+        "year": 2007,
+        "spending": 0.02366
+      },
+      {
+        "year": 2008,
+        "spending": 0.02476
+      },
+      {
+        "year": 2009,
+        "spending": 0.02635
+      },
+      {
+        "year": 2010,
+        "spending": 0.02563
+      },
+      {
+        "year": 2011,
+        "spending": 0.02488
+      },
+      {
+        "year": 2012,
+        "spending": 0.02407
+      },
+      {
+        "year": 2013,
+        "spending": 0.02282
+      },
+      {
+        "year": 2014,
+        "spending": 0.0217
+      },
+      {
+        "year": 2015,
+        "spending": 0.02037
+      },
+      {
+        "year": 2016,
+        "spending": 0.01972
+      },
+      {
+        "year": 2017,
+        "spending": 0.01936
+      },
+      {
+        "year": 2018,
+        "spending": 0.01927
+      },
+      {
+        "year": 2019,
+        "spending": 0.01968
+      },
+      {
+        "year": 2020,
+        "spending": 0.02141
+      },
+      {
+        "year": 2021,
+        "spending": 0.02039
+      },
+      {
+        "year": 2022,
+        "spending": 0.02012
+      },
+      {
+        "year": 2023,
+        "spending": 0.02152
+      },
+      {
+        "year": 2024,
+        "spending": 0.02437
+      },
+      {
+        "year": 2025,
+        "spending": 0.02353
+      }
+    ]
   },
   "Germany": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.02269
+    "latestSpending": 0.02269,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.02948
+      },
+      {
+        "year": 1981,
+        "spending": 0.03028
+      },
+      {
+        "year": 1982,
+        "spending": 0.0302
+      },
+      {
+        "year": 1983,
+        "spending": 0.03013
+      },
+      {
+        "year": 1984,
+        "spending": 0.02913
+      },
+      {
+        "year": 1985,
+        "spending": 0.02854
+      },
+      {
+        "year": 1986,
+        "spending": 0.02777
+      },
+      {
+        "year": 1987,
+        "spending": 0.02759
+      },
+      {
+        "year": 1988,
+        "spending": 0.02629
+      },
+      {
+        "year": 1989,
+        "spending": 0.02521
+      },
+      {
+        "year": 1990,
+        "spending": 0.02507
+      },
+      {
+        "year": 1991,
+        "spending": 0.01974
+      },
+      {
+        "year": 1992,
+        "spending": 0.01836
+      },
+      {
+        "year": 1993,
+        "spending": 0.01677
+      },
+      {
+        "year": 1994,
+        "spending": 0.01537
+      },
+      {
+        "year": 1995,
+        "spending": 0.01487
+      },
+      {
+        "year": 1996,
+        "spending": 0.01457
+      },
+      {
+        "year": 1997,
+        "spending": 0.01403
+      },
+      {
+        "year": 1998,
+        "spending": 0.01382
+      },
+      {
+        "year": 1999,
+        "spending": 0.0138
+      },
+      {
+        "year": 2000,
+        "spending": 0.01344
+      },
+      {
+        "year": 2001,
+        "spending": 0.01308
+      },
+      {
+        "year": 2002,
+        "spending": 0.01313
+      },
+      {
+        "year": 2003,
+        "spending": 0.01299
+      },
+      {
+        "year": 2004,
+        "spending": 0.01251
+      },
+      {
+        "year": 2005,
+        "spending": 0.01233
+      },
+      {
+        "year": 2006,
+        "spending": 0.01179
+      },
+      {
+        "year": 2007,
+        "spending": 0.01153
+      },
+      {
+        "year": 2008,
+        "spending": 0.01189
+      },
+      {
+        "year": 2009,
+        "spending": 0.01285
+      },
+      {
+        "year": 2010,
+        "spending": 0.01242
+      },
+      {
+        "year": 2011,
+        "spending": 0.01183
+      },
+      {
+        "year": 2012,
+        "spending": 0.01218
+      },
+      {
+        "year": 2013,
+        "spending": 0.01162
+      },
+      {
+        "year": 2014,
+        "spending": 0.01128
+      },
+      {
+        "year": 2015,
+        "spending": 0.01115
+      },
+      {
+        "year": 2016,
+        "spending": 0.01129
+      },
+      {
+        "year": 2017,
+        "spending": 0.01131
+      },
+      {
+        "year": 2018,
+        "spending": 0.01147
+      },
+      {
+        "year": 2019,
+        "spending": 0.01239
+      },
+      {
+        "year": 2020,
+        "spending": 0.01356
+      },
+      {
+        "year": 2021,
+        "spending": 0.01298
+      },
+      {
+        "year": 2022,
+        "spending": 0.01336
+      },
+      {
+        "year": 2023,
+        "spending": 0.01503
+      },
+      {
+        "year": 2024,
+        "spending": 0.01839
+      },
+      {
+        "year": 2025,
+        "spending": 0.02269
+      }
+    ]
   },
   "France": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.02027
+    "latestSpending": 0.02027,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.03155
+      },
+      {
+        "year": 1981,
+        "spending": 0.03246
+      },
+      {
+        "year": 1982,
+        "spending": 0.03224
+      },
+      {
+        "year": 1983,
+        "spending": 0.03237
+      },
+      {
+        "year": 1984,
+        "spending": 0.03187
+      },
+      {
+        "year": 1985,
+        "spending": 0.03144
+      },
+      {
+        "year": 1986,
+        "spending": 0.03086
+      },
+      {
+        "year": 1987,
+        "spending": 0.0312
+      },
+      {
+        "year": 1988,
+        "spending": 0.03
+      },
+      {
+        "year": 1989,
+        "spending": 0.02918
+      },
+      {
+        "year": 1990,
+        "spending": 0.02845
+      },
+      {
+        "year": 1991,
+        "spending": 0.02849
+      },
+      {
+        "year": 1992,
+        "spending": 0.02728
+      },
+      {
+        "year": 1993,
+        "spending": 0.02722
+      },
+      {
+        "year": 1994,
+        "spending": 0.02691
+      },
+      {
+        "year": 1995,
+        "spending": 0.02515
+      },
+      {
+        "year": 1996,
+        "spending": 0.02438
+      },
+      {
+        "year": 1997,
+        "spending": 0.02394
+      },
+      {
+        "year": 1998,
+        "spending": 0.02247
+      },
+      {
+        "year": 1999,
+        "spending": 0.02198
+      },
+      {
+        "year": 2000,
+        "spending": 0.02092
+      },
+      {
+        "year": 2001,
+        "spending": 0.02041
+      },
+      {
+        "year": 2002,
+        "spending": 0.02059
+      },
+      {
+        "year": 2003,
+        "spending": 0.02106
+      },
+      {
+        "year": 2004,
+        "spending": 0.02114
+      },
+      {
+        "year": 2005,
+        "spending": 0.02028
+      },
+      {
+        "year": 2006,
+        "spending": 0.01977
+      },
+      {
+        "year": 2007,
+        "spending": 0.01911
+      },
+      {
+        "year": 2008,
+        "spending": 0.01899
+      },
+      {
+        "year": 2009,
+        "spending": 0.02099
+      },
+      {
+        "year": 2010,
+        "spending": 0.01969
+      },
+      {
+        "year": 2011,
+        "spending": 0.01888
+      },
+      {
+        "year": 2012,
+        "spending": 0.01872
+      },
+      {
+        "year": 2013,
+        "spending": 0.01847
+      },
+      {
+        "year": 2014,
+        "spending": 0.0186
+      },
+      {
+        "year": 2015,
+        "spending": 0.0187
+      },
+      {
+        "year": 2016,
+        "spending": 0.01852
+      },
+      {
+        "year": 2017,
+        "spending": 0.01852
+      },
+      {
+        "year": 2018,
+        "spending": 0.01846
+      },
+      {
+        "year": 2019,
+        "spending": 0.01853
+      },
+      {
+        "year": 2020,
+        "spending": 0.02022
+      },
+      {
+        "year": 2021,
+        "spending": 0.0198
+      },
+      {
+        "year": 2022,
+        "spending": 0.01959
+      },
+      {
+        "year": 2023,
+        "spending": 0.01948
+      },
+      {
+        "year": 2024,
+        "spending": 0.02012
+      },
+      {
+        "year": 2025,
+        "spending": 0.02027
+      }
+    ]
   },
   "Italy": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.01889
+    "latestSpending": 0.01889,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.01764
+      },
+      {
+        "year": 1981,
+        "spending": 0.01821
+      },
+      {
+        "year": 1982,
+        "spending": 0.02005
+      },
+      {
+        "year": 1983,
+        "spending": 0.02017
+      },
+      {
+        "year": 1984,
+        "spending": 0.02009
+      },
+      {
+        "year": 1985,
+        "spending": 0.01936
+      },
+      {
+        "year": 1986,
+        "spending": 0.01977
+      },
+      {
+        "year": 1987,
+        "spending": 0.0206
+      },
+      {
+        "year": 1988,
+        "spending": 0.02073
+      },
+      {
+        "year": 1989,
+        "spending": 0.02026
+      },
+      {
+        "year": 1990,
+        "spending": 0.01881
+      },
+      {
+        "year": 1991,
+        "spending": 0.01859
+      },
+      {
+        "year": 1992,
+        "spending": 0.01752
+      },
+      {
+        "year": 1993,
+        "spending": 0.01787
+      },
+      {
+        "year": 1994,
+        "spending": 0.01714
+      },
+      {
+        "year": 1995,
+        "spending": 0.0146
+      },
+      {
+        "year": 1996,
+        "spending": 0.01581
+      },
+      {
+        "year": 1997,
+        "spending": 0.01619
+      },
+      {
+        "year": 1998,
+        "spending": 0.01636
+      },
+      {
+        "year": 1999,
+        "spending": 0.01675
+      },
+      {
+        "year": 2000,
+        "spending": 0.01733
+      },
+      {
+        "year": 2001,
+        "spending": 0.01667
+      },
+      {
+        "year": 2002,
+        "spending": 0.01694
+      },
+      {
+        "year": 2003,
+        "spending": 0.01698
+      },
+      {
+        "year": 2004,
+        "spending": 0.01672
+      },
+      {
+        "year": 2005,
+        "spending": 0.01595
+      },
+      {
+        "year": 2006,
+        "spending": 0.01514
+      },
+      {
+        "year": 2007,
+        "spending": 0.01441
+      },
+      {
+        "year": 2008,
+        "spending": 0.0153
+      },
+      {
+        "year": 2009,
+        "spending": 0.01547
+      },
+      {
+        "year": 2010,
+        "spending": 0.01494
+      },
+      {
+        "year": 2011,
+        "spending": 0.01468
+      },
+      {
+        "year": 2012,
+        "spending": 0.01419
+      },
+      {
+        "year": 2013,
+        "spending": 0.01392
+      },
+      {
+        "year": 2014,
+        "spending": 0.01251
+      },
+      {
+        "year": 2015,
+        "spending": 0.01179
+      },
+      {
+        "year": 2016,
+        "spending": 0.01297
+      },
+      {
+        "year": 2017,
+        "spending": 0.01285
+      },
+      {
+        "year": 2018,
+        "spending": 0.0132
+      },
+      {
+        "year": 2019,
+        "spending": 0.01248
+      },
+      {
+        "year": 2020,
+        "spending": 0.01662
+      },
+      {
+        "year": 2021,
+        "spending": 0.01608
+      },
+      {
+        "year": 2022,
+        "spending": 0.01602
+      },
+      {
+        "year": 2023,
+        "spending": 0.01534
+      },
+      {
+        "year": 2024,
+        "spending": 0.0159
+      },
+      {
+        "year": 2025,
+        "spending": 0.01889
+      }
+    ]
   },
   "Poland": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.04497
+    "latestSpending": 0.04497,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.02652
+      },
+      {
+        "year": 1981,
+        "spending": 0.02913
+      },
+      {
+        "year": 1982,
+        "spending": 0.03246
+      },
+      {
+        "year": 1983,
+        "spending": 0.02903
+      },
+      {
+        "year": 1984,
+        "spending": 0.03055
+      },
+      {
+        "year": 1985,
+        "spending": 0.03016
+      },
+      {
+        "year": 1986,
+        "spending": 0.02941
+      },
+      {
+        "year": 1987,
+        "spending": 0.02763
+      },
+      {
+        "year": 1988,
+        "spending": 0.02592
+      },
+      {
+        "year": 1989,
+        "spending": 0.01817
+      },
+      {
+        "year": 1990,
+        "spending": 0.02612
+      },
+      {
+        "year": 1991,
+        "spending": 0.02252
+      },
+      {
+        "year": 1992,
+        "spending": 0.02231
+      },
+      {
+        "year": 1993,
+        "spending": 0.02469
+      },
+      {
+        "year": 1994,
+        "spending": 0.02273
+      },
+      {
+        "year": 1995,
+        "spending": 0.01904
+      },
+      {
+        "year": 1996,
+        "spending": 0.01917
+      },
+      {
+        "year": 1997,
+        "spending": 0.01996
+      },
+      {
+        "year": 1998,
+        "spending": 0.01992
+      },
+      {
+        "year": 1999,
+        "spending": 0.0189
+      },
+      {
+        "year": 2000,
+        "spending": 0.01819
+      },
+      {
+        "year": 2001,
+        "spending": 0.01893
+      },
+      {
+        "year": 2002,
+        "spending": 0.01891
+      },
+      {
+        "year": 2003,
+        "spending": 0.01899
+      },
+      {
+        "year": 2004,
+        "spending": 0.01865
+      },
+      {
+        "year": 2005,
+        "spending": 0.01921
+      },
+      {
+        "year": 2006,
+        "spending": 0.01914
+      },
+      {
+        "year": 2007,
+        "spending": 0.01999
+      },
+      {
+        "year": 2008,
+        "spending": 0.01746
+      },
+      {
+        "year": 2009,
+        "spending": 0.01793
+      },
+      {
+        "year": 2010,
+        "spending": 0.01839
+      },
+      {
+        "year": 2011,
+        "spending": 0.01791
+      },
+      {
+        "year": 2012,
+        "spending": 0.01804
+      },
+      {
+        "year": 2013,
+        "spending": 0.0179
+      },
+      {
+        "year": 2014,
+        "spending": 0.01908
+      },
+      {
+        "year": 2015,
+        "spending": 0.02127
+      },
+      {
+        "year": 2016,
+        "spending": 0.01936
+      },
+      {
+        "year": 2017,
+        "spending": 0.01888
+      },
+      {
+        "year": 2018,
+        "spending": 0.02025
+      },
+      {
+        "year": 2019,
+        "spending": 0.01953
+      },
+      {
+        "year": 2020,
+        "spending": 0.02263
+      },
+      {
+        "year": 2021,
+        "spending": 0.02217
+      },
+      {
+        "year": 2022,
+        "spending": 0.02205
+      },
+      {
+        "year": 2023,
+        "spending": 0.03257
+      },
+      {
+        "year": 2024,
+        "spending": 0.03755
+      },
+      {
+        "year": 2025,
+        "spending": 0.04497
+      }
+    ]
   },
   "Russia": {
+    "earliestYear": 1992,
     "latestYear": 2025,
-    "latestSpending": 0.07501
+    "latestSpending": 0.07501,
+    "history": [
+      {
+        "year": 1992,
+        "spending": 0.04427
+      },
+      {
+        "year": 1993,
+        "spending": 0.04181
+      },
+      {
+        "year": 1994,
+        "spending": 0.04524
+      },
+      {
+        "year": 1995,
+        "spending": 0.03784
+      },
+      {
+        "year": 1996,
+        "spending": 0.03757
+      },
+      {
+        "year": 1997,
+        "spending": 0.0404
+      },
+      {
+        "year": 1998,
+        "spending": 0.02733
+      },
+      {
+        "year": 1999,
+        "spending": 0.03073
+      },
+      {
+        "year": 2000,
+        "spending": 0.03307
+      },
+      {
+        "year": 2001,
+        "spending": 0.03546
+      },
+      {
+        "year": 2002,
+        "spending": 0.03756
+      },
+      {
+        "year": 2003,
+        "spending": 0.03671
+      },
+      {
+        "year": 2004,
+        "spending": 0.033
+      },
+      {
+        "year": 2005,
+        "spending": 0.03331
+      },
+      {
+        "year": 2006,
+        "spending": 0.03246
+      },
+      {
+        "year": 2007,
+        "spending": 0.03119
+      },
+      {
+        "year": 2008,
+        "spending": 0.03149
+      },
+      {
+        "year": 2009,
+        "spending": 0.03924
+      },
+      {
+        "year": 2010,
+        "spending": 0.03585
+      },
+      {
+        "year": 2011,
+        "spending": 0.03433
+      },
+      {
+        "year": 2012,
+        "spending": 0.03689
+      },
+      {
+        "year": 2013,
+        "spending": 0.03854
+      },
+      {
+        "year": 2014,
+        "spending": 0.04113
+      },
+      {
+        "year": 2015,
+        "spending": 0.04872
+      },
+      {
+        "year": 2016,
+        "spending": 0.05425
+      },
+      {
+        "year": 2017,
+        "spending": 0.04249
+      },
+      {
+        "year": 2018,
+        "spending": 0.0372
+      },
+      {
+        "year": 2019,
+        "spending": 0.03847
+      },
+      {
+        "year": 2020,
+        "spending": 0.04145
+      },
+      {
+        "year": 2021,
+        "spending": 0.03604
+      },
+      {
+        "year": 2022,
+        "spending": 0.04556
+      },
+      {
+        "year": 2023,
+        "spending": 0.05272
+      },
+      {
+        "year": 2024,
+        "spending": 0.06874
+      },
+      {
+        "year": 2025,
+        "spending": 0.07501
+      }
+    ]
   },
   "Ukraine": {
+    "earliestYear": 1993,
     "latestYear": 2025,
-    "latestSpending": 0.39561
+    "latestSpending": 0.39561,
+    "history": [
+      {
+        "year": 1993,
+        "spending": 0.00435
+      },
+      {
+        "year": 1994,
+        "spending": 0.02418
+      },
+      {
+        "year": 1995,
+        "spending": 0.02735
+      },
+      {
+        "year": 1996,
+        "spending": 0.03179
+      },
+      {
+        "year": 1997,
+        "spending": 0.03988
+      },
+      {
+        "year": 1998,
+        "spending": 0.03244
+      },
+      {
+        "year": 1999,
+        "spending": 0.02884
+      },
+      {
+        "year": 2000,
+        "spending": 0.03511
+      },
+      {
+        "year": 2001,
+        "spending": 0.02769
+      },
+      {
+        "year": 2002,
+        "spending": 0.02676
+      },
+      {
+        "year": 2003,
+        "spending": 0.02746
+      },
+      {
+        "year": 2004,
+        "spending": 0.02507
+      },
+      {
+        "year": 2005,
+        "spending": 0.02792
+      },
+      {
+        "year": 2006,
+        "spending": 0.02772
+      },
+      {
+        "year": 2007,
+        "spending": 0.0287
+      },
+      {
+        "year": 2008,
+        "spending": 0.02673
+      },
+      {
+        "year": 2009,
+        "spending": 0.0284
+      },
+      {
+        "year": 2010,
+        "spending": 0.02742
+      },
+      {
+        "year": 2011,
+        "spending": 0.02258
+      },
+      {
+        "year": 2012,
+        "spending": 0.02353
+      },
+      {
+        "year": 2013,
+        "spending": 0.02393
+      },
+      {
+        "year": 2014,
+        "spending": 0.02967
+      },
+      {
+        "year": 2015,
+        "spending": 0.03848
+      },
+      {
+        "year": 2016,
+        "spending": 0.03669
+      },
+      {
+        "year": 2017,
+        "spending": 0.03241
+      },
+      {
+        "year": 2018,
+        "spending": 0.03635
+      },
+      {
+        "year": 2019,
+        "spending": 0.04068
+      },
+      {
+        "year": 2020,
+        "spending": 0.044
+      },
+      {
+        "year": 2021,
+        "spending": 0.03425
+      },
+      {
+        "year": 2022,
+        "spending": 0.25642
+      },
+      {
+        "year": 2023,
+        "spending": 0.36031
+      },
+      {
+        "year": 2024,
+        "spending": 0.33956
+      },
+      {
+        "year": 2025,
+        "spending": 0.39561
+      }
+    ]
   },
   "Israel": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.07809
+    "latestSpending": 0.07809,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.18919
+      },
+      {
+        "year": 1981,
+        "spending": 0.20262
+      },
+      {
+        "year": 1982,
+        "spending": 0.18388
+      },
+      {
+        "year": 1983,
+        "spending": 0.15547
+      },
+      {
+        "year": 1984,
+        "spending": 0.16182
+      },
+      {
+        "year": 1985,
+        "spending": 0.16601
+      },
+      {
+        "year": 1986,
+        "spending": 0.14768
+      },
+      {
+        "year": 1987,
+        "spending": 0.169
+      },
+      {
+        "year": 1988,
+        "spending": 0.15947
+      },
+      {
+        "year": 1989,
+        "spending": 0.12446
+      },
+      {
+        "year": 1990,
+        "spending": 0.12363
+      },
+      {
+        "year": 1991,
+        "spending": 0.15587
+      },
+      {
+        "year": 1992,
+        "spending": 0.10925
+      },
+      {
+        "year": 1993,
+        "spending": 0.11523
+      },
+      {
+        "year": 1994,
+        "spending": 0.1012
+      },
+      {
+        "year": 1995,
+        "spending": 0.07428
+      },
+      {
+        "year": 1996,
+        "spending": 0.07281
+      },
+      {
+        "year": 1997,
+        "spending": 0.07083
+      },
+      {
+        "year": 1998,
+        "spending": 0.06623
+      },
+      {
+        "year": 1999,
+        "spending": 0.06216
+      },
+      {
+        "year": 2000,
+        "spending": 0.06017
+      },
+      {
+        "year": 2001,
+        "spending": 0.06214
+      },
+      {
+        "year": 2002,
+        "spending": 0.06324
+      },
+      {
+        "year": 2003,
+        "spending": 0.06196
+      },
+      {
+        "year": 2004,
+        "spending": 0.06123
+      },
+      {
+        "year": 2005,
+        "spending": 0.05981
+      },
+      {
+        "year": 2006,
+        "spending": 0.05814
+      },
+      {
+        "year": 2007,
+        "spending": 0.06088
+      },
+      {
+        "year": 2008,
+        "spending": 0.06175
+      },
+      {
+        "year": 2009,
+        "spending": 0.05916
+      },
+      {
+        "year": 2010,
+        "spending": 0.05711
+      },
+      {
+        "year": 2011,
+        "spending": 0.05433
+      },
+      {
+        "year": 2012,
+        "spending": 0.05313
+      },
+      {
+        "year": 2013,
+        "spending": 0.0528
+      },
+      {
+        "year": 2014,
+        "spending": 0.05456
+      },
+      {
+        "year": 2015,
+        "spending": 0.05275
+      },
+      {
+        "year": 2016,
+        "spending": 0.05171
+      },
+      {
+        "year": 2017,
+        "spending": 0.05269
+      },
+      {
+        "year": 2018,
+        "spending": 0.0513
+      },
+      {
+        "year": 2019,
+        "spending": 0.04958
+      },
+      {
+        "year": 2020,
+        "spending": 0.05119
+      },
+      {
+        "year": 2021,
+        "spending": 0.04812
+      },
+      {
+        "year": 2022,
+        "spending": 0.04336
+      },
+      {
+        "year": 2023,
+        "spending": 0.05279
+      },
+      {
+        "year": 2024,
+        "spending": 0.08468
+      },
+      {
+        "year": 2025,
+        "spending": 0.07809
+      }
+    ]
   },
   "Saudi Arabia": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.06482
+    "latestSpending": 0.06482,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.12613
+      },
+      {
+        "year": 1981,
+        "spending": 0.13265
+      },
+      {
+        "year": 1982,
+        "spending": 0.1772
+      },
+      {
+        "year": 1983,
+        "spending": 0.16973
+      },
+      {
+        "year": 1984,
+        "spending": 0.19004
+      },
+      {
+        "year": 1985,
+        "spending": 0.16995
+      },
+      {
+        "year": 1986,
+        "spending": 0.16946
+      },
+      {
+        "year": 1987,
+        "spending": 0.16896
+      },
+      {
+        "year": 1988,
+        "spending": 0.15152
+      },
+      {
+        "year": 1989,
+        "spending": 0.1339
+      },
+      {
+        "year": 1990,
+        "spending": 0.14024
+      },
+      {
+        "year": 1991,
+        "spending": 0.1247
+      },
+      {
+        "year": 1992,
+        "spending": 0.11284
+      },
+      {
+        "year": 1993,
+        "spending": 0.12465
+      },
+      {
+        "year": 1994,
+        "spending": 0.10645
+      },
+      {
+        "year": 1995,
+        "spending": 0.09278
+      },
+      {
+        "year": 1996,
+        "spending": 0.08468
+      },
+      {
+        "year": 1997,
+        "spending": 0.11001
+      },
+      {
+        "year": 1998,
+        "spending": 0.14311
+      },
+      {
+        "year": 1999,
+        "spending": 0.11382
+      },
+      {
+        "year": 2000,
+        "spending": 0.10534
+      },
+      {
+        "year": 2001,
+        "spending": 0.11419
+      },
+      {
+        "year": 2002,
+        "spending": 0.09758
+      },
+      {
+        "year": 2003,
+        "spending": 0.08687
+      },
+      {
+        "year": 2004,
+        "spending": 0.08082
+      },
+      {
+        "year": 2005,
+        "spending": 0.07731
+      },
+      {
+        "year": 2006,
+        "spending": 0.07848
+      },
+      {
+        "year": 2007,
+        "spending": 0.08527
+      },
+      {
+        "year": 2008,
+        "spending": 0.07353
+      },
+      {
+        "year": 2009,
+        "spending": 0.09617
+      },
+      {
+        "year": 2010,
+        "spending": 0.08566
+      },
+      {
+        "year": 2011,
+        "spending": 0.0713
+      },
+      {
+        "year": 2012,
+        "spending": 0.07514
+      },
+      {
+        "year": 2013,
+        "spending": 0.08707
+      },
+      {
+        "year": 2014,
+        "spending": 0.1026
+      },
+      {
+        "year": 2015,
+        "spending": 0.12573
+      },
+      {
+        "year": 2016,
+        "spending": 0.09238
+      },
+      {
+        "year": 2017,
+        "spending": 0.09497
+      },
+      {
+        "year": 2018,
+        "spending": 0.08416
+      },
+      {
+        "year": 2019,
+        "spending": 0.07353
+      },
+      {
+        "year": 2020,
+        "spending": 0.08407
+      },
+      {
+        "year": 2021,
+        "spending": 0.06431
+      },
+      {
+        "year": 2022,
+        "spending": 0.05724
+      },
+      {
+        "year": 2023,
+        "spending": 0.06382
+      },
+      {
+        "year": 2024,
+        "spending": 0.06405
+      },
+      {
+        "year": 2025,
+        "spending": 0.06482
+      }
+    ]
   },
   "T\u00fcrkiye": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.01908
+    "latestSpending": 0.01908,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.039
+      },
+      {
+        "year": 1981,
+        "spending": 0.03825
+      },
+      {
+        "year": 1982,
+        "spending": 0.04298
+      },
+      {
+        "year": 1983,
+        "spending": 0.03938
+      },
+      {
+        "year": 1984,
+        "spending": 0.03597
+      },
+      {
+        "year": 1985,
+        "spending": 0.03531
+      },
+      {
+        "year": 1986,
+        "spending": 0.03638
+      },
+      {
+        "year": 1987,
+        "spending": 0.03329
+      },
+      {
+        "year": 1988,
+        "spending": 0.02932
+      },
+      {
+        "year": 1989,
+        "spending": 0.03149
+      },
+      {
+        "year": 1990,
+        "spending": 0.03528
+      },
+      {
+        "year": 1991,
+        "spending": 0.03754
+      },
+      {
+        "year": 1992,
+        "spending": 0.03871
+      },
+      {
+        "year": 1993,
+        "spending": 0.03921
+      },
+      {
+        "year": 1994,
+        "spending": 0.04051
+      },
+      {
+        "year": 1995,
+        "spending": 0.02815
+      },
+      {
+        "year": 1996,
+        "spending": 0.03
+      },
+      {
+        "year": 1997,
+        "spending": 0.02954
+      },
+      {
+        "year": 1998,
+        "spending": 0.03181
+      },
+      {
+        "year": 1999,
+        "spending": 0.03877
+      },
+      {
+        "year": 2000,
+        "spending": 0.03637
+      },
+      {
+        "year": 2001,
+        "spending": 0.03569
+      },
+      {
+        "year": 2002,
+        "spending": 0.03759
+      },
+      {
+        "year": 2003,
+        "spending": 0.03259
+      },
+      {
+        "year": 2004,
+        "spending": 0.02663
+      },
+      {
+        "year": 2005,
+        "spending": 0.02377
+      },
+      {
+        "year": 2006,
+        "spending": 0.02329
+      },
+      {
+        "year": 2007,
+        "spending": 0.02187
+      },
+      {
+        "year": 2008,
+        "spending": 0.02168
+      },
+      {
+        "year": 2009,
+        "spending": 0.02454
+      },
+      {
+        "year": 2010,
+        "spending": 0.02256
+      },
+      {
+        "year": 2011,
+        "spending": 0.02015
+      },
+      {
+        "year": 2012,
+        "spending": 0.01999
+      },
+      {
+        "year": 2013,
+        "spending": 0.01915
+      },
+      {
+        "year": 2014,
+        "spending": 0.01865
+      },
+      {
+        "year": 2015,
+        "spending": 0.0181
+      },
+      {
+        "year": 2016,
+        "spending": 0.02048
+      },
+      {
+        "year": 2017,
+        "spending": 0.02038
+      },
+      {
+        "year": 2018,
+        "spending": 0.02492
+      },
+      {
+        "year": 2019,
+        "spending": 0.02638
+      },
+      {
+        "year": 2020,
+        "spending": 0.02156
+      },
+      {
+        "year": 2021,
+        "spending": 0.01814
+      },
+      {
+        "year": 2022,
+        "spending": 0.01625
+      },
+      {
+        "year": 2023,
+        "spending": 0.01685
+      },
+      {
+        "year": 2024,
+        "spending": 0.0184
+      },
+      {
+        "year": 2025,
+        "spending": 0.01908
+      }
+    ]
   },
   "Iran": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.02092
+    "latestSpending": 0.02092,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.05343
+      },
+      {
+        "year": 1981,
+        "spending": 0.0819
+      },
+      {
+        "year": 1982,
+        "spending": 0.07907
+      },
+      {
+        "year": 1983,
+        "spending": 0.07097
+      },
+      {
+        "year": 1984,
+        "spending": 0.06355
+      },
+      {
+        "year": 1985,
+        "spending": 0.06512
+      },
+      {
+        "year": 1986,
+        "spending": 0.06079
+      },
+      {
+        "year": 1987,
+        "spending": 0.05889
+      },
+      {
+        "year": 1988,
+        "spending": 0.0627
+      },
+      {
+        "year": 1989,
+        "spending": 0.04558
+      },
+      {
+        "year": 1990,
+        "spending": 0.02943
+      },
+      {
+        "year": 1991,
+        "spending": 0.0217
+      },
+      {
+        "year": 1992,
+        "spending": 0.01789
+      },
+      {
+        "year": 1993,
+        "spending": 0.017
+      },
+      {
+        "year": 1994,
+        "spending": 0.02073
+      },
+      {
+        "year": 1995,
+        "spending": 0.02154
+      },
+      {
+        "year": 1996,
+        "spending": 0.02245
+      },
+      {
+        "year": 1997,
+        "spending": 0.02499
+      },
+      {
+        "year": 1998,
+        "spending": 0.02629
+      },
+      {
+        "year": 1999,
+        "spending": 0.02405
+      },
+      {
+        "year": 2000,
+        "spending": 0.02295
+      },
+      {
+        "year": 2001,
+        "spending": 0.02418
+      },
+      {
+        "year": 2002,
+        "spending": 0.02175
+      },
+      {
+        "year": 2003,
+        "spending": 0.02405
+      },
+      {
+        "year": 2004,
+        "spending": 0.02835
+      },
+      {
+        "year": 2005,
+        "spending": 0.03037
+      },
+      {
+        "year": 2006,
+        "spending": 0.03315
+      },
+      {
+        "year": 2007,
+        "spending": 0.02654
+      },
+      {
+        "year": 2008,
+        "spending": 0.02683
+      },
+      {
+        "year": 2009,
+        "spending": 0.03048
+      },
+      {
+        "year": 2010,
+        "spending": 0.02787
+      },
+      {
+        "year": 2011,
+        "spending": 0.02382
+      },
+      {
+        "year": 2012,
+        "spending": 0.02687
+      },
+      {
+        "year": 2013,
+        "spending": 0.02181
+      },
+      {
+        "year": 2014,
+        "spending": 0.02117
+      },
+      {
+        "year": 2015,
+        "spending": 0.02557
+      },
+      {
+        "year": 2016,
+        "spending": 0.02796
+      },
+      {
+        "year": 2017,
+        "spending": 0.02844
+      },
+      {
+        "year": 2018,
+        "spending": 0.02356
+      },
+      {
+        "year": 2019,
+        "spending": 0.02147
+      },
+      {
+        "year": 2020,
+        "spending": 0.02177
+      },
+      {
+        "year": 2021,
+        "spending": 0.02318
+      },
+      {
+        "year": 2022,
+        "spending": 0.02238
+      },
+      {
+        "year": 2023,
+        "spending": 0.02494
+      },
+      {
+        "year": 2024,
+        "spending": 0.02219
+      },
+      {
+        "year": 2025,
+        "spending": 0.02092
+      }
+    ]
   },
   "China": {
+    "earliestYear": 1989,
     "latestYear": 2025,
-    "latestSpending": 0.01725
+    "latestSpending": 0.01725,
+    "history": [
+      {
+        "year": 1989,
+        "spending": 0.02447
+      },
+      {
+        "year": 1990,
+        "spending": 0.02454
+      },
+      {
+        "year": 1991,
+        "spending": 0.02311
+      },
+      {
+        "year": 1992,
+        "spending": 0.02474
+      },
+      {
+        "year": 1993,
+        "spending": 0.01988
+      },
+      {
+        "year": 1994,
+        "spending": 0.0174
+      },
+      {
+        "year": 1995,
+        "spending": 0.01678
+      },
+      {
+        "year": 1996,
+        "spending": 0.01644
+      },
+      {
+        "year": 1997,
+        "spending": 0.01622
+      },
+      {
+        "year": 1998,
+        "spending": 0.01642
+      },
+      {
+        "year": 1999,
+        "spending": 0.01855
+      },
+      {
+        "year": 2000,
+        "spending": 0.01817
+      },
+      {
+        "year": 2001,
+        "spending": 0.0196
+      },
+      {
+        "year": 2002,
+        "spending": 0.02033
+      },
+      {
+        "year": 2003,
+        "spending": 0.01968
+      },
+      {
+        "year": 2004,
+        "spending": 0.0191
+      },
+      {
+        "year": 2005,
+        "spending": 0.01846
+      },
+      {
+        "year": 2006,
+        "spending": 0.01843
+      },
+      {
+        "year": 2007,
+        "spending": 0.01724
+      },
+      {
+        "year": 2008,
+        "spending": 0.01689
+      },
+      {
+        "year": 2009,
+        "spending": 0.01861
+      },
+      {
+        "year": 2010,
+        "spending": 0.01704
+      },
+      {
+        "year": 2011,
+        "spending": 0.01633
+      },
+      {
+        "year": 2012,
+        "spending": 0.01673
+      },
+      {
+        "year": 2013,
+        "spending": 0.01684
+      },
+      {
+        "year": 2014,
+        "spending": 0.01706
+      },
+      {
+        "year": 2015,
+        "spending": 0.01742
+      },
+      {
+        "year": 2016,
+        "spending": 0.01734
+      },
+      {
+        "year": 2017,
+        "spending": 0.0168
+      },
+      {
+        "year": 2018,
+        "spending": 0.01644
+      },
+      {
+        "year": 2019,
+        "spending": 0.01651
+      },
+      {
+        "year": 2020,
+        "spending": 0.01721
+      },
+      {
+        "year": 2021,
+        "spending": 0.01572
+      },
+      {
+        "year": 2022,
+        "spending": 0.01592
+      },
+      {
+        "year": 2023,
+        "spending": 0.01622
+      },
+      {
+        "year": 2024,
+        "spending": 0.01664
+      },
+      {
+        "year": 2025,
+        "spending": 0.01725
+      }
+    ]
   },
   "India": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.02295
+    "latestSpending": 0.02295,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.03134
+      },
+      {
+        "year": 1981,
+        "spending": 0.03186
+      },
+      {
+        "year": 1982,
+        "spending": 0.03345
+      },
+      {
+        "year": 1983,
+        "spending": 0.03323
+      },
+      {
+        "year": 1984,
+        "spending": 0.03417
+      },
+      {
+        "year": 1985,
+        "spending": 0.03569
+      },
+      {
+        "year": 1986,
+        "spending": 0.04106
+      },
+      {
+        "year": 1987,
+        "spending": 0.04231
+      },
+      {
+        "year": 1988,
+        "spending": 0.03729
+      },
+      {
+        "year": 1989,
+        "spending": 0.03534
+      },
+      {
+        "year": 1990,
+        "spending": 0.03146
+      },
+      {
+        "year": 1991,
+        "spending": 0.0291
+      },
+      {
+        "year": 1992,
+        "spending": 0.02705
+      },
+      {
+        "year": 1993,
+        "spending": 0.02824
+      },
+      {
+        "year": 1994,
+        "spending": 0.02665
+      },
+      {
+        "year": 1995,
+        "spending": 0.02578
+      },
+      {
+        "year": 1996,
+        "spending": 0.02473
+      },
+      {
+        "year": 1997,
+        "spending": 0.02648
+      },
+      {
+        "year": 1998,
+        "spending": 0.02727
+      },
+      {
+        "year": 1999,
+        "spending": 0.02957
+      },
+      {
+        "year": 2000,
+        "spending": 0.02949
+      },
+      {
+        "year": 2001,
+        "spending": 0.02924
+      },
+      {
+        "year": 2002,
+        "spending": 0.02827
+      },
+      {
+        "year": 2003,
+        "spending": 0.02678
+      },
+      {
+        "year": 2004,
+        "spending": 0.02829
+      },
+      {
+        "year": 2005,
+        "spending": 0.02911
+      },
+      {
+        "year": 2006,
+        "spending": 0.0268
+      },
+      {
+        "year": 2007,
+        "spending": 0.02478
+      },
+      {
+        "year": 2008,
+        "spending": 0.02631
+      },
+      {
+        "year": 2009,
+        "spending": 0.03129
+      },
+      {
+        "year": 2010,
+        "spending": 0.02889
+      },
+      {
+        "year": 2011,
+        "spending": 0.02704
+      },
+      {
+        "year": 2012,
+        "spending": 0.02618
+      },
+      {
+        "year": 2013,
+        "spending": 0.02549
+      },
+      {
+        "year": 2014,
+        "spending": 0.02544
+      },
+      {
+        "year": 2015,
+        "spending": 0.02457
+      },
+      {
+        "year": 2016,
+        "spending": 0.02543
+      },
+      {
+        "year": 2017,
+        "spending": 0.02532
+      },
+      {
+        "year": 2018,
+        "spending": 0.02424
+      },
+      {
+        "year": 2019,
+        "spending": 0.02546
+      },
+      {
+        "year": 2020,
+        "spending": 0.02804
+      },
+      {
+        "year": 2021,
+        "spending": 0.02469
+      },
+      {
+        "year": 2022,
+        "spending": 0.02383
+      },
+      {
+        "year": 2023,
+        "spending": 0.02357
+      },
+      {
+        "year": 2024,
+        "spending": 0.02223
+      },
+      {
+        "year": 2025,
+        "spending": 0.02295
+      }
+    ]
   },
   "Japan": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.01412
+    "latestSpending": 0.01412,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.00907
+      },
+      {
+        "year": 1981,
+        "spending": 0.00917
+      },
+      {
+        "year": 1982,
+        "spending": 0.00926
+      },
+      {
+        "year": 1983,
+        "spending": 0.00952
+      },
+      {
+        "year": 1984,
+        "spending": 0.00958
+      },
+      {
+        "year": 1985,
+        "spending": 0.00959
+      },
+      {
+        "year": 1986,
+        "spending": 0.00963
+      },
+      {
+        "year": 1987,
+        "spending": 0.00966
+      },
+      {
+        "year": 1988,
+        "spending": 0.0095
+      },
+      {
+        "year": 1989,
+        "spending": 0.00941
+      },
+      {
+        "year": 1990,
+        "spending": 0.00942
+      },
+      {
+        "year": 1991,
+        "spending": 0.00941
+      },
+      {
+        "year": 1992,
+        "spending": 0.00948
+      },
+      {
+        "year": 1993,
+        "spending": 0.00951
+      },
+      {
+        "year": 1994,
+        "spending": 0.00887
+      },
+      {
+        "year": 1995,
+        "spending": 0.00886
+      },
+      {
+        "year": 1996,
+        "spending": 0.00877
+      },
+      {
+        "year": 1997,
+        "spending": 0.00887
+      },
+      {
+        "year": 1998,
+        "spending": 0.00912
+      },
+      {
+        "year": 1999,
+        "spending": 0.0092
+      },
+      {
+        "year": 2000,
+        "spending": 0.00903
+      },
+      {
+        "year": 2001,
+        "spending": 0.00918
+      },
+      {
+        "year": 2002,
+        "spending": 0.00926
+      },
+      {
+        "year": 2003,
+        "spending": 0.00929
+      },
+      {
+        "year": 2004,
+        "spending": 0.00918
+      },
+      {
+        "year": 2005,
+        "spending": 0.00909
+      },
+      {
+        "year": 2006,
+        "spending": 0.00894
+      },
+      {
+        "year": 2007,
+        "spending": 0.00876
+      },
+      {
+        "year": 2008,
+        "spending": 0.00898
+      },
+      {
+        "year": 2009,
+        "spending": 0.00964
+      },
+      {
+        "year": 2010,
+        "spending": 0.0094
+      },
+      {
+        "year": 2011,
+        "spending": 0.00968
+      },
+      {
+        "year": 2012,
+        "spending": 0.00947
+      },
+      {
+        "year": 2013,
+        "spending": 0.0093
+      },
+      {
+        "year": 2014,
+        "spending": 0.00941
+      },
+      {
+        "year": 2015,
+        "spending": 0.00929
+      },
+      {
+        "year": 2016,
+        "spending": 0.0091
+      },
+      {
+        "year": 2017,
+        "spending": 0.00894
+      },
+      {
+        "year": 2018,
+        "spending": 0.00941
+      },
+      {
+        "year": 2019,
+        "spending": 0.00968
+      },
+      {
+        "year": 2020,
+        "spending": 0.0099
+      },
+      {
+        "year": 2021,
+        "spending": 0.01026
+      },
+      {
+        "year": 2022,
+        "spending": 0.0097
+      },
+      {
+        "year": 2023,
+        "spending": 0.01097
+      },
+      {
+        "year": 2024,
+        "spending": 0.01295
+      },
+      {
+        "year": 2025,
+        "spending": 0.01412
+      }
+    ]
   },
   "Korea, South": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.02601
+    "latestSpending": 0.02601,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.06399
+      },
+      {
+        "year": 1981,
+        "spending": 0.06416
+      },
+      {
+        "year": 1982,
+        "spending": 0.06241
+      },
+      {
+        "year": 1983,
+        "spending": 0.05727
+      },
+      {
+        "year": 1984,
+        "spending": 0.05255
+      },
+      {
+        "year": 1985,
+        "spending": 0.05226
+      },
+      {
+        "year": 1986,
+        "spending": 0.04948
+      },
+      {
+        "year": 1987,
+        "spending": 0.04469
+      },
+      {
+        "year": 1988,
+        "spending": 0.04281
+      },
+      {
+        "year": 1989,
+        "spending": 0.0429
+      },
+      {
+        "year": 1990,
+        "spending": 0.04002
+      },
+      {
+        "year": 1991,
+        "spending": 0.03711
+      },
+      {
+        "year": 1992,
+        "spending": 0.0369
+      },
+      {
+        "year": 1993,
+        "spending": 0.03418
+      },
+      {
+        "year": 1994,
+        "spending": 0.03193
+      },
+      {
+        "year": 1995,
+        "spending": 0.02892
+      },
+      {
+        "year": 1996,
+        "spending": 0.02743
+      },
+      {
+        "year": 1997,
+        "spending": 0.02663
+      },
+      {
+        "year": 1998,
+        "spending": 0.02794
+      },
+      {
+        "year": 1999,
+        "spending": 0.02493
+      },
+      {
+        "year": 2000,
+        "spending": 0.0231
+      },
+      {
+        "year": 2001,
+        "spending": 0.0228
+      },
+      {
+        "year": 2002,
+        "spending": 0.02169
+      },
+      {
+        "year": 2003,
+        "spending": 0.02175
+      },
+      {
+        "year": 2004,
+        "spending": 0.02166
+      },
+      {
+        "year": 2005,
+        "spending": 0.0228
+      },
+      {
+        "year": 2006,
+        "spending": 0.02299
+      },
+      {
+        "year": 2007,
+        "spending": 0.02271
+      },
+      {
+        "year": 2008,
+        "spending": 0.02389
+      },
+      {
+        "year": 2009,
+        "spending": 0.025
+      },
+      {
+        "year": 2010,
+        "spending": 0.02361
+      },
+      {
+        "year": 2011,
+        "spending": 0.02371
+      },
+      {
+        "year": 2012,
+        "spending": 0.02392
+      },
+      {
+        "year": 2013,
+        "spending": 0.02391
+      },
+      {
+        "year": 2014,
+        "spending": 0.02413
+      },
+      {
+        "year": 2015,
+        "spending": 0.02376
+      },
+      {
+        "year": 2016,
+        "spending": 0.02336
+      },
+      {
+        "year": 2017,
+        "spending": 0.02298
+      },
+      {
+        "year": 2018,
+        "spending": 0.02362
+      },
+      {
+        "year": 2019,
+        "spending": 0.02519
+      },
+      {
+        "year": 2020,
+        "spending": 0.02643
+      },
+      {
+        "year": 2021,
+        "spending": 0.02619
+      },
+      {
+        "year": 2022,
+        "spending": 0.02576
+      },
+      {
+        "year": 2023,
+        "spending": 0.02599
+      },
+      {
+        "year": 2024,
+        "spending": 0.02538
+      },
+      {
+        "year": 2025,
+        "spending": 0.02601
+      }
+    ]
   },
   "Pakistan": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.02914
+    "latestSpending": 0.02914,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.05523
+      },
+      {
+        "year": 1981,
+        "spending": 0.05711
+      },
+      {
+        "year": 1982,
+        "spending": 0.06376
+      },
+      {
+        "year": 1983,
+        "spending": 0.06644
+      },
+      {
+        "year": 1984,
+        "spending": 0.06659
+      },
+      {
+        "year": 1985,
+        "spending": 0.06922
+      },
+      {
+        "year": 1986,
+        "spending": 0.06992
+      },
+      {
+        "year": 1987,
+        "spending": 0.06972
+      },
+      {
+        "year": 1988,
+        "spending": 0.06786
+      },
+      {
+        "year": 1989,
+        "spending": 0.06533
+      },
+      {
+        "year": 1990,
+        "spending": 0.06522
+      },
+      {
+        "year": 1991,
+        "spending": 0.06571
+      },
+      {
+        "year": 1992,
+        "spending": 0.06698
+      },
+      {
+        "year": 1993,
+        "spending": 0.06427
+      },
+      {
+        "year": 1994,
+        "spending": 0.05924
+      },
+      {
+        "year": 1995,
+        "spending": 0.0582
+      },
+      {
+        "year": 1996,
+        "spending": 0.06037
+      },
+      {
+        "year": 1997,
+        "spending": 0.05621
+      },
+      {
+        "year": 1998,
+        "spending": 0.05415
+      },
+      {
+        "year": 1999,
+        "spending": 0.0519
+      },
+      {
+        "year": 2000,
+        "spending": 0.04169
+      },
+      {
+        "year": 2001,
+        "spending": 0.03879
+      },
+      {
+        "year": 2002,
+        "spending": 0.04074
+      },
+      {
+        "year": 2003,
+        "spending": 0.04091
+      },
+      {
+        "year": 2004,
+        "spending": 0.03956
+      },
+      {
+        "year": 2005,
+        "spending": 0.03897
+      },
+      {
+        "year": 2006,
+        "spending": 0.03645
+      },
+      {
+        "year": 2007,
+        "spending": 0.03512
+      },
+      {
+        "year": 2008,
+        "spending": 0.03459
+      },
+      {
+        "year": 2009,
+        "spending": 0.03265
+      },
+      {
+        "year": 2010,
+        "spending": 0.03042
+      },
+      {
+        "year": 2011,
+        "spending": 0.02919
+      },
+      {
+        "year": 2012,
+        "spending": 0.03096
+      },
+      {
+        "year": 2013,
+        "spending": 0.03088
+      },
+      {
+        "year": 2014,
+        "spending": 0.03097
+      },
+      {
+        "year": 2015,
+        "spending": 0.03163
+      },
+      {
+        "year": 2016,
+        "spending": 0.03204
+      },
+      {
+        "year": 2017,
+        "spending": 0.03364
+      },
+      {
+        "year": 2018,
+        "spending": 0.03587
+      },
+      {
+        "year": 2019,
+        "spending": 0.03506
+      },
+      {
+        "year": 2020,
+        "spending": 0.03487
+      },
+      {
+        "year": 2021,
+        "spending": 0.03389
+      },
+      {
+        "year": 2022,
+        "spending": 0.03177
+      },
+      {
+        "year": 2023,
+        "spending": 0.02891
+      },
+      {
+        "year": 2024,
+        "spending": 0.0273
+      },
+      {
+        "year": 2025,
+        "spending": 0.02914
+      }
+    ]
   },
   "Australia": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.01918
+    "latestSpending": 0.01918,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.02249
+      },
+      {
+        "year": 1981,
+        "spending": 0.02297
+      },
+      {
+        "year": 1982,
+        "spending": 0.02393
+      },
+      {
+        "year": 1983,
+        "spending": 0.0252
+      },
+      {
+        "year": 1984,
+        "spending": 0.02505
+      },
+      {
+        "year": 1985,
+        "spending": 0.02523
+      },
+      {
+        "year": 1986,
+        "spending": 0.0254
+      },
+      {
+        "year": 1987,
+        "spending": 0.02373
+      },
+      {
+        "year": 1988,
+        "spending": 0.02158
+      },
+      {
+        "year": 1989,
+        "spending": 0.02046
+      },
+      {
+        "year": 1990,
+        "spending": 0.02074
+      },
+      {
+        "year": 1991,
+        "spending": 0.02161
+      },
+      {
+        "year": 1992,
+        "spending": 0.02165
+      },
+      {
+        "year": 1993,
+        "spending": 0.02172
+      },
+      {
+        "year": 1994,
+        "spending": 0.02111
+      },
+      {
+        "year": 1995,
+        "spending": 0.02017
+      },
+      {
+        "year": 1996,
+        "spending": 0.01927
+      },
+      {
+        "year": 1997,
+        "spending": 0.01862
+      },
+      {
+        "year": 1998,
+        "spending": 0.01866
+      },
+      {
+        "year": 1999,
+        "spending": 0.01884
+      },
+      {
+        "year": 2000,
+        "spending": 0.01821
+      },
+      {
+        "year": 2001,
+        "spending": 0.0186
+      },
+      {
+        "year": 2002,
+        "spending": 0.01865
+      },
+      {
+        "year": 2003,
+        "spending": 0.0184
+      },
+      {
+        "year": 2004,
+        "spending": 0.01819
+      },
+      {
+        "year": 2005,
+        "spending": 0.01793
+      },
+      {
+        "year": 2006,
+        "spending": 0.01814
+      },
+      {
+        "year": 2007,
+        "spending": 0.01808
+      },
+      {
+        "year": 2008,
+        "spending": 0.01791
+      },
+      {
+        "year": 2009,
+        "spending": 0.01917
+      },
+      {
+        "year": 2010,
+        "spending": 0.01847
+      },
+      {
+        "year": 2011,
+        "spending": 0.0175
+      },
+      {
+        "year": 2012,
+        "spending": 0.01664
+      },
+      {
+        "year": 2013,
+        "spending": 0.01631
+      },
+      {
+        "year": 2014,
+        "spending": 0.01765
+      },
+      {
+        "year": 2015,
+        "spending": 0.01945
+      },
+      {
+        "year": 2016,
+        "spending": 0.02081
+      },
+      {
+        "year": 2017,
+        "spending": 0.01997
+      },
+      {
+        "year": 2018,
+        "spending": 0.01888
+      },
+      {
+        "year": 2019,
+        "spending": 0.01872
+      },
+      {
+        "year": 2020,
+        "spending": 0.02001
+      },
+      {
+        "year": 2021,
+        "spending": 0.01973
+      },
+      {
+        "year": 2022,
+        "spending": 0.01877
+      },
+      {
+        "year": 2023,
+        "spending": 0.01856
+      },
+      {
+        "year": 2024,
+        "spending": 0.01902
+      },
+      {
+        "year": 2025,
+        "spending": 0.01918
+      }
+    ]
   },
   "Indonesia": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.01045
+    "latestSpending": 0.01045,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.02917
+      },
+      {
+        "year": 1981,
+        "spending": 0.02885
+      },
+      {
+        "year": 1982,
+        "spending": 0.02902
+      },
+      {
+        "year": 1983,
+        "spending": 0.02398
+      },
+      {
+        "year": 1984,
+        "spending": 0.02285
+      },
+      {
+        "year": 1985,
+        "spending": 0.02171
+      },
+      {
+        "year": 1986,
+        "spending": 0.0201
+      },
+      {
+        "year": 1987,
+        "spending": 0.01722
+      },
+      {
+        "year": 1988,
+        "spending": 0.01531
+      },
+      {
+        "year": 1989,
+        "spending": 0.01389
+      },
+      {
+        "year": 1990,
+        "spending": 0.0141
+      },
+      {
+        "year": 1991,
+        "spending": 0.01324
+      },
+      {
+        "year": 1992,
+        "spending": 0.01357
+      },
+      {
+        "year": 1993,
+        "spending": 0.01224
+      },
+      {
+        "year": 1994,
+        "spending": 0.01266
+      },
+      {
+        "year": 1995,
+        "spending": 0.01226
+      },
+      {
+        "year": 1996,
+        "spending": 0.01264
+      },
+      {
+        "year": 1997,
+        "spending": 0.01498
+      },
+      {
+        "year": 1998,
+        "spending": 0.01019
+      },
+      {
+        "year": 1999,
+        "spending": 0.00811
+      },
+      {
+        "year": 2000,
+        "spending": 0.00684
+      },
+      {
+        "year": 2001,
+        "spending": 0.00573
+      },
+      {
+        "year": 2002,
+        "spending": 0.007
+      },
+      {
+        "year": 2003,
+        "spending": 0.00909
+      },
+      {
+        "year": 2004,
+        "spending": 0.00946
+      },
+      {
+        "year": 2005,
+        "spending": 0.00751
+      },
+      {
+        "year": 2006,
+        "spending": 0.00659
+      },
+      {
+        "year": 2007,
+        "spending": 0.00712
+      },
+      {
+        "year": 2008,
+        "spending": 0.00579
+      },
+      {
+        "year": 2009,
+        "spending": 0.00571
+      },
+      {
+        "year": 2010,
+        "spending": 0.00618
+      },
+      {
+        "year": 2011,
+        "spending": 0.00654
+      },
+      {
+        "year": 2012,
+        "spending": 0.00712
+      },
+      {
+        "year": 2013,
+        "spending": 0.00919
+      },
+      {
+        "year": 2014,
+        "spending": 0.00778
+      },
+      {
+        "year": 2015,
+        "spending": 0.00882
+      },
+      {
+        "year": 2016,
+        "spending": 0.00792
+      },
+      {
+        "year": 2017,
+        "spending": 0.00865
+      },
+      {
+        "year": 2018,
+        "spending": 0.00719
+      },
+      {
+        "year": 2019,
+        "spending": 0.00729
+      },
+      {
+        "year": 2020,
+        "spending": 0.00886
+      },
+      {
+        "year": 2021,
+        "spending": 0.00742
+      },
+      {
+        "year": 2022,
+        "spending": 0.00768
+      },
+      {
+        "year": 2023,
+        "spending": 0.00821
+      },
+      {
+        "year": 2024,
+        "spending": 0.0086
+      },
+      {
+        "year": 2025,
+        "spending": 0.01045
+      }
+    ]
   },
   "Viet Nam": {
+    "earliestYear": 1987,
     "latestYear": 2025,
-    "latestSpending": 0.02154
+    "latestSpending": 0.02154,
+    "history": [
+      {
+        "year": 1987,
+        "spending": 0.03954
+      },
+      {
+        "year": 1988,
+        "spending": 0.07102
+      },
+      {
+        "year": 1989,
+        "spending": 0.07287
+      },
+      {
+        "year": 1990,
+        "spending": 0.07911
+      },
+      {
+        "year": 1991,
+        "spending": 0.05595
+      },
+      {
+        "year": 1992,
+        "spending": 0.03375
+      },
+      {
+        "year": 1993,
+        "spending": 0.02259
+      },
+      {
+        "year": 1994,
+        "spending": 0.02649
+      },
+      {
+        "year": 1995,
+        "spending": 0.02591
+      },
+      {
+        "year": 1996,
+        "spending": 0.02534
+      },
+      {
+        "year": 1997,
+        "spending": 0.02476
+      },
+      {
+        "year": 1998,
+        "spending": 0.02418
+      },
+      {
+        "year": 1999,
+        "spending": 0.0236
+      },
+      {
+        "year": 2000,
+        "spending": 0.02302
+      },
+      {
+        "year": 2001,
+        "spending": 0.02244
+      },
+      {
+        "year": 2002,
+        "spending": 0.02186
+      },
+      {
+        "year": 2003,
+        "spending": 0.02129
+      },
+      {
+        "year": 2004,
+        "spending": 0.02014
+      },
+      {
+        "year": 2005,
+        "spending": 0.01781
+      },
+      {
+        "year": 2006,
+        "spending": 0.01938
+      },
+      {
+        "year": 2007,
+        "spending": 0.02305
+      },
+      {
+        "year": 2008,
+        "spending": 0.0207
+      },
+      {
+        "year": 2009,
+        "spending": 0.02729
+      },
+      {
+        "year": 2010,
+        "spending": 0.01839
+      },
+      {
+        "year": 2011,
+        "spending": 0.01755
+      },
+      {
+        "year": 2012,
+        "spending": 0.02423
+      },
+      {
+        "year": 2013,
+        "spending": 0.02584
+      },
+      {
+        "year": 2014,
+        "spending": 0.02412
+      },
+      {
+        "year": 2015,
+        "spending": 0.02555
+      },
+      {
+        "year": 2016,
+        "spending": 0.02461
+      },
+      {
+        "year": 2017,
+        "spending": 0.02276
+      },
+      {
+        "year": 2018,
+        "spending": 0.02223
+      },
+      {
+        "year": 2019,
+        "spending": 0.0217
+      },
+      {
+        "year": 2020,
+        "spending": 0.02066
+      },
+      {
+        "year": 2021,
+        "spending": 0.02054
+      },
+      {
+        "year": 2022,
+        "spending": 0.01716
+      },
+      {
+        "year": 2023,
+        "spending": 0.01834
+      },
+      {
+        "year": 2024,
+        "spending": 0.01803
+      },
+      {
+        "year": 2025,
+        "spending": 0.02154
+      }
+    ]
   },
   "South Africa": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.00737
+    "latestSpending": 0.00737,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.03305
+      },
+      {
+        "year": 1981,
+        "spending": 0.03638
+      },
+      {
+        "year": 1982,
+        "spending": 0.03614
+      },
+      {
+        "year": 1983,
+        "spending": 0.03605
+      },
+      {
+        "year": 1984,
+        "spending": 0.03696
+      },
+      {
+        "year": 1985,
+        "spending": 0.03698
+      },
+      {
+        "year": 1986,
+        "spending": 0.03821
+      },
+      {
+        "year": 1987,
+        "spending": 0.04192
+      },
+      {
+        "year": 1988,
+        "spending": 0.04624
+      },
+      {
+        "year": 1989,
+        "spending": 0.04358
+      },
+      {
+        "year": 1990,
+        "spending": 0.03896
+      },
+      {
+        "year": 1991,
+        "spending": 0.03223
+      },
+      {
+        "year": 1992,
+        "spending": 0.02818
+      },
+      {
+        "year": 1993,
+        "spending": 0.02496
+      },
+      {
+        "year": 1994,
+        "spending": 0.02562
+      },
+      {
+        "year": 1995,
+        "spending": 0.02118
+      },
+      {
+        "year": 1996,
+        "spending": 0.01756
+      },
+      {
+        "year": 1997,
+        "spending": 0.01582
+      },
+      {
+        "year": 1998,
+        "spending": 0.01383
+      },
+      {
+        "year": 1999,
+        "spending": 0.01272
+      },
+      {
+        "year": 2000,
+        "spending": 0.01387
+      },
+      {
+        "year": 2001,
+        "spending": 0.01483
+      },
+      {
+        "year": 2002,
+        "spending": 0.01529
+      },
+      {
+        "year": 2003,
+        "spending": 0.01469
+      },
+      {
+        "year": 2004,
+        "spending": 0.01356
+      },
+      {
+        "year": 2005,
+        "spending": 0.01235
+      },
+      {
+        "year": 2006,
+        "spending": 0.01154
+      },
+      {
+        "year": 2007,
+        "spending": 0.01059
+      },
+      {
+        "year": 2008,
+        "spending": 0.01039
+      },
+      {
+        "year": 2009,
+        "spending": 0.0109
+      },
+      {
+        "year": 2010,
+        "spending": 0.01003
+      },
+      {
+        "year": 2011,
+        "spending": 0.01003
+      },
+      {
+        "year": 2012,
+        "spending": 0.01034
+      },
+      {
+        "year": 2013,
+        "spending": 0.01028
+      },
+      {
+        "year": 2014,
+        "spending": 0.01022
+      },
+      {
+        "year": 2015,
+        "spending": 0.01007
+      },
+      {
+        "year": 2016,
+        "spending": 0.00971
+      },
+      {
+        "year": 2017,
+        "spending": 0.00944
+      },
+      {
+        "year": 2018,
+        "spending": 0.00895
+      },
+      {
+        "year": 2019,
+        "spending": 0.00882
+      },
+      {
+        "year": 2020,
+        "spending": 0.00957
+      },
+      {
+        "year": 2021,
+        "spending": 0.00845
+      },
+      {
+        "year": 2022,
+        "spending": 0.00849
+      },
+      {
+        "year": 2023,
+        "spending": 0.00802
+      },
+      {
+        "year": 2024,
+        "spending": 0.00756
+      },
+      {
+        "year": 2025,
+        "spending": 0.00737
+      }
+    ]
   },
   "Nigeria": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.00909
+    "latestSpending": 0.00909,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.03296
+      },
+      {
+        "year": 1981,
+        "spending": 0.0277
+      },
+      {
+        "year": 1982,
+        "spending": 0.02267
+      },
+      {
+        "year": 1983,
+        "spending": 0.0222
+      },
+      {
+        "year": 1984,
+        "spending": 0.01557
+      },
+      {
+        "year": 1985,
+        "spending": 0.01437
+      },
+      {
+        "year": 1986,
+        "spending": 0.01312
+      },
+      {
+        "year": 1987,
+        "spending": 0.0077
+      },
+      {
+        "year": 1988,
+        "spending": 0.00884
+      },
+      {
+        "year": 1989,
+        "spending": 0.0058
+      },
+      {
+        "year": 1990,
+        "spending": 0.00833
+      },
+      {
+        "year": 1991,
+        "spending": 0.00774
+      },
+      {
+        "year": 1992,
+        "spending": 0.00564
+      },
+      {
+        "year": 1993,
+        "spending": 0.00933
+      },
+      {
+        "year": 1994,
+        "spending": 0.00781
+      },
+      {
+        "year": 1995,
+        "spending": 0.00484
+      },
+      {
+        "year": 1996,
+        "spending": 0.00406
+      },
+      {
+        "year": 1997,
+        "spending": 0.00436
+      },
+      {
+        "year": 1998,
+        "spending": 0.00548
+      },
+      {
+        "year": 1999,
+        "spending": 0.00855
+      },
+      {
+        "year": 2000,
+        "spending": 0.00544
+      },
+      {
+        "year": 2001,
+        "spending": 0.0078
+      },
+      {
+        "year": 2002,
+        "spending": 0.00954
+      },
+      {
+        "year": 2003,
+        "spending": 0.00571
+      },
+      {
+        "year": 2004,
+        "spending": 0.00491
+      },
+      {
+        "year": 2005,
+        "spending": 0.00397
+      },
+      {
+        "year": 2006,
+        "spending": 0.00348
+      },
+      {
+        "year": 2007,
+        "spending": 0.0037
+      },
+      {
+        "year": 2008,
+        "spending": 0.00489
+      },
+      {
+        "year": 2009,
+        "spending": 0.00506
+      },
+      {
+        "year": 2010,
+        "spending": 0.00539
+      },
+      {
+        "year": 2011,
+        "spending": 0.00579
+      },
+      {
+        "year": 2012,
+        "spending": 0.00504
+      },
+      {
+        "year": 2013,
+        "spending": 0.0047
+      },
+      {
+        "year": 2014,
+        "spending": 0.00415
+      },
+      {
+        "year": 2015,
+        "spending": 0.00418
+      },
+      {
+        "year": 2016,
+        "spending": 0.00433
+      },
+      {
+        "year": 2017,
+        "spending": 0.00431
+      },
+      {
+        "year": 2018,
+        "spending": 0.00507
+      },
+      {
+        "year": 2019,
+        "spending": 0.00459
+      },
+      {
+        "year": 2020,
+        "spending": 0.00632
+      },
+      {
+        "year": 2021,
+        "spending": 0.01013
+      },
+      {
+        "year": 2022,
+        "spending": 0.0065
+      },
+      {
+        "year": 2023,
+        "spending": 0.00843
+      },
+      {
+        "year": 2024,
+        "spending": 0.00555
+      },
+      {
+        "year": 2025,
+        "spending": 0.00909
+      }
+    ]
   },
   "Egypt": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.00606
+    "latestSpending": 0.00606,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.0616
+      },
+      {
+        "year": 1981,
+        "spending": 0.07417
+      },
+      {
+        "year": 1982,
+        "spending": 0.07189
+      },
+      {
+        "year": 1983,
+        "spending": 0.07959
+      },
+      {
+        "year": 1984,
+        "spending": 0.08265
+      },
+      {
+        "year": 1985,
+        "spending": 0.07857
+      },
+      {
+        "year": 1986,
+        "spending": 0.07498
+      },
+      {
+        "year": 1987,
+        "spending": 0.06529
+      },
+      {
+        "year": 1988,
+        "spending": 0.05061
+      },
+      {
+        "year": 1989,
+        "spending": 0.03968
+      },
+      {
+        "year": 1990,
+        "spending": 0.03468
+      },
+      {
+        "year": 1991,
+        "spending": 0.03612
+      },
+      {
+        "year": 1992,
+        "spending": 0.03216
+      },
+      {
+        "year": 1993,
+        "spending": 0.03098
+      },
+      {
+        "year": 1994,
+        "spending": 0.03154
+      },
+      {
+        "year": 1995,
+        "spending": 0.03082
+      },
+      {
+        "year": 1996,
+        "spending": 0.02975
+      },
+      {
+        "year": 1997,
+        "spending": 0.02841
+      },
+      {
+        "year": 1998,
+        "spending": 0.02659
+      },
+      {
+        "year": 1999,
+        "spending": 0.0257
+      },
+      {
+        "year": 2000,
+        "spending": 0.02551
+      },
+      {
+        "year": 2001,
+        "spending": 0.02986
+      },
+      {
+        "year": 2002,
+        "spending": 0.03278
+      },
+      {
+        "year": 2003,
+        "spending": 0.03177
+      },
+      {
+        "year": 2004,
+        "spending": 0.02878
+      },
+      {
+        "year": 2005,
+        "spending": 0.02714
+      },
+      {
+        "year": 2006,
+        "spending": 0.02606
+      },
+      {
+        "year": 2007,
+        "spending": 0.0238
+      },
+      {
+        "year": 2008,
+        "spending": 0.02181
+      },
+      {
+        "year": 2009,
+        "spending": 0.02033
+      },
+      {
+        "year": 2010,
+        "spending": 0.01953
+      },
+      {
+        "year": 2011,
+        "spending": 0.01837
+      },
+      {
+        "year": 2012,
+        "spending": 0.01648
+      },
+      {
+        "year": 2013,
+        "spending": 0.0161
+      },
+      {
+        "year": 2014,
+        "spending": 0.0169
+      },
+      {
+        "year": 2015,
+        "spending": 0.01723
+      },
+      {
+        "year": 2016,
+        "spending": 0.01667
+      },
+      {
+        "year": 2017,
+        "spending": 0.01422
+      },
+      {
+        "year": 2018,
+        "spending": 0.0125
+      },
+      {
+        "year": 2019,
+        "spending": 0.01181
+      },
+      {
+        "year": 2020,
+        "spending": 0.01122
+      },
+      {
+        "year": 2021,
+        "spending": 0.01122
+      },
+      {
+        "year": 2022,
+        "spending": 0.01015
+      },
+      {
+        "year": 2023,
+        "spending": 0.00809
+      },
+      {
+        "year": 2024,
+        "spending": 0.00667
+      },
+      {
+        "year": 2025,
+        "spending": 0.00606
+      }
+    ]
   },
   "Algeria": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.08831
+    "latestSpending": 0.08831,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.02102
+      },
+      {
+        "year": 1981,
+        "spending": 0.01818
+      },
+      {
+        "year": 1982,
+        "spending": 0.02063
+      },
+      {
+        "year": 1983,
+        "spending": 0.01951
+      },
+      {
+        "year": 1984,
+        "spending": 0.01755
+      },
+      {
+        "year": 1985,
+        "spending": 0.01644
+      },
+      {
+        "year": 1986,
+        "spending": 0.01787
+      },
+      {
+        "year": 1987,
+        "spending": 0.01856
+      },
+      {
+        "year": 1988,
+        "spending": 0.0175
+      },
+      {
+        "year": 1989,
+        "spending": 0.0154
+      },
+      {
+        "year": 1990,
+        "spending": 0.01461
+      },
+      {
+        "year": 1991,
+        "spending": 0.01211
+      },
+      {
+        "year": 1992,
+        "spending": 0.0214
+      },
+      {
+        "year": 1993,
+        "spending": 0.02506
+      },
+      {
+        "year": 1994,
+        "spending": 0.03146
+      },
+      {
+        "year": 1995,
+        "spending": 0.02935
+      },
+      {
+        "year": 1996,
+        "spending": 0.03094
+      },
+      {
+        "year": 1997,
+        "spending": 0.03637
+      },
+      {
+        "year": 1998,
+        "spending": 0.03966
+      },
+      {
+        "year": 1999,
+        "spending": 0.03755
+      },
+      {
+        "year": 2000,
+        "spending": 0.03433
+      },
+      {
+        "year": 2001,
+        "spending": 0.0352
+      },
+      {
+        "year": 2002,
+        "spending": 0.03415
+      },
+      {
+        "year": 2003,
+        "spending": 0.03003
+      },
+      {
+        "year": 2004,
+        "spending": 0.03049
+      },
+      {
+        "year": 2005,
+        "spending": 0.02732
+      },
+      {
+        "year": 2006,
+        "spending": 0.02514
+      },
+      {
+        "year": 2007,
+        "spending": 0.02769
+      },
+      {
+        "year": 2008,
+        "spending": 0.02867
+      },
+      {
+        "year": 2009,
+        "spending": 0.03513
+      },
+      {
+        "year": 2010,
+        "spending": 0.0319
+      },
+      {
+        "year": 2011,
+        "spending": 0.03963
+      },
+      {
+        "year": 2012,
+        "spending": 0.04106
+      },
+      {
+        "year": 2013,
+        "spending": 0.04424
+      },
+      {
+        "year": 2014,
+        "spending": 0.04965
+      },
+      {
+        "year": 2015,
+        "spending": 0.05551
+      },
+      {
+        "year": 2016,
+        "spending": 0.05653
+      },
+      {
+        "year": 2017,
+        "spending": 0.05307
+      },
+      {
+        "year": 2018,
+        "spending": 0.0493
+      },
+      {
+        "year": 2019,
+        "spending": 0.05327
+      },
+      {
+        "year": 2020,
+        "spending": 0.05886
+      },
+      {
+        "year": 2021,
+        "spending": 0.0489
+      },
+      {
+        "year": 2022,
+        "spending": 0.04057
+      },
+      {
+        "year": 2023,
+        "spending": 0.0739
+      },
+      {
+        "year": 2024,
+        "spending": 0.07971
+      },
+      {
+        "year": 2025,
+        "spending": 0.08831
+      }
+    ]
   },
   "Sweden": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.02471
+    "latestSpending": 0.02471,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.02923
+      },
+      {
+        "year": 1981,
+        "spending": 0.02948
+      },
+      {
+        "year": 1982,
+        "spending": 0.02854
+      },
+      {
+        "year": 1983,
+        "spending": 0.02738
+      },
+      {
+        "year": 1984,
+        "spending": 0.02672
+      },
+      {
+        "year": 1985,
+        "spending": 0.02673
+      },
+      {
+        "year": 1986,
+        "spending": 0.02587
+      },
+      {
+        "year": 1987,
+        "spending": 0.02653
+      },
+      {
+        "year": 1988,
+        "spending": 0.02585
+      },
+      {
+        "year": 1989,
+        "spending": 0.02509
+      },
+      {
+        "year": 1990,
+        "spending": 0.02569
+      },
+      {
+        "year": 1991,
+        "spending": 0.02454
+      },
+      {
+        "year": 1992,
+        "spending": 0.02444
+      },
+      {
+        "year": 1993,
+        "spending": 0.02357
+      },
+      {
+        "year": 1994,
+        "spending": 0.02254
+      },
+      {
+        "year": 1995,
+        "spending": 0.02146
+      },
+      {
+        "year": 1996,
+        "spending": 0.02125
+      },
+      {
+        "year": 1997,
+        "spending": 0.0194
+      },
+      {
+        "year": 1998,
+        "spending": 0.01895
+      },
+      {
+        "year": 1999,
+        "spending": 0.01877
+      },
+      {
+        "year": 2000,
+        "spending": 0.01822
+      },
+      {
+        "year": 2001,
+        "spending": 0.01702
+      },
+      {
+        "year": 2002,
+        "spending": 0.01629
+      },
+      {
+        "year": 2003,
+        "spending": 0.01588
+      },
+      {
+        "year": 2004,
+        "spending": 0.01434
+      },
+      {
+        "year": 2005,
+        "spending": 0.01409
+      },
+      {
+        "year": 2006,
+        "spending": 0.0132
+      },
+      {
+        "year": 2007,
+        "spending": 0.01303
+      },
+      {
+        "year": 2008,
+        "spending": 0.01171
+      },
+      {
+        "year": 2009,
+        "spending": 0.01166
+      },
+      {
+        "year": 2010,
+        "spending": 0.01194
+      },
+      {
+        "year": 2011,
+        "spending": 0.01109
+      },
+      {
+        "year": 2012,
+        "spending": 0.01136
+      },
+      {
+        "year": 2013,
+        "spending": 0.01118
+      },
+      {
+        "year": 2014,
+        "spending": 0.01135
+      },
+      {
+        "year": 2015,
+        "spending": 0.01074
+      },
+      {
+        "year": 2016,
+        "spending": 0.01058
+      },
+      {
+        "year": 2017,
+        "spending": 0.01034
+      },
+      {
+        "year": 2018,
+        "spending": 0.01043
+      },
+      {
+        "year": 2019,
+        "spending": 0.011
+      },
+      {
+        "year": 2020,
+        "spending": 0.01152
+      },
+      {
+        "year": 2021,
+        "spending": 0.012
+      },
+      {
+        "year": 2022,
+        "spending": 0.01343
+      },
+      {
+        "year": 2023,
+        "spending": 0.01517
+      },
+      {
+        "year": 2024,
+        "spending": 0.01993
+      },
+      {
+        "year": 2025,
+        "spending": 0.02471
+      }
+    ]
   },
   "Norway": {
+    "earliestYear": 1980,
     "latestYear": 2025,
-    "latestSpending": 0.03278
+    "latestSpending": 0.03278,
+    "history": [
+      {
+        "year": 1980,
+        "spending": 0.02619
+      },
+      {
+        "year": 1981,
+        "spending": 0.02624
+      },
+      {
+        "year": 1982,
+        "spending": 0.02745
+      },
+      {
+        "year": 1983,
+        "spending": 0.02795
+      },
+      {
+        "year": 1984,
+        "spending": 0.02544
+      },
+      {
+        "year": 1985,
+        "spending": 0.02796
+      },
+      {
+        "year": 1986,
+        "spending": 0.02808
+      },
+      {
+        "year": 1987,
+        "spending": 0.02978
+      },
+      {
+        "year": 1988,
+        "spending": 0.02841
+      },
+      {
+        "year": 1989,
+        "spending": 0.02857
+      },
+      {
+        "year": 1990,
+        "spending": 0.02834
+      },
+      {
+        "year": 1991,
+        "spending": 0.02698
+      },
+      {
+        "year": 1992,
+        "spending": 0.02907
+      },
+      {
+        "year": 1993,
+        "spending": 0.02634
+      },
+      {
+        "year": 1994,
+        "spending": 0.02677
+      },
+      {
+        "year": 1995,
+        "spending": 0.02307
+      },
+      {
+        "year": 1996,
+        "spending": 0.02163
+      },
+      {
+        "year": 1997,
+        "spending": 0.02016
+      },
+      {
+        "year": 1998,
+        "spending": 0.02156
+      },
+      {
+        "year": 1999,
+        "spending": 0.02038
+      },
+      {
+        "year": 2000,
+        "spending": 0.01704
+      },
+      {
+        "year": 2001,
+        "spending": 0.01702
+      },
+      {
+        "year": 2002,
+        "spending": 0.02075
+      },
+      {
+        "year": 2003,
+        "spending": 0.01969
+      },
+      {
+        "year": 2004,
+        "spending": 0.01842
+      },
+      {
+        "year": 2005,
+        "spending": 0.01576
+      },
+      {
+        "year": 2006,
+        "spending": 0.01445
+      },
+      {
+        "year": 2007,
+        "spending": 0.01459
+      },
+      {
+        "year": 2008,
+        "spending": 0.0137
+      },
+      {
+        "year": 2009,
+        "spending": 0.01597
+      },
+      {
+        "year": 2010,
+        "spending": 0.01508
+      },
+      {
+        "year": 2011,
+        "spending": 0.01443
+      },
+      {
+        "year": 2012,
+        "spending": 0.01393
+      },
+      {
+        "year": 2013,
+        "spending": 0.01405
+      },
+      {
+        "year": 2014,
+        "spending": 0.01462
+      },
+      {
+        "year": 2015,
+        "spending": 0.01498
+      },
+      {
+        "year": 2016,
+        "spending": 0.01617
+      },
+      {
+        "year": 2017,
+        "spending": 0.01705
+      },
+      {
+        "year": 2018,
+        "spending": 0.01715
+      },
+      {
+        "year": 2019,
+        "spending": 0.01844
+      },
+      {
+        "year": 2020,
+        "spending": 0.01966
+      },
+      {
+        "year": 2021,
+        "spending": 0.01676
+      },
+      {
+        "year": 2022,
+        "spending": 0.01458
+      },
+      {
+        "year": 2023,
+        "spending": 0.01822
+      },
+      {
+        "year": 2024,
+        "spending": 0.02232
+      },
+      {
+        "year": 2025,
+        "spending": 0.03278
+      }
+    ]
   }
 }

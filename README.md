@@ -6,7 +6,9 @@ A per-country military spending forecasting pipeline, built on real SIPRI data a
 
 I built this project to go deeper into MLOps and real-world data handling, as a follow-up to an earlier project (iris-mlops-demo) that used a clean, pre-labeled toy dataset. That project taught me the mechanics of the full pipeline: training, serving, containerizing, and testing a model. This one is about the part that project didn't cover: what real, messy data actually looks like, and how to make and defend real modeling decisions when there isn't one obviously correct answer.
 
-I write and reason through every line of code myself alongside Claude to explain unfamiliar concepts, walk through why something broke, and push back on my assumptions when my reasoning was incomplete, the same way I'd use a mentor or documentation, not as something writing the project for me. Debugging in particular has been mine to work through: tracing an off-by-one header row error, a mixed-up row/column slice, and a duplicate-variable bug that silently ignored a function parameter were all things I had to reason through, not paste in.
+For the data pipeline, model comparison, and API, I write and reason through every line of code myself alongside Claude, which explains unfamiliar concepts, walks through why something broke, and pushes back on my assumptions when my reasoning was incomplete, the same way I'd use a mentor or documentation, not as something writing the project for me. Debugging in particular has been mine to work through: tracing an off-by-one header row error, a mixed-up row/column slice, and a duplicate-variable bug that silently ignored a function parameter were all things I had to reason through, not paste in.
+
+The frontend was built differently, and I want to be upfront about that distinction. I used Claude Code as an agentic coding tool to implement the React app, rather than writing it line by line myself, since frontend development was genuinely new territory for me and this project's priority was the ML/data engineering side. My role there was scoping and directing the work: specifying the interaction design, catching a real gap in the original plan (having it inspect the existing backend and README first, and restructure the repo into backend/ and frontend/ without breaking existing tests or CI), diagnosing real bugs from what I saw on screen (a debounce issue causing overlapping API calls, a layout bug causing the modal to resize erratically) and directing the fixes, and reviewing its output rather than assuming it was correct, including having it walk me through, in detail, why an npm audit-flagged vulnerability in a transitive dependency didn't actually apply to how we use the library.
 
 I picked military spending data specifically because I wanted a subject with real, current stakes rather than another synthetic or overused dataset. NATO's 2% GDP spending target is an active, reported policy debate, and I wanted to build something that could speak to it honestly: not a tool that claims to predict geopolitics, but one that shows what the actual historical data says, compares reasonable forecasting approaches on their merits, and is upfront about where the data itself is unreliable or misleading.
 
@@ -51,6 +53,8 @@ Initial testing with Prophet at default settings showed linear regression winnin
 - **Türkiye's data is an outlier by roughly 5x on year-over-year volatility.** Investigated and traced this to the Turkish lira losing over 80% of its value against the dollar since 2018, driven by chronic high inflation, not a genuine defense-policy shift. Since spending is measured as a share of GDP in dollar terms, currency instability directly distorts the metric. Linear regression's simple averaging handled this noise better than Prophet, which tried to fit it as a real trend.
 - **North Korea was excluded from the country list entirely.** It has no reliable, publicly reported military spending data for almost the entire study period, so there is nothing meaningful to forecast from.
 - **No single model or setting works best universally.** The right choice depends on whether a country's history has genuine, discrete shifts (a war, a policy change) or a smoother, gradual trend.
+- **Tuning mattered more than model choice.** At Prophet's default sensitivity setting, linear regression won on every country tested. Only after properly tuning Prophet's changepoint sensitivity did the result flip, with Prophet winning 27 of 31 — evidence that a poorly configured model can lose to a much simpler one, and that a first comparison shouldn't be trusted without checking both sides were fairly tuned.
+- **Forecasting models can't predict genuinely novel events.** Ukraine's 2022 spending spike falls inside the test period, not the training period, so both models were effectively guessing blind for that year. Tuning Prophet's sensitivity made no measurable difference here, which is itself informative: no amount of model flexibility can infer an event with zero precedent in its training history.
 
 **4. Model artifacts**
 
@@ -73,8 +77,11 @@ A React app (`frontend/`, built with Vite) renders an interactive world map usin
 
 - **Country name mapping.** SIPRI's names don't all match the map library's naming (sourced from Natural Earth via `world-atlas`) — e.g. SIPRI's "Türkiye," "Korea, South," and "Viet Nam." Rather than assume the two datasets line up, `frontend/src/data/countryNameMap.js` holds an explicit translation table, and `frontend/src/data/countryData.js` cross-checks every mapped name against the map's actual topojson data at load time, logging a console warning for anything that doesn't resolve. Currently all 31 countries match confidently: 27 by exact name (including "United States of America," which - despite differing conventions elsewhere - happens to already match), and 3 needing the explicit translation (Türkiye → Turkey, Korea, South → South Korea, Viet Nam → Vietnam).
 - **Hover** shows a small popup with the country's most recent known spending value (from `cleaned_data.csv`, exported to the frontend as static JSON via `backend/export_country_data.py`).
-- **Click** opens a modal (not a new page) with a slider to pick how many years ahead to forecast, calling the live `POST /forecast` endpoint and displaying the actual returned values.
-- Countries without a trained model are still rendered (so the map looks complete), but are visually distinct and not interactive.
+- **Click** opens a modal (not a new page) with a slider to pick how many years ahead to forecast, calling the live `POST /forecast` endpoint. Results are shown as a line chart (Recharts) combining the last 15 years of observed history with the forecasted years on one continuous line — solid for observed data, dashed for the forecast, sharing a bridge point at the last observed year so the two segments connect with no visual gap. The chart has a fixed size regardless of how many years are selected, so requesting more years plots more points in the same space rather than growing the modal.
+- The slider is debounced (waits for the user to pause dragging before calling the API, and discards any in-flight request superseded by a newer one), fixing an earlier bug where dragging fired overlapping requests that raced each other and caused the results to flicker.
+- Countries without a trained model are still rendered (so the map looks complete), but are visually distinct (a hairline hatch pattern) and not interactive.
+- The visual design is a light, editorial "printed policy report" aesthetic — a warm cream background, ink-navy for observed data and muted burgundy for forecasted data (same cool/observed vs. warm/projected logic carried through the map, hover, and chart), and a serif typeface for body text with sans reserved for UI labels.
+- Built with Claude Code (see "Why I built this" above for how this piece was developed differently from the rest of the project).
 
 ## What's next
 
@@ -89,7 +96,7 @@ A React app (`frontend/`, built with Vite) renders an interactive world map usin
 - FastAPI, Pydantic for the API
 - pytest, GitHub Actions for testing and CI
 - Docker for containerization
-- React, Vite, react-simple-maps for the frontend
+- React, Vite, react-simple-maps, Recharts for the frontend
 
 ## Running locally
 

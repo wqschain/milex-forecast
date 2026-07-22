@@ -36,3 +36,12 @@ if (unmatchedCountries.length > 0) {
     unmatchedCountries
   );
 }
+
+// Full span of the dataset (min earliest year to max latest year across all
+// countries), for display in the data strip - not hardcoded, since coverage
+// actually varies per country (e.g. Ukraine only starts in 1993).
+const allCountryData = [...countryDataByMapName.values()];
+export const datasetYearRange = {
+  earliest: Math.min(...allCountryData.map((c) => c.earliestYear)),
+  latest: Math.max(...allCountryData.map((c) => c.latestYear)),
+};
