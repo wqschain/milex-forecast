@@ -14,7 +14,7 @@ I picked military spending data specifically because I wanted a subject with rea
 
 Forecasts military spending (as % of GDP) for 31 countries spanning every populated region, using SIPRI's historical expenditure data from 1980 to 2025. Rather than applying one model to every country, it evaluates two different forecasting approaches per country and selects whichever performs better, based on measured error against real held-out data.
 
-## Status: data pipeline and modeling complete. API and frontend not yet built.
++ ## Status: data pipeline, modeling, and API complete. Frontend in progress.
 
 ## What has been done so far
 
@@ -43,26 +43,37 @@ Initial testing with Prophet at default settings showed linear regression winnin
 - **North Korea was excluded from the country list entirely.** It has no reliable, publicly reported military spending data for almost the entire study period, so there is nothing meaningful to forecast from.
 - **No single model or setting works best universally.** The right choice depends on whether a country's history has genuine, discrete shifts (a war, a policy change) or a smoother, gradual trend.
 
-**4. Final output**
++ **4. Model artifacts**
 
 For each of the 31 countries, the winning model configuration was retrained on the full dataset (not just the pre-2015 training slice) and saved. Outputs:
 - `cleaned_data.csv` — the cleaned, long-format dataset
 - `model_selection_log.json` — a transparent record of which model won for each country, its error score, and the runner-up's score, so every decision is traceable back to real evidence
 - `final_models.pkl` — all 31 final trained models, bundled by country name, ready to be loaded and queried
 
++ **5. API**
++
++ A FastAPI service (`main.py`) loads `final_models.pkl` and serves forecasts:
++ - `POST /forecast` — takes a country name and a number of years ahead, looks up that country's chosen model, and returns the forecasted values. Returns a `404` for countries without a trained model, and handles unexpected prediction errors with a clean `500` rather than an unhandled crash.
++ - `GET /health` — a lightweight uptime check, kept separate from the actual prediction logic.
++
++ Covered by a pytest suite (a valid forecast request, an invalid country, and the health check), run automatically by GitHub Actions on every push, before the Docker build. Containerized with a Dockerfile and `.dockerignore` that excludes anything the running service doesn't actually need (the raw and cleaned data files, training script, and evaluation log all stay out of the image, since the API only ever needs the final trained models).
+
+
 ## What's next
 
-- Build a FastAPI service that loads `final_models.pkl` and serves forecasts through a `/forecast` endpoint, keyed by country
-- Add input validation, error handling, and tests, following the same practices used in a prior project (iris-mlops-demo)
-- Containerize with Docker and set up CI, same as the prior project
-- Build a frontend to visualize spending trends and forecasts across countries, likely with a curated set of real historical events (an embargo, a conflict) marked on the timeline as honest context, not a causal claim
-- Deploy publicly
++ - Build a frontend: an interactive world map highlighting the 31 countries with data, hovering shows recent spending, clicking opens a modal with a forecast-years control that calls the live `/forecast` endpoint
++ - Reorganize the repo into `backend/` and `frontend/` folders as the frontend is added
++ - Possibly layer in a curated set of real historical events (an embargo, a conflict) marked on the timeline as honest context, not a causal claim
++ - Deploy publicly
 
 ## Tech stack so far
 
 - pandas, openpyxl for data loading and cleaning
 - scikit-learn (LinearRegression) and Prophet for forecasting
 - joblib for model persistence
++ - FastAPI, Pydantic for the API
++ - pytest, GitHub Actions for testing and CI
++ - Docker for containerization
 
 ## Data source
 
