@@ -14,7 +14,16 @@ I picked military spending data specifically because I wanted a subject with rea
 
 Forecasts military spending (as % of GDP) for 31 countries spanning every populated region, using SIPRI's historical expenditure data from 1980 to 2025. Rather than applying one model to every country, it evaluates two different forecasting approaches per country and selects whichever performs better, based on measured error against real held-out data.
 
-+ ## Status: data pipeline, modeling, and API complete. Frontend in progress.
+## Status: data pipeline, modeling, API, and frontend complete. Public deployment next.
+
+## Project structure
+
+```
+backend/   FastAPI service, model training, and the data pipeline
+frontend/  React app (Vite) - interactive world map + forecast UI
+```
+
+The two are independently runnable; `frontend/` talks to `backend/` only over HTTP (`/forecast`, `/health`).
 
 ## What has been done so far
 
@@ -43,37 +52,59 @@ Initial testing with Prophet at default settings showed linear regression winnin
 - **North Korea was excluded from the country list entirely.** It has no reliable, publicly reported military spending data for almost the entire study period, so there is nothing meaningful to forecast from.
 - **No single model or setting works best universally.** The right choice depends on whether a country's history has genuine, discrete shifts (a war, a policy change) or a smoother, gradual trend.
 
-+ **4. Model artifacts**
+**4. Model artifacts**
 
 For each of the 31 countries, the winning model configuration was retrained on the full dataset (not just the pre-2015 training slice) and saved. Outputs:
 - `cleaned_data.csv` — the cleaned, long-format dataset
 - `model_selection_log.json` — a transparent record of which model won for each country, its error score, and the runner-up's score, so every decision is traceable back to real evidence
 - `final_models.pkl` — all 31 final trained models, bundled by country name, ready to be loaded and queried
 
-+ **5. API**
-+
-+ A FastAPI service (`main.py`) loads `final_models.pkl` and serves forecasts:
-+ - `POST /forecast` — takes a country name and a number of years ahead, looks up that country's chosen model, and returns the forecasted values. Returns a `404` for countries without a trained model, and handles unexpected prediction errors with a clean `500` rather than an unhandled crash.
-+ - `GET /health` — a lightweight uptime check, kept separate from the actual prediction logic.
-+
-+ Covered by a pytest suite (a valid forecast request, an invalid country, and the health check), run automatically by GitHub Actions on every push, before the Docker build. Containerized with a Dockerfile and `.dockerignore` that excludes anything the running service doesn't actually need (the raw and cleaned data files, training script, and evaluation log all stay out of the image, since the API only ever needs the final trained models).
+**5. API**
 
+A FastAPI service (`backend/main.py`) loads `final_models.pkl` and serves forecasts:
+- `POST /forecast` — takes a country name and a number of years ahead, looks up that country's chosen model, and returns the forecasted values. Returns a `404` for countries without a trained model, and handles unexpected prediction errors with a clean `500` rather than an unhandled crash.
+- `GET /health` — a lightweight uptime check, kept separate from the actual prediction logic.
+
+Covered by a pytest suite (a valid forecast request, an invalid country, and the health check), run automatically by GitHub Actions on every push, before the Docker build. Containerized with a Dockerfile and `.dockerignore` that excludes anything the running service doesn't actually need (the raw and cleaned data files, training script, and evaluation log all stay out of the image, since the API only ever needs the final trained models).
+
+**6. Frontend**
+
+A React app (`frontend/`, built with Vite) renders an interactive world map using `react-simple-maps`, highlighting the 31 countries that have a trained model:
+
+- **Country name mapping.** SIPRI's names don't all match the map library's naming (sourced from Natural Earth via `world-atlas`) — e.g. SIPRI's "Türkiye," "Korea, South," and "Viet Nam." Rather than assume the two datasets line up, `frontend/src/data/countryNameMap.js` holds an explicit translation table, and `frontend/src/data/countryData.js` cross-checks every mapped name against the map's actual topojson data at load time, logging a console warning for anything that doesn't resolve. Currently all 31 countries match confidently: 27 by exact name (including "United States of America," which - despite differing conventions elsewhere - happens to already match), and 3 needing the explicit translation (Türkiye → Turkey, Korea, South → South Korea, Viet Nam → Vietnam).
+- **Hover** shows a small popup with the country's most recent known spending value (from `cleaned_data.csv`, exported to the frontend as static JSON via `backend/export_country_data.py`).
+- **Click** opens a modal (not a new page) with a slider to pick how many years ahead to forecast, calling the live `POST /forecast` endpoint and displaying the actual returned values.
+- Countries without a trained model are still rendered (so the map looks complete), but are visually distinct and not interactive.
 
 ## What's next
 
-+ - Build a frontend: an interactive world map highlighting the 31 countries with data, hovering shows recent spending, clicking opens a modal with a forecast-years control that calls the live `/forecast` endpoint
-+ - Reorganize the repo into `backend/` and `frontend/` folders as the frontend is added
-+ - Possibly layer in a curated set of real historical events (an embargo, a conflict) marked on the timeline as honest context, not a causal claim
-+ - Deploy publicly
+- Possibly layer in a curated set of real historical events (an embargo, a conflict) marked on the timeline as honest context, not a causal claim
+- Deploy publicly
 
 ## Tech stack so far
 
 - pandas, openpyxl for data loading and cleaning
 - scikit-learn (LinearRegression) and Prophet for forecasting
 - joblib for model persistence
-+ - FastAPI, Pydantic for the API
-+ - pytest, GitHub Actions for testing and CI
-+ - Docker for containerization
+- FastAPI, Pydantic for the API
+- pytest, GitHub Actions for testing and CI
+- Docker for containerization
+- React, Vite, react-simple-maps for the frontend
+
+## Running locally
+
+**Backend** (from `backend/`, with its dependencies installed):
+```
+uvicorn main:app --reload
+```
+Serves the API at `http://localhost:8000`.
+
+**Frontend** (from `frontend/`):
+```
+npm install
+npm run dev
+```
+Serves the app at `http://localhost:5173`, configured (via `.env.example` → `VITE_API_BASE_URL`) to call the backend at `http://localhost:8000`.
 
 ## Data source
 

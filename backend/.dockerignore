@@ -1,10 +1,9 @@
 venv
 .pytest_cache
 __pycache__
-.git
-.github
-.gitignore
 sipri_data.xlsx
 cleaned_data.csv
 train.py
+explore.py
+test_main.py
 model_selection_log.json

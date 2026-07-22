@@ -15,11 +15,12 @@ jobs:
         with:
           python-version: '3.14'
       
-      - name: Install dependancies 
-        run:  pip install -r requirements.txt 
+      - name: Install dependancies
+        run:  pip install -r backend/requirements.txt
 
       - name: Run tests
         run: pytest
+        working-directory: backend
 
       - name: Build Docker Image
-        run: docker build -t milex-forecast . 
+        run: docker build -t milex-forecast ./backend
