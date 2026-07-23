@@ -33,16 +33,34 @@ df["mention_share"] = df["total_mentions"] / yearly_total
 
 
 def trailing_ratio(group):
-    trailing_avg = group["mention_share"].shift(1).rolling(TRAILING_WINDOW_YEARS, min_periods=3).mean()
+    # min_periods=1 (not 3): using whatever trailing history exists, even
+    # just one prior year, instead of requiring three - min_periods=3 left
+    # each country's first ~3 years with no ratio at all (93 rows total),
+    # which caused a downstream problem (see the note on missing_baseline
+    # below). Only the true first year of each country's series (where
+    # shift(1) has literally nothing before it, regardless of min_periods)
+    # still ends up with no ratio - an unavoidable 31 rows, one per country.
+    trailing_avg = group["mention_share"].shift(1).rolling(TRAILING_WINDOW_YEARS, min_periods=1).mean()
     return group["mention_share"] / trailing_avg
 
 
 df["spike_ratio"] = df.groupby("Country", group_keys=False).apply(trailing_ratio)
 
+# For that unavoidable first-year-per-country remainder, default to 1.0
+# ("assume typical baseline") rather than a placeholder phrase or omitting
+# the volume clause. An earlier version did the latter and it backfired:
+# even without identical wording, rows missing the volume clause were
+# structurally distinct (shorter, starting with "Average event tone...")
+# and k-means clustered all ~93 of them together by that shared shape, not
+# by any real event characteristic. Defaulting to 1.0 keeps every row's
+# sentence the same shape, and it only affects 31/1426 rows (~2%).
+df["missing_baseline"] = df["spike_ratio"].isna()
+df["spike_ratio"] = df["spike_ratio"].fillna(1.0)
+print(f"{df['missing_baseline'].sum()} rows had no trailing history at all (each country's first year) "
+      f"- defaulted to spike_ratio=1.0")
+
 
 def volume_phrase(ratio):
-    if pd.isna(ratio):
-        return "no prior-year baseline yet to compare against"
     if ratio < 1.5:
         return f"event volume around its typical baseline ({ratio:.1f}x)"
     if ratio < 2.5:
@@ -74,9 +92,8 @@ def describe(row):
 
 df["description"] = df.apply(describe, axis=1)
 
-df[["Country", "Year", "avg_goldstein", "avg_tone", "mention_share", "spike_ratio", "description"]].to_csv(
-    TEXT_OUTPUT, index=False
-)
+df[["Country", "Year", "avg_goldstein", "avg_tone", "mention_share", "spike_ratio",
+    "missing_baseline", "description"]].to_csv(TEXT_OUTPUT, index=False)
 print(f"wrote {len(df)} descriptions to {TEXT_OUTPUT}")
 print()
 print("--- sample descriptions ---")

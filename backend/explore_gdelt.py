@@ -8,10 +8,10 @@ the cost of the real 31-country aggregation query before it's run for real.
 None of this is billed unless it actually queries `gdelt-bq.full.events`;
 dry runs (job_config=bigquery.QueryJobConfig(dry_run=True)) cost nothing.
 
-Phases 2, 3, and 3B, and the aggregation query, already ran once
+Phases 2, 3, 3B, and 3C, and the aggregation query, already ran once
 (2026-07-22) and are confirmed - their results are recorded in comments
 below, and they all default to OFF so re-running this script doesn't
-silently re-bill ~245 GB to reconfirm something already known. Flip the
+silently re-bill ~445 GB to reconfirm something already known. Flip the
 relevant RUN_* flag back to True only if you want to re-verify one of them
 (e.g. after a schema change). The aggregation query's dry-run estimate is
 still printed unconditionally (costs nothing) so its cost stays visible
@@ -32,6 +32,7 @@ AGGREGATION_OUTPUT = BACKEND_DIR / "gdelt_country_year.csv"
 RUN_DATE_CHECK = False
 RUN_UKRAINE_SAMPLE = False
 RUN_UNREST_VERIFICATION = False
+RUN_POLICY_SHIFT_VERIFICATION = False
 RUN_AGGREGATION = False
 
 # --- PHASE 1: table metadata (free - no data scanned) ---
@@ -112,6 +113,47 @@ if RUN_UNREST_VERIFICATION:
     job = client.query(sql_unrest_verification)
     rows = [dict(row) for row in job]
     print(f"India 1984 / Korea 1987 sample: {len(rows)} rows, {job.total_bytes_billed / 1e9:.3f} GB billed")
+    for r in rows[:5]:
+        print(json.dumps(r, default=str))
+
+# --- PHASE 3C: verify whether "policy shift" has a real, findable GDELT
+# signal - Germany's 2022 Zeitenwende defense-policy reversal is real,
+# documented, and unlike Ukraine/Korea/India has no aggregate spike_ratio
+# signal at all (Germany's spike_ratio never exceeds ~1.05 across
+# 2018-2025). Does that mean nothing is there, like Türkiye, or does it
+# mean the aggregate feature is diluting a real signal, like the original
+# avg_goldstein finding? ---
+# Confirmed (2026-07-22, 99.615 GB billed): real, identifiable Zeitenwende
+# content IS present - NAVY/FRIGATE deployment events and Germany
+# "providing aid" (EventCode 070, GoldsteinScale +7.0) cluster right at
+# Feb 25-26 2022 (the Zeitenwende speech was Feb 27), and repeated
+# cooperation events located at Ramstein appear Apr 25 / May 22 / Jun 25 -
+# the real Ukraine Defense Contact Group ("Ramstein format") that started
+# convening there in April 2022. This is a THIRD, distinct outcome from
+# the other two: unlike Türkiye (no distinguishable content at all - a
+# true data absence), Germany's signal genuinely exists in the raw events,
+# it just doesn't clear the yearly-aggregate spike_ratio threshold -
+# likely because Germany's baseline event volume is already enormous (see
+# the Canada/Australia English-language-media-bias note from the earlier
+# volatility check), and because diplomatic/aid-provision events (Goldstein
+# positive - cooperation, not conflict) generate lower relative volume than
+# active fighting does, even when the underlying policy shift is major.
+# This is a detection-methodology gap (current features aren't sensitive
+# enough), not a data-absence gap - worth documenting as a real limitation
+# of the *current* pipeline, but distinct from currency instability's more
+# fundamental absence. See ROADMAP.md for how this is handled for now.
+if RUN_POLICY_SHIFT_VERIFICATION:
+    sql_policy_shift_verification = """
+    SELECT SQLDATE, Year, Actor1Name, Actor2Name, EventCode, EventRootCode, QuadClass,
+           GoldsteinScale, AvgTone, NumMentions, NumArticles, ActionGeo_FullName
+    FROM `gdelt-bq.full.events`
+    WHERE ActionGeo_CountryCode = "GM" AND Year = 2022
+    ORDER BY NumMentions DESC
+    LIMIT 30
+    """
+    job = client.query(sql_policy_shift_verification)
+    rows = [dict(row) for row in job]
+    print(f"Germany 2022 sample: {len(rows)} rows, {job.total_bytes_billed / 1e9:.3f} GB billed")
     for r in rows[:5]:
         print(json.dumps(r, default=str))
 

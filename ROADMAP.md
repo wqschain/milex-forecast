@@ -30,28 +30,52 @@ Convert each country-year's aggregated event summary into a vector embedding, so
 **3. Clustering**
 Group country-years by embedding similarity (e.g., k-means, via scikit-learn — already a project dependency), surfacing natural groupings — such as a cluster containing Ukraine 2022+ alongside other historically volatile country-years — without predefining categories.
 
-**4. Interpretation (LLM, once per cluster, not once per row)**
-Have an LLM review a sample from each cluster and assign it one of four decided categories: **conflict, currency instability, policy shift, stable**. These map directly to the two cases already investigated by hand (Ukraine = conflict, Türkiye = currency instability), giving two of the four categories a built-in validation example; "policy shift" covers cases like a documented change in defense posture without active conflict; "stable" is the default/majority case. Run locally via Ollama with Mistral 7B (confirmed installed and working, model storage on `D:` to avoid `C:` drive constraints) — free, no API cost, and adequate for this bounded classification task. Labels are checked against the two known cases before being trusted on countries without prior manual research; if local labeling accuracy doesn't hold up, a paid API (Claude or OpenAI) is a fallback worth the small cost, given the low call volume (once per cluster, not per country-year).
+**Finding (2026-07-22):** two real bugs were caught and fixed while building the k-means input, both by inspecting actual cluster membership rather than trusting silhouette score alone:
+1. An early version's "no prior-year baseline yet" placeholder text was identical across every country's first ~3 years regardless of their actual tone/Goldstein values, so k-means grouped all 93 of them together by that shared *sentence*, not by any real event characteristic — a pure artifact, not a category. Fixing the placeholder text wasn't enough on its own: even after removing it, rows that simply *omitted* the volume clause were still structurally distinct (shorter, starting with "Average event tone...") and kept clustering together by that shape. The actual fix: minimize how many rows lack a computed spike ratio at all (trailing window `min_periods` reduced from 3 to 1, cutting 93 affected rows down to 31 - the genuinely unavoidable true-first-year-per-country case), and default those remaining 31 to `spike_ratio=1.0` ("assume typical") so every row's sentence has the same shape.
+2. With that fixed, k=4 has by far the best silhouette score (0.51 vs. ~0.25-0.29 for k=5-9) and produces four sensible, evidence-checked groups: 1,006 "typical, positive-tone" years and 324 "typical, negative-tone" years, each **100% tone-pure**; 78 "elevated" years (88% positive-tone); and 18 "large spike" years (78% positive-tone, 22% negative). That last, smallest cluster is where Ukraine 2022 lands — alongside Russia 2022 and Israel 2023/2024 (negative-tone, the interstate-war pattern) *and* Korea 1987/India 1984/Egypt 2011/Argentina 1982 (positive-tone, the civil-unrest pattern from the finding above) in the same 18-member group. Raising k to 6 or 7 doesn't split it further - the extra clusters subdivide the two large "typical" groups instead, leaving this same 18-member group intact. So step 4's LLM interpretation needs to be able to tell interstate war apart from civil unrest *within* a single cluster's sample, not just assign one label per cluster - it can't assume every cluster is internally homogeneous.
+
+**4. Interpretation (LLM)**
+Two distinct uses, deliberately kept separate after finding that cluster membership doesn't reliably imply category homogeneity (see the clustering finding above) — they have very different tolerances for a wrong label:
+
+- **As a regressor input (feeds step 5, every country-year):** cluster-inherited labels are fine. An LLM reviews a sample from each k-means cluster (from step 3) and assigns it one of the four categories; every member inherits it. An occasional mislabeled quiet year barely moves a fitted coefficient, and hand-labeling all 1,426 rows individually isn't tractable anyway.
+- **As the trigger for automated scenario construction (feeds step 6, only `calculate_volatility`-flagged countries):** cluster-inherited labels are **not** used here. Each flagged country's own anomalous year(s) get individual LLM review, using that country's own description/samples directly — never whatever label its cluster happened to get. Only a handful of countries ever cross the volatility threshold, so individual review is cheap and tractable with a local model. This split matters because the cluster that would matter most for this decision isn't type-pure: at k=3 sub-clustering, Ukraine 2022 itself didn't land with its real type-peers (Russia 2022, Israel 2023/2024) — it grouped with Argentina 1982 and Ukraine 1986 by magnitude instead. A wrong regressor coefficient is a minor cost; a wrong scenario template automatically applied to a real country is not.
+
+Categories: **conflict, currency instability, policy shift, stable**. Run locally via Ollama with Mistral 7B (confirmed installed and working, model storage on `D:` to avoid `C:` drive constraints) — free, no API cost. Paid API (Claude/OpenAI) remains a fallback if local labeling accuracy doesn't hold up.
+
+**Required branch, not optional:** if a country is flagged by `calculate_volatility` but its GDELT signal shows no corresponding elevation, route to an explicit **"undetermined by GDELT — needs manual classification"** state. This must never silently default to "stable," which would incorrectly suppress scenario treatment for a country `calculate_volatility` already says needs it.
+
+**Validation status of the four categories (2026-07-22), checked against real data before trusting any of them for automation:**
+- **Conflict — confirmed present.** Ukraine 2022: `spike_ratio` 12.0x (the dataset's largest by far), negative tone, real invasion-period events.
+- **Currency instability — confirmed absent.** Türkiye 2018: `spike_ratio` 0.77 — actually *below* its own trailing baseline. No GDELT event-volume signal at all; a true data absence, not a labeling gap. Routes to "undetermined by GDELT."
+- **Policy shift — a real signal exists, but the current features don't capture it.** Germany's 2022 Zeitenwende (a real, major, documented defense-policy reversal — €100B special fund, reversing a 77-year policy against sending weapons to conflict zones) also shows no aggregate `spike_ratio` signal (never exceeds ~1.05 across 2018-2025). But pulling real events shows the Zeitenwende genuinely is there: NAVY/FRIGATE deployment events and Germany "providing aid" (EventCode 070, GoldsteinScale +7.0) cluster right at Feb 25-26 2022 — the Zeitenwende speech was Feb 27 — and cooperation events located at Ramstein appear Apr 25 / May 22 / Jun 25 2022, matching the real Ukraine Defense Contact Group ("Ramstein format") that began convening there in April 2022. Unlike Türkiye, this is not a data absence — it's a detection-methodology gap: Germany's baseline event volume is already enormous (see the earlier Canada/Australia media-coverage-bias note), and diplomatic/aid-provision events (Goldstein *positive* — cooperation, not conflict) generate lower relative volume than active fighting even when the underlying policy shift is major. Under the *current* feature set, a policy-shift country would still route to "undetermined by GDELT" — not because nothing happened, but because `spike_ratio`/`avg_goldstein`/`avg_tone` aren't sensitive to this category's actual signature (positive-Goldstein cooperation/aid events, not volume spikes). A future refinement — e.g. tracking QuadClass 1/2 (verbal/material cooperation) events specifically, rather than total volume — could plausibly close this gap. Not attempted in this phase; there is currently no usable "policy shift" template (see step 6).
+- **Stable — the default/majority case**, not separately validated; there's nothing to verify beyond the absence of the other three.
 
 **5. Feed labels into the existing models**
 Every country-year inherits its cluster's label. This becomes a new regressor, added to Prophet via `add_regressor()` (a supported, standard Prophet feature, not a custom hack), alongside the existing time-based fit.
 
 **6. Scenario forecasting**
 
-Decided: a country is flagged for scenario treatment if its volatility (from the existing `calculate_volatility` function) is more than 2 standard deviations above the mean volatility across all 31 countries — a standard statistical definition of an outlier, not an arbitrary cutoff, and one that already correctly flags Türkiye using data already computed earlier in this project. Countries below this threshold keep the current single-line forecast; not every country needs scenario treatment.
+Decided: a country is flagged for scenario treatment if its volatility (from the existing `calculate_volatility` function) is more than 2 standard deviations above the mean volatility across all 31 countries — a standard statistical definition of an outlier, not an arbitrary cutoff, and one that already correctly flags Türkiye using data already computed earlier in this project. Countries below this threshold keep the current single-line forecast; not every country needs scenario treatment. This flagging step runs on SIPRI spending volatility directly — it doesn't depend on GDELT, clustering, or embeddings at all, and already works today.
 
-Decided scenarios for the two cases already investigated by hand:
+Ukraine and Türkiye are the two **founding validation cases** — hand-researched and hand-written specifically to ground-truth what a real conflict scenario and a real currency scenario should look like before anything gets automated. They are not the general pattern for every future flagged country. For any country flagged in the future, scenario construction is automated: that country's category — from step 4's *individual* review of its own flagged year(s), never a cluster-inherited label — selects a generic template, applied without per-country manual research:
 
-- **Ukraine (conflict-driven)**
+- A **conflict** label gets the conflict template below.
+- A **currency instability** label gets the currency template below.
+- A **policy shift** label has no template yet — there's no validated example to design one from (see the Germany finding in step 4). This needs to be defined before any policy-shift-labeled country can reach this step; until then, treat it the same as "undetermined by GDELT."
+- **"Undetermined by GDELT"** gets no automatic template. It needs the same kind of manual research Ukraine and Türkiye originally got, since automation has nothing reliable to act on.
+
+Decided scenario templates, defined via the two founding cases but written generically enough to apply to any future country the category-matching step assigns to them:
+
+- **Conflict template** (defined via Ukraine)
   - "Conflict continues at current intensity" — conflict flag held active for the full forecast horizon
-  - "Conflict resolves within 3 years" — conflict flag active for years 1-3, inactive afterward, spending gradually reverting toward the pre-2022 trend
+  - "Conflict resolves within 3 years" — conflict flag active for years 1-3, inactive afterward, spending gradually reverting toward the pre-conflict trend
   - "Gradual de-escalation" — conflict flag steps down in intensity gradually, spending plateauing rather than fully reverting
 
-- **Türkiye (currency-driven)**
+- **Currency instability template** (defined via Türkiye)
   - "Currency instability continues" — continued high inflation/volatility at recent levels
-  - "Currency stabilizes" — inflation/volatility reverts toward Türkiye's own pre-2018 baseline within the forecast horizon
+  - "Currency stabilizes" — inflation/volatility reverts toward the country's own pre-crisis baseline within the forecast horizon
 
-Each scenario is grounded in an already-established real event (the 2022 conflict start, the 2018 onset of currency instability), not an invented assumption. Additional countries flagged by the volatility threshold will need their own scenario definitions, following this same pattern (grounded in a real, researched event, not a guess).
+Each template is grounded in an already-established real event (the 2022 conflict start, the 2018 onset of currency instability), not an invented assumption.
 
 ### Integration with the existing project
 
@@ -79,14 +103,19 @@ Progress so far:
 - See the Goldstein/volume finding above
 - `backend/build_embeddings.py`: built a per-country-year text description (share-normalized volume spike phrase + tone + Goldstein, deliberately excluding Country/Year - see the embeddings finding above) and embedded all 1,426 with `sentence-transformers` (`all-MiniLM-L6-v2`, local, free) — saved to `backend/gdelt_country_year_descriptions.csv` and `backend/gdelt_embeddings.npy`
 - Sanity-checked with nearest-neighbor lookups before trusting it for clustering (see finding above) — confirmed genuine cross-country groupings, not an artifact
+- `backend/cluster_country_years.py`: k-means over the embeddings, k chosen by silhouette score (k=4) rather than guessed — see the clustering finding above for the two bugs caught along the way and the known limitation (the 18-member "large spike" cluster mixes interstate-war and civil-unrest years) — saved to `backend/gdelt_country_year_clusters.csv`
+- Sub-clustered that 18-member group (k=2/3) to check whether war and civil unrest separate at a finer level: at k=3, a clean 3-member 100%-negative-tone "interstate war" subcluster does emerge (Israel 2023/2024, Russia 2022) — but Ukraine 2022 itself doesn't land in it, grouping instead with Argentina 1982 (plausibly the Falklands War) and Ukraine 1986 by sheer magnitude. This is what drove the step 4/6 redesign below: cluster membership (at any granularity tried) isn't reliable enough to trust for automated scenario-template selection.
+- Corrected a design misunderstanding: category labels ARE load-bearing (they select which scenario template gets applied automatically for countries beyond the two founding cases), not superseded by magnitude alone as briefly considered. But cluster-inherited labels are only trustworthy for the regressor use (step 5); template selection (step 6) needs individual per-country review instead. See the rewritten steps 4 and 6 above.
+- Verified Germany's 2022 Zeitenwende as the candidate real example for "policy shift" (the one category with no prior validation case) — see the finding in step 4. Result: real signal exists in the raw events, but isn't captured by the current `spike_ratio`/`avg_goldstein`/`avg_tone` features, so it currently behaves like "undetermined by GDELT" in practice despite being a different underlying problem than Türkiye's true absence. There is currently no usable "policy shift" template as a result.
+- Added Phase 3C to `backend/explore_gdelt.py` recording the Germany verification (99.615 GB billed) — cumulative usage across this phase is now ~445 GB of the 1TB monthly free tier (~44.5%)
 
-Next actual step: clustering (k-means via scikit-learn) on the embeddings, to surface natural groupings ahead of the LLM interpretation step.
+Next actual step: define what "undetermined by GDELT" actually does in the pipeline (a real state, not a placeholder), and decide whether to attempt the policy-shift feature refinement (QuadClass 1/2 cooperation-event tracking) now or defer it — both open per the discussion above, not yet decided.
 
 ### Tooling and cost
 
 - BigQuery: free tier, Google Cloud account required.
 - Embeddings: `sentence-transformers`, local, free.
-- Cluster labeling: Ollama + Mistral 7B (or Llama 3 8B), local, free. Paid API (Claude/OpenAI) as a fallback only if local labeling accuracy doesn't hold up against the known Ukraine/Türkiye validation cases — a small cost given the low call volume (once per cluster).
+- Interpretation: Ollama + Mistral 7B (or Llama 3 8B), local, free — once per cluster for the regressor use, individually per flagged country for scenario-template selection (see step 4). Paid API (Claude/OpenAI) as a fallback only if local labeling accuracy doesn't hold up against the known Ukraine/Türkiye validation cases — a small cost given the low call volume either way.
 
 ### Scope notes
 
