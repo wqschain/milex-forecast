@@ -17,3 +17,5 @@ cluster_country_years.py
 gdelt_country_year_clusters.csv
 test_regressor_ukraine.py
 test_regressor_ukraine_v2.py
+test_scenarios_ukraine.py
+test_scenarios_turkiye.py

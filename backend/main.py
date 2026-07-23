@@ -33,6 +33,26 @@ with open("growth_caps.json") as f:
 growth_caps = _growth_cap_status["capped"]
 flagged_countries = set(_growth_cap_status["flagged"])
 
+# Countries with a known, researched anomaly whose future magnitude isn't
+# reliably estimable from available data - a qualitative caveat attached to
+# the country's normal production forecast, not a second model or a set of
+# named scenarios. See ROADMAP.md step 6, "Türkiye scenario proof-of-concept":
+# building a scenario mechanism for Türkiye would have meant abandoning its
+# actual best-fitting model (linear regression, MAE 0.00293) for a worse one
+# (Prophet, MAE 0.00727) to gain a regressor whose effect (~0.3pp) turned out
+# to be the same order of magnitude as the accuracy cost of doing so - not a
+# worthwhile trade, unlike Ukraine's growth cap/conflict flag. Independent of
+# the growth-cap mechanism above: Türkiye isn't in the volatility-flagged
+# list (it was identified by an earlier, different method - see ROADMAP.md),
+# so this doesn't interact with or bypass that fail-safe.
+FORECAST_CAVEATS = {
+    "Türkiye": (
+        "Known currency instability since 2018 (lira depreciation) is not reflected in this "
+        "trend forecast - its future magnitude could not be reliably estimated from available "
+        "data. See ROADMAP.md, step 6, for the full investigation."
+    ),
+}
+
 
 class ForecastRequest(BaseModel):
     country: str
@@ -76,7 +96,10 @@ def forecast_spending(request: ForecastRequest):
             result = forecast["yhat"].tail(request.years_ahead).tolist()
         
             
-        return {"country": request.country, "forecast": result}
+        response = {"country": request.country, "forecast": result}
+        if request.country in FORECAST_CAVEATS:
+            response["caveat"] = FORECAST_CAVEATS[request.country]
+        return response
 
     except Exception as e: 
                     # catching unexpected errors and handling it cleanly
