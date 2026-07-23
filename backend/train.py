@@ -194,6 +194,19 @@ for country, result in results_log.items():
 joblib.dump(final_models, "final_models.pkl")
 print(f"Trained and saved {len(final_models)} final models.")
 
+# Both "capped" and "flagged" are saved, not just "capped", so main.py can
+# tell "flagged but not yet capped" apart from "never flagged" at serving
+# time - collapsing those into the same absence-of-a-cap-entry, as an
+# earlier version of this file did, meant a flagged country with no cap
+# (missing GROWTH_CAPS entry, or an unsupported chosen_model like "linear")
+# would silently be served a completely normal, unbounded forecast with no
+# indication anything was different. See ROADMAP.md.
+growth_cap_status = {
+    "capped": growth_caps_used,
+    "flagged": flagged_countries,
+}
 with open("growth_caps.json", "w") as f:
-    json.dump(growth_caps_used, f, indent=2)
-print(f"Saved growth caps for {len(growth_caps_used)} countries to growth_caps.json: {growth_caps_used}")
+    json.dump(growth_cap_status, f, indent=2)
+uncapped_flagged = [c for c in flagged_countries if c not in growth_caps_used]
+print(f"Saved growth cap status to growth_caps.json: {len(growth_caps_used)} capped, "
+      f"{len(uncapped_flagged)} flagged-but-uncapped ({uncapped_flagged})")
