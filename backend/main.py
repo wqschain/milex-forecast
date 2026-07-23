@@ -5,6 +5,7 @@ from sklearn.linear_model import LinearRegression
 import pandas as pd
 from pydantic import BaseModel
 import logging
+import json
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -19,6 +20,12 @@ app.add_middleware(
 )
 
 models = joblib.load("final_models.pkl")
+
+# Countries whose Prophet model was fit with growth="logistic" (see
+# train.py's GROWTH_CAPS / ROADMAP.md step 5 round 2) - predict() requires a
+# "cap" column on every dataframe passed in, not just at training time.
+with open("growth_caps.json") as f:
+    growth_caps = json.load(f)
 
 
 class ForecastRequest(BaseModel):
@@ -43,6 +50,8 @@ def forecast_spending(request: ForecastRequest):
             result = predictions.tolist()
         else:
             future = model.make_future_dataframe(periods=request.years_ahead, freq="YE")
+            if request.country in growth_caps:
+                future["cap"] = growth_caps[request.country]
             forecast = model.predict(future)
             result = forecast["yhat"].tail(request.years_ahead).tolist()
         
