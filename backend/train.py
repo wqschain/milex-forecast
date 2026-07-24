@@ -5,6 +5,7 @@ from prophet import Prophet
 import joblib
 import json
 from scenario_pipeline import determine_cap
+from scenario_templates import SCENARIO_TEMPLATES, train_scenario_model
 
 df = pd.read_csv("cleaned_data.csv")
 test_countries = [
@@ -86,6 +87,18 @@ GROWTH_CAPS = {
     "Ukraine": 0.50,
 }
 
+# Countries explicitly checked and found NOT to need a growth cap - a
+# deliberate, evidence-based decision, distinct from a country simply being
+# absent from GROWTH_CAPS (which means "unresolved" and routes to the
+# fail-safe below). See ROADMAP.md, 2026-07-24, for why this distinction
+# matters: without it, a country's already-made "no cap needed" decision
+# would silently turn into an unexplained refusal if it were ever newly
+# flagged by calculate_volatility.
+NO_CAP_NEEDED = {
+    "Türkiye": ("Historical max 4.30% of GDP (1982); the 2018-2025 currency-instability period "
+                "(1.6%-2.6%) stays below that - no runaway pattern. See ROADMAP.md."),
+}
+
 gdelt_df = pd.read_csv("gdelt_country_year_clusters.csv")
 
 volatilities = {c: calculate_volatility(c) for c in test_countries}
@@ -96,12 +109,14 @@ print(f"Volatility-flagged countries (>{_vol_threshold:.4f}): {flagged_countries
 
 # Computed once per flagged country (not re-derived later) so the automated
 # pipeline's LLM calls run at most once per country per training run.
-cap_info = {c: determine_cap(c, GROWTH_CAPS, df, gdelt_df) for c in flagged_countries}
+cap_info = {c: determine_cap(c, GROWTH_CAPS, NO_CAP_NEEDED, df, gdelt_df) for c in flagged_countries}
 for c in flagged_countries:
     cap, meta = cap_info[c]
-    if cap is None:
+    if meta["decision"] == "undetermined":
         print(f"  WARNING: '{c}' is flagged but no cap could be determined (hand-set or automated) "
-              f"- left uncapped, unresolved.")
+              f"- left uncapped, unresolved: {meta['note']}")
+    elif meta["decision"] == "no_cap_needed":
+        print(f"  '{c}': no growth cap needed ({meta['source']}) - {meta['note']}")
     else:
         print(f"  '{c}': cap={cap:.2f} ({meta['source']}, confidence={meta['confidence']})")
 
@@ -200,7 +215,7 @@ for country, result in results_log.items():
             final_model = Prophet(changepoint_prior_scale=result["best_prophet_scale"],
                                    growth="logistic", yearly_seasonality=False)
             final_model.fit(prophet_df[["ds", "y", "cap"]])
-            growth_caps_used[country] = {"cap": cap, **cap_meta}
+            growth_caps_used[country] = cap_meta  # already has "cap", "decision", "source", "confidence", "note"
         else:
             final_model = Prophet(changepoint_prior_scale=result["best_prophet_scale"], yearly_seasonality=False)
             final_model.fit(prophet_df[["ds", "y"]])
@@ -210,19 +225,54 @@ for country, result in results_log.items():
 joblib.dump(final_models, "final_models.pkl")
 print(f"Trained and saved {len(final_models)} final models.")
 
-# Both "capped" and "flagged" are saved, not just "capped", so main.py can
-# tell "flagged but not yet capped" apart from "never flagged" at serving
-# time - collapsing those into the same absence-of-a-cap-entry, as an
-# earlier version of this file did, meant a flagged country with no cap
-# (missing GROWTH_CAPS entry, or an unsupported chosen_model like "linear")
-# would silently be served a completely normal, unbounded forecast with no
-# indication anything was different. See ROADMAP.md.
+# "capped", "no_cap_needed", and "flagged" are all saved separately, not
+# collapsed into "has a cap entry or doesn't" - main.py needs to tell three
+# states apart: capped, explicitly resolved as not needing one (safe to
+# serve uncapped), and genuinely unresolved (refuse rather than serve an
+# unconfirmed-safe forecast). Collapsing "no_cap_needed" into "missing"
+# would have reintroduced the exact gap fixed in this change - see
+# scenario_pipeline.py's determine_cap() docstring and ROADMAP.md.
+no_cap_needed_used = {c: cap_info[c][1] for c in flagged_countries if cap_info[c][1]["decision"] == "no_cap_needed"}
 growth_cap_status = {
     "capped": growth_caps_used,
+    "no_cap_needed": no_cap_needed_used,
     "flagged": flagged_countries,
 }
 with open("growth_caps.json", "w") as f:
     json.dump(growth_cap_status, f, indent=2)
-uncapped_flagged = [c for c in flagged_countries if c not in growth_caps_used]
+resolved = set(growth_caps_used) | set(no_cap_needed_used)
+uncapped_flagged = [c for c in flagged_countries if c not in resolved]
 print(f"Saved growth cap status to growth_caps.json: {len(growth_caps_used)} capped, "
-      f"{len(uncapped_flagged)} flagged-but-uncapped ({uncapped_flagged})")
+      f"{len(no_cap_needed_used)} no-cap-needed, {len(uncapped_flagged)} unresolved ({uncapped_flagged})")
+
+# --- Scenario models (ROADMAP.md step 6, 2026-07-24 reversal): Ukraine and
+# Türkiye, the two founding validation cases, each get a hand-designed
+# scenario template trained for real, replacing the earlier decision to
+# ship Türkiye as caveat-only. Each country's own growth-cap decision
+# (already resolved above, whether Ukraine's hand-set cap or Türkiye's
+# explicit "no cap needed") is reused here rather than re-derived, so the
+# scenario models stay consistent with the single-line models' safety
+# gating. See scenario_templates.py.
+scenario_models = {}
+scenario_status = {}
+for country, config in SCENARIO_TEMPLATES.items():
+    cap, meta = determine_cap(country, GROWTH_CAPS, NO_CAP_NEEDED, df, gdelt_df)
+    model, historical_flag = train_scenario_model(country, df, cap_value=cap)
+    scenario_models[country] = {"model": model, "historical_flag": historical_flag, "cap": cap}
+    scenario_status[country] = {
+        "regressor": config["regressor"],
+        "scenario_names": list(config["scenarios"].keys()),
+        "magnitude_note": config["magnitude_note"],
+        "cap": cap,
+        "cap_decision": meta["decision"],
+        "cap_source": meta.get("source"),
+        "cap_confidence": meta.get("confidence"),
+        "cap_note": meta.get("note"),
+    }
+    print(f"  Scenario model trained for '{country}': {len(config['scenarios'])} named scenarios, "
+          f"cap={cap} ({meta['decision']})")
+
+joblib.dump(scenario_models, "scenario_models.pkl")
+with open("scenario_status.json", "w") as f:
+    json.dump(scenario_status, f, indent=2)
+print(f"Saved {len(scenario_models)} scenario models to scenario_models.pkl and scenario_status.json")

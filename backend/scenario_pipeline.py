@@ -242,17 +242,38 @@ REASONING: <2-3 sentences citing how many precedent episodes were available and 
 
 
 # ---------- Orchestration: determine a growth cap for a flagged country ----------
-def determine_cap(country, hand_set_caps, spending_df, gdelt_df):
+def determine_cap(country, hand_set_caps, no_cap_needed, spending_df, gdelt_df):
     """
-    Returns (cap_fraction, metadata) for a flagged country, or (None, None)
-    if no cap could be determined - the caller (train.py) routes that to
-    the existing flagged-but-uncapped fail-safe (main.py refuses rather
-    than serving an unbounded forecast) instead of guessing a value.
+    Returns (cap_fraction_or_None, metadata) for a flagged country.
+    `metadata` is always a dict with a "decision" key - never conflate
+    "explicitly resolved with no cap value" with "unresolved" by checking
+    `cap is None` alone, since both "no_cap_needed" and "undetermined"
+    return `cap=None`. Check `metadata["decision"]` instead:
+      - "capped": a real cap value exists (metadata["cap"] duplicates it).
+      - "no_cap_needed": explicitly evaluated and found not to need one -
+        safe to serve uncapped, not an unresolved gap.
+      - "undetermined": genuinely unresolved - the caller (train.py) routes
+        this to the flagged-but-uncapped fail-safe (main.py refuses rather
+        than serving a forecast that was never confirmed safe).
+
+    This three-way split was added after a real gap was found (2026-07-24):
+    Türkiye's "no growth cap needed" decision (checked directly - historical
+    max 4.30% of GDP, 2018-2025 crisis years stay below that, no runaway
+    pattern) was never encoded anywhere. It worked only by accident, because
+    Türkiye isn't in `calculate_volatility`'s flagged list at all (it was
+    identified by an earlier, different method) - so it bypasses the
+    fail-safe gate rather than passing it. If a country's volatility were
+    ever to newly cross the threshold after already having a "no cap
+    needed" decision on record, that decision needs to be encoded
+    somewhere the gate can see it, or it would silently turn into an
+    unexplained refusal instead of correctly recognizing the question was
+    already answered. See ROADMAP.md.
 
     Priority order, per the 2026-07-24 decision (ROADMAP.md): a
-    hand-researched entry in `hand_set_caps` always wins over the automated
-    pipeline below. A value with a real, externally-checkable anchor is
-    preferred over an LLM estimate reasoning from GDELT event magnitude
+    hand-researched entry in `hand_set_caps` or `no_cap_needed` always wins
+    over the automated pipeline below. A value with a real, externally-
+    checkable anchor (or an explicit "checked, not needed" determination)
+    is preferred over an LLM estimate reasoning from GDELT event magnitude
     alone, even at "moderate" stated confidence - the LLM estimate has no
     outside verification at all, unlike e.g. Ukraine's UK WW2 precedent.
 
@@ -272,29 +293,42 @@ def determine_cap(country, hand_set_caps, spending_df, gdelt_df):
     """
     if country in hand_set_caps:
         return hand_set_caps[country], {
+            "decision": "capped",
+            "cap": hand_set_caps[country],
             "source": "hand-researched",
             "confidence": "high",
             "note": "Externally verified against independent historical precedent - see ROADMAP.md.",
         }
 
+    if country in no_cap_needed:
+        return None, {
+            "decision": "no_cap_needed",
+            "source": "hand-researched",
+            "confidence": "high",
+            "note": no_cap_needed[country],
+        }
+
     signal_df, _ = compute_elevated_signal(gdelt_df, country)
     current_years, precedent_years = find_current_episode(signal_df)
     if not current_years:
-        return None, None  # flagged by SIPRI volatility but GDELT shows no corresponding elevation
+        return None, {"decision": "undetermined",
+                       "note": "flagged by SIPRI volatility but GDELT shows no corresponding elevation"}
 
     category, _, _ = categorize_episode(signal_df, current_years)
     template = select_template(category)
     if template is None:
-        return None, None  # category "other" (or unparsed) - no template exists, routes to undetermined
+        return None, {"decision": "undetermined", "note": "category 'other' (or unparsed) - no template exists"}
 
     last_observed = spending_df[spending_df["Country"] == country].dropna().sort_values("Year")["Spending"].iloc[-1] * 100
     ceiling, confidence, _, _, status = draft_magnitude(
         signal_df, current_years, precedent_years, category, last_observed
     )
     if status != "ok":
-        return None, None  # LLM output failed the automatic coherence check - undetermined, not guessed
+        return None, {"decision": "undetermined", "note": "LLM output failed the automatic coherence check"}
 
     return ceiling / 100, {
+        "decision": "capped",
+        "cap": ceiling / 100,
         "source": "automated",
         "confidence": confidence,
         "note": f"GDELT-only estimate (category: {category}), not independently cross-checked - see ROADMAP.md.",
