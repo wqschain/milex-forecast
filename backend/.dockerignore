@@ -19,3 +19,5 @@ test_regressor_ukraine.py
 test_regressor_ukraine_v2.py
 test_scenarios_ukraine.py
 test_scenarios_turkiye.py
+scenario_pipeline.py
+blind_test_ukraine.py

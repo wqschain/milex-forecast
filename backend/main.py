@@ -81,6 +81,8 @@ def forecast_spending(request: ForecastRequest):
     model = models[request.country]
 
 
+    cap_entry = growth_caps.get(request.country)
+
     try:
         if isinstance(model, LinearRegression):
             future_years = pd.DataFrame({
@@ -90,15 +92,23 @@ def forecast_spending(request: ForecastRequest):
             result = predictions.tolist()
         else:
             future = model.make_future_dataframe(periods=request.years_ahead, freq="YE")
-            if request.country in growth_caps:
-                future["cap"] = growth_caps[request.country]
+            if cap_entry is not None:
+                future["cap"] = cap_entry["cap"]
             forecast = model.predict(future)
             result = forecast["yhat"].tail(request.years_ahead).tolist()
-        
-            
+
         response = {"country": request.country, "forecast": result}
         if request.country in FORECAST_CAVEATS:
             response["caveat"] = FORECAST_CAVEATS[request.country]
+        # Growth-cap provenance surfaced explicitly, not just applied
+        # silently: a hand-researched cap (externally verified against a
+        # real historical precedent) and an automated, GDELT-only LLM
+        # estimate must never look equally confident to a consumer of this
+        # API - see ROADMAP.md, 2026-07-24 decision.
+        if cap_entry is not None:
+            response["cap_source"] = cap_entry["source"]
+            response["cap_confidence"] = cap_entry["confidence"]
+            response["cap_note"] = cap_entry["note"]
         return response
 
     except Exception as e: 

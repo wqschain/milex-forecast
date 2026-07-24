@@ -1,6 +1,11 @@
 {
   "capped": {
-    "Ukraine": 0.5
+    "Ukraine": {
+      "cap": 0.5,
+      "source": "hand-researched",
+      "confidence": "high",
+      "note": "Externally verified against independent historical precedent - see ROADMAP.md."
+    }
   },
   "flagged": [
     "Ukraine"

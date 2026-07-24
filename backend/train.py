@@ -4,6 +4,7 @@ from sklearn.metrics import mean_absolute_error
 from prophet import Prophet
 import joblib
 import json
+from scenario_pipeline import determine_cap
 
 df = pd.read_csv("cleaned_data.csv")
 test_countries = [
@@ -66,13 +67,9 @@ def calculate_volatility(country_name):
 # data every run, not hardcoded, so this extends automatically if another
 # country ever crosses the threshold.
 #
-# Cap values are deliberately NOT auto-computed from data - each one is a
-# hand-set, documented judgment call (same category as the scenario
-# templates in step 6), because a formula-derived cap would be presented as
-# more rigorous than it actually is. A flagged country with no entry here
-# is left uncapped and printed as a warning below, rather than silently
-# guessing a value - matching the project's "undetermined, not silently
-# defaulted" branching philosophy (step 4).
+# GROWTH_CAPS holds hand-researched values only - each one a documented
+# judgment call grounded in a real, externally-checkable historical anchor
+# (e.g. Ukraine's UK WW2 defense-spending precedent). See ROADMAP.md.
 GROWTH_CAPS = {
     # 0.50 = 50% of GDP. Ukraine was already at 39.6% (2025) and still
     # rising, so the cap must sit above that; sustained wartime economies
@@ -81,14 +78,24 @@ GROWTH_CAPS = {
     "Ukraine": 0.50,
 }
 
+gdelt_df = pd.read_csv("gdelt_country_year_clusters.csv")
+
 volatilities = {c: calculate_volatility(c) for c in test_countries}
 _vol_values = list(volatilities.values())
 _vol_threshold = (sum(_vol_values) / len(_vol_values)) + 2 * pd.Series(_vol_values).std()
 flagged_countries = [c for c in test_countries if volatilities[c] > _vol_threshold]
 print(f"Volatility-flagged countries (>{_vol_threshold:.4f}): {flagged_countries}")
+
+# Computed once per flagged country (not re-derived later) so the automated
+# pipeline's LLM calls run at most once per country per training run.
+cap_info = {c: determine_cap(c, GROWTH_CAPS, df, gdelt_df) for c in flagged_countries}
 for c in flagged_countries:
-    if c not in GROWTH_CAPS:
-        print(f"  WARNING: '{c}' is flagged but has no GROWTH_CAPS entry - left uncapped, unresolved.")
+    cap, meta = cap_info[c]
+    if cap is None:
+        print(f"  WARNING: '{c}' is flagged but no cap could be determined (hand-set or automated) "
+              f"- left uncapped, unresolved.")
+    else:
+        print(f"  '{c}': cap={cap:.2f} ({meta['source']}, confidence={meta['confidence']})")
 
 
 scales_to_test = [0.05, 0.3, 0.8]
@@ -155,7 +162,7 @@ for country, result in results_log.items():
         continue
 
     country_data = df[df["Country"] == country].dropna()
-    cap = GROWTH_CAPS.get(country) if country in flagged_countries else None
+    cap, cap_meta = cap_info.get(country, (None, None))
 
     if result["chosen_model"] == "linear":
         # Growth cap is a Prophet-only mechanism (logistic growth). A flagged
@@ -184,7 +191,7 @@ for country, result in results_log.items():
             final_model = Prophet(changepoint_prior_scale=result["best_prophet_scale"],
                                    growth="logistic", yearly_seasonality=False)
             final_model.fit(prophet_df[["ds", "y", "cap"]])
-            growth_caps_used[country] = cap
+            growth_caps_used[country] = {"cap": cap, **cap_meta}
         else:
             final_model = Prophet(changepoint_prior_scale=result["best_prophet_scale"])
             final_model.fit(prophet_df[["ds", "y"]])
