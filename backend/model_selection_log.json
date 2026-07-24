@@ -1,219 +1,219 @@
 {
   "United States of America": {
     "chosen_model": "prophet",
-    "mae": 0.0019319822525510444,
+    "mae": 0.0019815395186038973,
     "linear_mae": 0.0037352056734017746,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.0019319822525510444
+    "best_prophet_mae": 0.0019815395186038973
   },
   "Canada": {
     "chosen_model": "prophet",
-    "mae": 0.004221389961123453,
+    "mae": 0.0021197650255599873,
     "linear_mae": 0.005444079303797146,
     "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.004221389961123453
+    "best_prophet_mae": 0.0021197650255599873
   },
   "Mexico": {
     "chosen_model": "prophet",
-    "mae": 0.001121782528099367,
+    "mae": 0.0011553969050953382,
     "linear_mae": 0.002845723618784351,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.001121782528099367
+    "best_prophet_mae": 0.0011553969050953382
   },
   "Brazil": {
     "chosen_model": "prophet",
-    "mae": 0.0018717377077714496,
+    "mae": 0.0010956358160776098,
     "linear_mae": 0.0031438010566858673,
-    "best_prophet_scale": 0.05,
-    "best_prophet_mae": 0.0018717377077714496
+    "best_prophet_scale": 0.3,
+    "best_prophet_mae": 0.0010956358160776098
   },
   "Argentina": {
     "chosen_model": "prophet",
-    "mae": 0.0015860672973438573,
+    "mae": 0.0008531230941728529,
     "linear_mae": 0.006909470070742161,
     "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.0015860672973438573
+    "best_prophet_mae": 0.0008531230941728529
   },
   "Colombia": {
     "chosen_model": "prophet",
-    "mae": 0.005133525599659022,
+    "mae": 0.0017271388238970019,
     "linear_mae": 0.009253493178705968,
-    "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.005133525599659022
+    "best_prophet_scale": 0.3,
+    "best_prophet_mae": 0.0017271388238970019
   },
   "United Kingdom": {
     "chosen_model": "prophet",
-    "mae": 0.003134604914452676,
+    "mae": 0.002095922578739205,
     "linear_mae": 0.010594555231046392,
-    "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.003134604914452676
+    "best_prophet_scale": 0.3,
+    "best_prophet_mae": 0.002095922578739205
   },
   "Germany": {
     "chosen_model": "prophet",
-    "mae": 0.003216772060143077,
+    "mae": 0.003189867376328885,
     "linear_mae": 0.010538138040203893,
-    "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.003216772060143077
+    "best_prophet_scale": 0.3,
+    "best_prophet_mae": 0.003189867376328885
   },
   "France": {
     "chosen_model": "prophet",
-    "mae": 0.0023313900275444503,
+    "mae": 0.0016544796103420086,
     "linear_mae": 0.005539819100796253,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.0023313900275444503
+    "best_prophet_mae": 0.0016544796103420086
   },
   "Italy": {
     "chosen_model": "prophet",
-    "mae": 0.002621828426626939,
+    "mae": 0.002742462517113604,
     "linear_mae": 0.0027437016914562606,
     "best_prophet_scale": 0.05,
-    "best_prophet_mae": 0.002621828426626939
+    "best_prophet_mae": 0.002742462517113604
   },
   "Poland": {
-    "chosen_model": "linear",
-    "mae": 0.012128206782907547,
+    "chosen_model": "prophet",
+    "mae": 0.006780858903733396,
     "linear_mae": 0.012128206782907547,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.012757762708660445
+    "best_prophet_mae": 0.006780858903733396
   },
   "Russia": {
     "chosen_model": "prophet",
-    "mae": 0.009237381370280582,
+    "mae": 0.009720495002740633,
     "linear_mae": 0.012924225312073647,
     "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.009237381370280582
+    "best_prophet_mae": 0.009720495002740633
   },
   "Ukraine": {
     "chosen_model": "prophet",
-    "mae": 0.12249705492151619,
+    "mae": 0.12133386975385752,
     "linear_mae": 0.12749790759451773,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.12249705492151619
+    "best_prophet_mae": 0.12133386975385752
   },
   "Israel": {
     "chosen_model": "prophet",
-    "mae": 0.011566398439920073,
+    "mae": 0.008468131721709323,
     "linear_mae": 0.05606315056518727,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.011566398439920073
+    "best_prophet_mae": 0.008468131721709323
   },
   "Saudi Arabia": {
-    "chosen_model": "linear",
-    "mae": 0.015938913199942544,
+    "chosen_model": "prophet",
+    "mae": 0.015889205388474534,
     "linear_mae": 0.015938913199942544,
-    "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.0236809224714835
+    "best_prophet_scale": 0.05,
+    "best_prophet_mae": 0.015889205388474534
   },
   "T\u00fcrkiye": {
     "chosen_model": "linear",
     "mae": 0.0029266456991518244,
     "linear_mae": 0.0029266456991518244,
     "best_prophet_scale": 0.05,
-    "best_prophet_mae": 0.0072671349390695085
+    "best_prophet_mae": 0.0029411321833748374
   },
   "Iran": {
     "chosen_model": "prophet",
-    "mae": 0.003485038229893646,
+    "mae": 0.004408335304914558,
     "linear_mae": 0.01779331611825675,
     "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.003485038229893646
+    "best_prophet_mae": 0.004408335304914558
   },
   "China": {
     "chosen_model": "prophet",
-    "mae": 0.00047624762798957365,
+    "mae": 0.00043899127071796786,
     "linear_mae": 0.0016261671758609722,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.00047624762798957365
+    "best_prophet_mae": 0.00043899127071796786
   },
   "India": {
     "chosen_model": "prophet",
-    "mae": 0.0008258457168723445,
+    "mae": 0.0007871023967978234,
     "linear_mae": 0.001370251354800856,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.0008258457168723445
+    "best_prophet_mae": 0.0007871023967978234
   },
   "Japan": {
     "chosen_model": "prophet",
-    "mae": 0.0010216169861703237,
+    "mae": 0.0010295509533004709,
     "linear_mae": 0.0013918824197589135,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.0010216169861703237
+    "best_prophet_mae": 0.0010295509533004709
   },
   "Korea, South": {
     "chosen_model": "prophet",
-    "mae": 0.0017224999967353854,
+    "mae": 0.0008355566000939774,
     "linear_mae": 0.017672544643341816,
-    "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.0017224999967353854
+    "best_prophet_scale": 0.05,
+    "best_prophet_mae": 0.0008355566000939774
   },
   "Pakistan": {
     "chosen_model": "prophet",
-    "mae": 0.0063168168497764274,
+    "mae": 0.005546263835517149,
     "linear_mae": 0.011111831264796198,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.0063168168497764274
+    "best_prophet_mae": 0.005546263835517149
   },
   "Australia": {
-    "chosen_model": "linear",
-    "mae": 0.004153858658956117,
+    "chosen_model": "prophet",
+    "mae": 0.0019057979953482327,
     "linear_mae": 0.004153858658956117,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.005450920743019616
+    "best_prophet_mae": 0.0019057979953482327
   },
   "Indonesia": {
     "chosen_model": "prophet",
-    "mae": 0.0007363960335366269,
+    "mae": 0.0008295756641627152,
     "linear_mae": 0.008785281078532478,
     "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.0007363960335366269
+    "best_prophet_mae": 0.0008295756641627152
   },
   "Viet Nam": {
     "chosen_model": "prophet",
-    "mae": 0.0028621357589479067,
+    "mae": 0.0016688582267500207,
     "linear_mae": 0.01538143929900126,
     "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.0028621357589479067
+    "best_prophet_mae": 0.0016688582267500207
   },
   "South Africa": {
     "chosen_model": "prophet",
-    "mae": 0.00035823328749437066,
+    "mae": 0.0006674746415412392,
     "linear_mae": 0.010339231582779575,
     "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.00035823328749437066
+    "best_prophet_mae": 0.0006674746415412392
   },
   "Nigeria": {
     "chosen_model": "prophet",
-    "mae": 0.004525669248648431,
+    "mae": 0.0017488162920476287,
     "linear_mae": 0.0087416845207851,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.004525669248648431
+    "best_prophet_mae": 0.0017488162920476287
   },
   "Egypt": {
     "chosen_model": "prophet",
-    "mae": 0.012227395110013507,
+    "mae": 0.0008141773149947429,
     "linear_mae": 0.012719949867971366,
-    "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.012227395110013507
+    "best_prophet_scale": 0.8,
+    "best_prophet_mae": 0.0008141773149947429
   },
   "Algeria": {
     "chosen_model": "prophet",
-    "mae": 0.009639675903551978,
+    "mae": 0.010689541567413141,
     "linear_mae": 0.014688148087484598,
     "best_prophet_scale": 0.3,
-    "best_prophet_mae": 0.009639675903551978
+    "best_prophet_mae": 0.010689541567413141
   },
   "Sweden": {
     "chosen_model": "prophet",
-    "mae": 0.005021221795608381,
+    "mae": 0.0042810072968758875,
     "linear_mae": 0.008099755827771483,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.005021221795608381
+    "best_prophet_mae": 0.0042810072968758875
   },
   "Norway": {
-    "chosen_model": "linear",
-    "mae": 0.009304599664800354,
+    "chosen_model": "prophet",
+    "mae": 0.00503683572856178,
     "linear_mae": 0.009304599664800354,
     "best_prophet_scale": 0.8,
-    "best_prophet_mae": 0.011248231048817852
+    "best_prophet_mae": 0.00503683572856178
   }
 }

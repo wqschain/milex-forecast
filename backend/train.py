@@ -41,7 +41,15 @@ def evaluate_country(country_name, changepoint_prior_scale=0.05):
     prophet_train = prophet_df[prophet_df["ds"] <= "2015-01-01"]
     prophet_test = prophet_df[prophet_df["ds"] > "2015-01-01"]
 
-    prophet_model = Prophet(changepoint_prior_scale=changepoint_prior_scale)
+    # yearly_seasonality=False: this data is already one point per year (no
+    # sub-year signal exists to seasonally model), so Prophet's default
+    # yearly term is a meaningless artifact here, not a real pattern - see
+    # ROADMAP.md step 5 round 2. Applied here (not just on the final model)
+    # so model selection itself (which model wins, which scale) is
+    # evaluated under the same corrected setting the final model uses -
+    # otherwise the chosen model/scale would be stale, picked to fit noise
+    # this fix removes.
+    prophet_model = Prophet(changepoint_prior_scale=changepoint_prior_scale, yearly_seasonality=False)
     prophet_model.fit(prophet_train)
 
     prophet_future = prophet_model.make_future_dataframe(periods=len(prophet_test), freq="YE")
@@ -179,21 +187,22 @@ for country, result in results_log.items():
         prophet_df = country_data[["Year", "Spending"]].copy()
         prophet_df["ds"] = pd.to_datetime(prophet_df["Year"], format="%Y")
         prophet_df["y"] = prophet_df["Spending"]
+        # yearly_seasonality=False for every Prophet model, capped or not:
+        # this data is already one point per year, so Prophet's default
+        # yearly seasonality is a meaningless artifact regardless of
+        # whether a growth cap is involved - it was originally only fixed
+        # here for capped countries (where it visibly pushed forecasts
+        # above their own cap), but it was silently live in the yhat of
+        # every other Prophet-chosen country too, just masked there by
+        # trend dominance rather than absent. See ROADMAP.md.
         if cap is not None:
-            # yearly_seasonality=False is required, not optional, for the cap
-            # to actually hold: Prophet's default yearly seasonality adds a
-            # +/-2pp wiggle on top of the capped trend on this yearly-only
-            # data (no sub-year signal exists to seasonally model), which was
-            # enough to push forecasts above the cap in testing - see
-            # ROADMAP.md step 5 round 2. Only applied for capped countries,
-            # not all 31 - the general fix is filed as a separate follow-up.
             prophet_df["cap"] = cap
             final_model = Prophet(changepoint_prior_scale=result["best_prophet_scale"],
                                    growth="logistic", yearly_seasonality=False)
             final_model.fit(prophet_df[["ds", "y", "cap"]])
             growth_caps_used[country] = {"cap": cap, **cap_meta}
         else:
-            final_model = Prophet(changepoint_prior_scale=result["best_prophet_scale"])
+            final_model = Prophet(changepoint_prior_scale=result["best_prophet_scale"], yearly_seasonality=False)
             final_model.fit(prophet_df[["ds", "y"]])
 
     final_models[country] = final_model
