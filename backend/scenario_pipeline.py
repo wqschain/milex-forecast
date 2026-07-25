@@ -21,7 +21,9 @@ just to get one small function.
 """
 import re
 import requests
+import numpy as np
 import pandas as pd
+from prophet import Prophet
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "mistral:latest"
@@ -86,11 +88,26 @@ def compute_elevated_signal(gdelt_df, country):
     return country_df, threshold
 
 
-def find_current_episode(signal_df):
+def find_current_episode(signal_df, max_gap_years=2):
     """The most recent contiguous run of elevated_active=1 years is the
     'current' episode driving forward scenario construction; any earlier,
     separate elevated years are historical precedent for stage 5's
-    magnitude reasoning, not part of what's being forecast forward."""
+    magnitude reasoning, not part of what's being forecast forward.
+
+    Recency check (added 2026-07-24, a fix, not a documented deferral -
+    see ROADMAP.md): the most recent block's last year must be within
+    `max_gap_years` of this signal_df's own latest year, or it isn't
+    treated as "current" at all - both current_years and precedent_years
+    come back empty, routing the caller to undetermined. Without this,
+    the most-recent-ever elevated block was returned regardless of how
+    long ago it ended - caught when Nigeria's block (2002-2005, twenty
+    years stale) was confidently labeled "current" and used to construct
+    forward-looking scenarios as if it were ongoing. Ukraine's validated
+    result is unaffected (its block ends in 2025, the dataset's own last
+    year, gap=0). max_gap_years=2 is a round, generally-applicable choice
+    (allows a one-to-two-year lull without dropping a genuinely ongoing
+    situation), not tuned to reproduce any specific country's outcome.
+    """
     elevated_years = signal_df.loc[signal_df["elevated_active"] == 1, "Year"].tolist()
     if not elevated_years:
         return [], []
@@ -100,6 +117,11 @@ def find_current_episode(signal_df):
             current.insert(0, y)
         else:
             break
+
+    latest_year = signal_df["Year"].max()
+    if latest_year - current[-1] > max_gap_years:
+        return [], []  # most recent elevated block is stale, not ongoing - undetermined, not guessed
+
     precedent = [y for y in elevated_years if y not in current]
     return current, precedent
 
@@ -241,6 +263,144 @@ REASONING: <2-3 sentences citing how many precedent episodes were available and 
     return ceiling, confidence, response, prompt, "ok"
 
 
+# ---------- Stage 6: scenario construction (automated, ROADMAP.md 2026-07-24) ----------
+def construct_scenarios(signal_df, current_years, precedent_years, category):
+    """
+    LLM constructs three named scenarios directly from this country's real
+    GDELT evidence, rather than filling in Ukraine's/Türkiye's rigid
+    pre-written templates - the same reasoning quality already validated
+    in categorize_episode(), applied to scenario construction instead of
+    category labeling.
+
+    Structurally always three scenarios (continues indefinitely / resolves
+    relatively quickly / gradually de-escalates over a longer period),
+    matching the conceptual shape of the hand-built templates - but the
+    NAMES and DURATIONS are LLM-derived from the real evidence, not
+    hardcoded. Deliberately constrained to simple structured fields (two
+    names, two small integers), not raw numeric flag arrays: draft_magnitude()'s
+    first attempt at unconstrained LLM numeric output produced an
+    incoherent result (see ROADMAP.md, 2026-07-24) - the lesson carried
+    forward here is to constrain what the LLM has to get exactly right,
+    not ask it to invent an arbitrary numeric sequence.
+
+    Returns (scenario_spec, response, prompt) where scenario_spec is None
+    if parsing failed or the result failed its coherence check (a
+    "gradual, longer-process" scenario must actually take longer to
+    resolve than the "quick resolution" one, and both must be positive
+    integers) - never trusted at face value, same principle as
+    draft_magnitude()'s ceiling check.
+    """
+    current_rows = signal_df[signal_df["Year"].isin(current_years)].sort_values("Year")
+    precedent_rows = signal_df[signal_df["Year"].isin(precedent_years)].sort_values("Year")
+
+    current_desc = "; ".join(f"{r['baseline_ratio']:.1f}x baseline, tone {r['avg_tone']:.1f}"
+                              for _, r in current_rows.iterrows())
+    if len(precedent_rows) > 0:
+        precedent_desc = "; ".join(f"{r['baseline_ratio']:.1f}x baseline, tone {r['avg_tone']:.1f}"
+                                    for _, r in precedent_rows.iterrows())
+        precedent_line = f"This location has {len(precedent_rows)} earlier precedent episode(s): {precedent_desc}."
+    else:
+        precedent_line = "This location has no earlier precedent episodes."
+
+    prompt = f"""You are naming three future scenarios for a {category} situation detected in event-monitoring data, to drive a forecasting model. A regressor flag is held at 1 while the situation is assumed active and transitions to 0 as it resolves.
+
+Current elevated episode: {current_desc}
+{precedent_line}
+
+Name three scenarios:
+1. The situation continues at its current intensity indefinitely.
+2. The situation resolves relatively quickly - give a specific number of years until fully resolved.
+3. The situation gradually de-escalates over a longer period than scenario 2 - give a specific number of years until fully resolved, greater than scenario 2's.
+
+Respond in exactly this format:
+SCENARIO_1_NAME: <short descriptive name for the "continues" scenario>
+SCENARIO_2_NAME: <short descriptive name for the "resolves quickly" scenario>
+SCENARIO_2_YEARS: <integer number of years>
+SCENARIO_3_NAME: <short descriptive name for the "gradual" scenario>
+SCENARIO_3_YEARS: <integer number of years, greater than SCENARIO_2_YEARS>"""
+
+    response = call_ollama(prompt)
+    name1 = re.search(r"SCENARIO_1_NAME:\s*(.+)", response)
+    name2 = re.search(r"SCENARIO_2_NAME:\s*(.+)", response)
+    years2 = re.search(r"SCENARIO_2_YEARS:\s*(\d+)", response)
+    name3 = re.search(r"SCENARIO_3_NAME:\s*(.+)", response)
+    years3 = re.search(r"SCENARIO_3_YEARS:\s*(\d+)", response)
+
+    if not all([name1, name2, years2, name3, years3]):
+        return None, response, prompt
+
+    y2, y3 = int(years2.group(1)), int(years3.group(1))
+    # Coherence gate: a "gradual, longer-process" scenario has to actually
+    # take longer than "resolves quickly", and both must be positive - not
+    # trusted at face value, same principle as draft_magnitude()'s check.
+    if y2 <= 0 or y3 <= 0 or y3 <= y2:
+        return None, response, prompt
+
+    spec = {
+        "continues_name": name1.group(1).strip(),
+        "resolves_name": name2.group(1).strip(),
+        "resolves_years": y2,
+        "gradual_name": name3.group(1).strip(),
+        "gradual_years": y3,
+    }
+    return spec, response, prompt
+
+
+def build_flag_schedules(scenario_spec):
+    """Deterministic numeric flag arrays built from construct_scenarios()'s
+    structured output - the LLM never generates raw numbers here, only the
+    names and the two integer durations that parameterize these three
+    fixed shapes (matching scenario_templates.py's hand-built shapes)."""
+    d2, d3 = scenario_spec["resolves_years"], scenario_spec["gradual_years"]
+    return {
+        scenario_spec["continues_name"]: lambda n: np.ones(n),
+        scenario_spec["resolves_name"]: lambda n, d=d2: np.concatenate([np.ones(min(d, n)), np.zeros(max(0, n - d))]),
+        scenario_spec["gradual_name"]: lambda n, d=d3: np.clip(1 - np.arange(n) / d, 0, 1),
+    }
+
+
+def train_automated_scenario_model(country, spending_df, signal_df, cap_value, changepoint_prior_scale):
+    """
+    Fits an automated scenario Prophet model using the elevated_active
+    signal (stage 2) as the regressor directly - unlike scenario_templates.py's
+    hand-built models, which use a hardcoded historical date, this reuses
+    the exact binary series stage 2 already computed for this country, so
+    there's no second, separately-tuned flag definition to keep in sync.
+    """
+    country_data = spending_df[spending_df["Country"] == country][["Year", "Spending"]].dropna()
+    country_data = country_data.sort_values("Year").reset_index(drop=True)
+    country_data["ds"] = pd.to_datetime(country_data["Year"], format="%Y")
+    country_data["y"] = country_data["Spending"]
+    flag_lookup = signal_df.set_index("Year")["elevated_active"]
+    country_data["elevated_active"] = country_data["Year"].map(flag_lookup).fillna(0).astype(int)
+
+    prophet_kwargs = dict(changepoint_prior_scale=changepoint_prior_scale, yearly_seasonality=False)
+    cols = ["ds", "y", "elevated_active"]
+    if cap_value is not None:
+        country_data["cap"] = cap_value
+        cols.append("cap")
+        prophet_kwargs["growth"] = "logistic"
+
+    model = Prophet(**prophet_kwargs)
+    model.add_regressor("elevated_active")
+    model.fit(country_data[cols])
+    return model, country_data["elevated_active"].values
+
+
+def forecast_automated_scenarios(model, historical_flag, scenario_spec, years_ahead, cap_value=None):
+    """Returns {scenario_name: [forecast values]} for the three constructed scenarios."""
+    flag_schedules = build_flag_schedules(scenario_spec)
+    results = {}
+    for name, flag_fn in flag_schedules.items():
+        future = model.make_future_dataframe(periods=years_ahead, freq="YE")
+        future["elevated_active"] = np.concatenate([historical_flag, flag_fn(years_ahead)])
+        if cap_value is not None:
+            future["cap"] = cap_value
+        forecast = model.predict(future)
+        results[name] = forecast["yhat"].tail(years_ahead).tolist()
+    return results
+
+
 # ---------- Orchestration: determine a growth cap for a flagged country ----------
 def determine_cap(country, hand_set_caps, no_cap_needed, spending_df, gdelt_df):
     """
@@ -332,4 +492,68 @@ def determine_cap(country, hand_set_caps, no_cap_needed, spending_df, gdelt_df):
         "source": "automated",
         "confidence": confidence,
         "note": f"GDELT-only estimate (category: {category}), not independently cross-checked - see ROADMAP.md.",
+    }
+
+
+# ---------- Orchestration: determine a scenario for a flagged country ----------
+def determine_scenario(country, hand_built_countries, spending_df, gdelt_df):
+    """
+    Returns a dict describing an automated scenario configuration for a
+    flagged country, or None if hand-built, undetermined, or the category
+    has no scenario template - never a guess. Mirrors determine_cap()'s
+    exact pattern (2026-07-24): a hand-built entry always wins and is
+    checked first; the automated pipeline only runs for a flagged country
+    with neither.
+
+    `hand_built_countries` is the caller's registry of hand-built templates
+    (e.g. scenario_templates.SCENARIO_TEMPLATES) - a country in it returns
+    None here, since the caller already trains that country's model
+    entirely separately via scenario_templates.py, not this module. This
+    function has nothing to add for those two countries; it exists purely
+    for the automated fallback.
+
+    On success, returns {"category", "cap", "confidence", "scenario_spec",
+    "signal_df"} - everything train.py needs to train and label an
+    automated scenario model without recomputing stages 2/3/5 a second
+    time. Every automated result is tagged with the same "source":
+    "automated" / confidence-level pattern already established for
+    determine_cap()'s automated growth caps - it must never be presented
+    with the same certainty as Ukraine's or Türkiye's hand-built scenarios.
+
+    Undetermined at any stage - no elevated episode, category not conflict
+    or currency instability (no template exists for "other" yet, see
+    ROADMAP.md step 4), the magnitude coherence check failing, or the
+    scenario-construction coherence check failing - returns None. The
+    caller routes that to the existing "undetermined" status, the same as
+    a country determine_cap() also couldn't resolve.
+    """
+    if country in hand_built_countries:
+        return None
+
+    signal_df, _ = compute_elevated_signal(gdelt_df, country)
+    current_years, precedent_years = find_current_episode(signal_df)
+    if not current_years:
+        return None
+
+    category, _, _ = categorize_episode(signal_df, current_years)
+    if category not in ("conflict", "currency instability"):
+        return None  # "other"/unparsed - no scenario template exists for this category yet (see ROADMAP.md)
+
+    last_observed = spending_df[spending_df["Country"] == country].dropna().sort_values("Year")["Spending"].iloc[-1] * 100
+    ceiling, mag_confidence, _, _, mag_status = draft_magnitude(
+        signal_df, current_years, precedent_years, category, last_observed
+    )
+    if mag_status != "ok":
+        return None
+
+    scenario_spec, _, _ = construct_scenarios(signal_df, current_years, precedent_years, category)
+    if scenario_spec is None:
+        return None
+
+    return {
+        "category": category,
+        "cap": ceiling / 100,
+        "confidence": mag_confidence,
+        "scenario_spec": scenario_spec,
+        "signal_df": signal_df,
     }

@@ -6,7 +6,8 @@ import pandas as pd
 from pydantic import BaseModel
 import logging
 import json
-from scenario_templates import forecast_scenarios
+from scenario_templates import SCENARIO_TEMPLATES, forecast_scenarios
+from scenario_pipeline import forecast_automated_scenarios
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -99,14 +100,37 @@ def forecast_spending(request: ForecastRequest):
         if country in scenario_models:
             entry = scenario_models[country]
             status_meta = scenario_status[country]
-            scenarios = forecast_scenarios(
-                country, entry["model"], entry["historical_flag"], request.years_ahead, cap_value=entry["cap"]
-            )
+            # Two different forecast functions depending on provenance: a
+            # hand-built country (Ukraine, Türkiye) has a fixed
+            # SCENARIO_TEMPLATES entry to look its flag schedules up from;
+            # an automated country has none - its schedules were LLM-
+            # constructed at training time and persisted as "scenario_spec"
+            # in scenario_models.pkl (not scenario_status.json - it's
+            # inference config, not human/API-facing status). The frontend
+            # never sees this dispatch - both produce the identical
+            # {scenario_name: [...]} response shape.
+            if country in SCENARIO_TEMPLATES:
+                scenarios = forecast_scenarios(
+                    country, entry["model"], entry["historical_flag"], request.years_ahead, cap_value=entry["cap"]
+                )
+            else:
+                scenarios = forecast_automated_scenarios(
+                    entry["model"], entry["historical_flag"], entry["scenario_spec"],
+                    request.years_ahead, cap_value=entry["cap"]
+                )
             response = {
                 "country": country,
                 "status": "scenario",
                 "scenarios": scenarios,
                 "magnitude_note": status_meta["magnitude_note"],
+                # Never presented with equal certainty: a hand-built
+                # scenario (individually researched, matching Ukraine's/
+                # Türkiye's conflict_active/currency_active provenance) and
+                # an automated one (GDELT-only, not independently
+                # cross-checked) must be visibly distinguishable - same
+                # principle as cap_source/cap_confidence. See ROADMAP.md.
+                "scenario_source": status_meta["scenario_source"],
+                "scenario_confidence": status_meta["scenario_confidence"],
             }
             if status_meta["cap_decision"] == "capped":
                 response["cap_source"] = status_meta["cap_source"]

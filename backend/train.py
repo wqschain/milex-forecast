@@ -4,7 +4,7 @@ from sklearn.metrics import mean_absolute_error
 from prophet import Prophet
 import joblib
 import json
-from scenario_pipeline import determine_cap
+from scenario_pipeline import determine_cap, determine_scenario, train_automated_scenario_model, build_flag_schedules
 from scenario_templates import SCENARIO_TEMPLATES, train_scenario_model
 
 df = pd.read_csv("cleaned_data.csv")
@@ -268,9 +268,65 @@ for country, config in SCENARIO_TEMPLATES.items():
         "cap_source": meta.get("source"),
         "cap_confidence": meta.get("confidence"),
         "cap_note": meta.get("note"),
+        # Scenario provenance is distinct from cap provenance - Ukraine and
+        # Türkiye's scenario CONSTRUCTION (the template itself: which named
+        # scenarios exist, their flag schedules) is individually
+        # hand-researched, same as their conflict_active/currency_active
+        # magnitude. See requirement #5, ROADMAP.md.
+        "scenario_source": "hand-built",
+        "scenario_confidence": "high",
     }
     print(f"  Scenario model trained for '{country}': {len(config['scenarios'])} named scenarios, "
           f"cap={cap} ({meta['decision']})")
+
+# --- Automated scenario construction (ROADMAP.md step 6, 2026-07-24): for
+# any flagged country with NEITHER a hand-built template NOR a category
+# that routes to undetermined - mirrors determine_cap()'s exact pattern
+# (hand-built always wins, automated only fills the remainder). Currently
+# has no live case (the only flagged country, Ukraine, has a hand-built
+# template) - verified instead by simulation on a real, currently-unflagged
+# country (Nigeria), the same discipline used to verify determine_cap()'s
+# automated fallback before it had a live case either.
+for country in flagged_countries:
+    if country in SCENARIO_TEMPLATES:
+        continue  # already handled above - hand-built always wins, never overridden
+    scenario_info = determine_scenario(country, SCENARIO_TEMPLATES, df, gdelt_df)
+    if scenario_info is None:
+        print(f"  No automated scenario constructed for '{country}' - routes to undetermined.")
+        continue
+
+    changepoint_prior_scale = results_log.get(country, {}).get("best_prophet_scale") or 0.05
+    model, historical_flag = train_automated_scenario_model(
+        country, df, scenario_info["signal_df"], scenario_info["cap"], changepoint_prior_scale
+    )
+    flag_schedules_preview = list(build_flag_schedules(scenario_info["scenario_spec"]).keys())
+    scenario_models[country] = {
+        "model": model, "historical_flag": historical_flag, "cap": scenario_info["cap"],
+        # scenario_spec is config main.py needs at serving time to rebuild
+        # this country's flag schedules (unlike the hand-built path, there's
+        # no fixed SCENARIO_TEMPLATES entry to look up from) - kept here in
+        # the pickle alongside the model, not in scenario_status.json, since
+        # it's inference configuration, not human/API-facing status.
+        "scenario_spec": scenario_info["scenario_spec"],
+    }
+    scenario_status[country] = {
+        "regressor": "elevated_active",
+        "scenario_names": flag_schedules_preview,
+        "magnitude_note": (
+            f"Automated, GDELT-only scenario construction (category: {scenario_info['category']}) - not "
+            f"individually researched or independently cross-checked, confidence: {scenario_info['confidence']}. "
+            f"See ROADMAP.md."
+        ),
+        "cap": scenario_info["cap"],
+        "cap_decision": "capped",
+        "cap_source": "automated",
+        "cap_confidence": scenario_info["confidence"],
+        "cap_note": f"GDELT-only estimate (category: {scenario_info['category']}) - see ROADMAP.md.",
+        "scenario_source": "automated",
+        "scenario_confidence": scenario_info["confidence"],
+    }
+    print(f"  Automated scenario model trained for '{country}': {len(flag_schedules_preview)} named scenarios "
+          f"(category: {scenario_info['category']}, confidence: {scenario_info['confidence']})")
 
 joblib.dump(scenario_models, "scenario_models.pkl")
 with open("scenario_status.json", "w") as f:
