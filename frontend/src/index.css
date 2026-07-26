@@ -21,11 +21,23 @@
   --no-data-fill: #e8e0cc;
 
   /* Reserved accent: marks projected/forecasted values specifically, nothing
-     else - a muted burgundy, distinct from the ink-navy "observed" tone */
+     else - a muted burgundy, distinct from the ink-navy "observed" tone.
+     --accent-dim and --accent-deep are lighter/darker steps in the same
+     burgundy family, used to distinguish multiple scenario lines on one
+     chart without introducing an unrelated hue - a third scenario line is
+     still "a forecast," so it stays in the forecast color family. */
   --accent: #7d3644;
   --accent-dim: #a86773;
+  --accent-deep: #5c2733;
 
   --danger: #a6403d;
+
+  /* Reserved for "automated, not independently verified" provenance only -
+     a muted amber distinct from both the ink/accent data-encoding hues and
+     from --danger, so it reads as "worth noticing" without reading as an
+     error. Never used decoratively. */
+  --caution: #9c7a3c;
+  --caution-bg: #f3ead4;
 
   --font-body: "Source Serif 4", Georgia, "Iowan Old Style", serif;
   --font-display: "Roboto Slab", Georgia, "Times New Roman", serif;

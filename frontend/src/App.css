@@ -283,6 +283,67 @@ body,
   color: var(--ink);
 }
 
+/* Provenance badges: whether the scenarios/growth cap shown are
+   hand-researched or an automated GDELT-only estimate must be visible
+   here, not just present in the API response - see ROADMAP.md. */
+.modal__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.provenance-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  font-family: var(--font-ui);
+  font-size: 11px;
+}
+
+.provenance-badge__label {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.provenance-badge__value {
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+/* Automated estimates get a visibly different treatment - the point is
+   that a user can tell the difference at a glance, not just by reading. */
+.provenance-badge--automated {
+  border-color: var(--caution);
+  background: var(--caution-bg);
+}
+
+.provenance-badge--automated .provenance-badge__value {
+  color: var(--caution);
+}
+
+/* "Undetermined" is deliberately plain - functionally correct and clearly
+   labeled, but not heavily designed, since this state has only ever fired
+   from a hand-crafted test fixture, never a real country reaching it
+   naturally (see ROADMAP.md). It reuses .modal__subtitle's plain text
+   treatment rather than a bespoke callout. */
+.modal__undetermined-note {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
 .modal__slider-label {
   display: block;
   font-family: var(--font-ui);
@@ -306,6 +367,24 @@ body,
    the error text never overlaps the legend beneath the chart. */
 .modal__results {
   min-height: 266px;
+}
+
+/* Scenario status has more to show below the chart than a single-line
+   forecast does: the legend can wrap to a second line with 3-4 items
+   (Observed + up to 3 named scenarios), plus the magnitude_note sentence -
+   a taller reservation so switching between loading/done/error still never
+   resizes the modal, same principle as the base .modal__results height. */
+.modal__results--scenario {
+  min-height: 352px;
+}
+
+.modal__magnitude-note {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.5;
+  margin-top: 10px;
 }
 
 .modal__status {
