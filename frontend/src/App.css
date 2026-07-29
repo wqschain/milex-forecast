@@ -440,3 +440,14 @@ body,
 .forecast-chart__swatch--forecast {
   background: repeating-linear-gradient(to right, var(--accent) 0, var(--accent) 4px, transparent 4px, transparent 7px);
 }
+
+/* Confidence-band legend swatch: a translucent block rather than a line,
+   echoing the shaded area itself. backgroundColor is set inline per-series
+   (matches that series' line color) since a future series with its own
+   interval would use its own SCENARIO_STYLES color, not this one hardcoded
+   hue. */
+.forecast-chart__swatch--band {
+  height: 8px;
+  opacity: 0.3;
+  border-radius: 1px;
+}

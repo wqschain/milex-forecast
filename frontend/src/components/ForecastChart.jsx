@@ -1,4 +1,5 @@
-import { CartesianGrid, Line, LineChart, XAxis, YAxis, Tooltip } from "recharts";
+import { Fragment } from "react";
+import { Area, CartesianGrid, ComposedChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 
 // Fixed regardless of how many years are selected - more years means more
 // points plotted within this same space, never a bigger chart. The modal's
@@ -27,12 +28,23 @@ export const SCENARIO_STYLES = [
   { color: "#5c2733", dash: "1 3" }, // --accent-deep
 ];
 
+// Recharts renders a shaded range band directly from a dataKey whose value
+// is a [low, high] tuple - no stacked-area trick needed. Only series that
+// carry `lower`/`upper` (currently: the single trend-status series; never
+// scenario series - see ForecastModal's buildSeries) get a `${key}__band`
+// field at all, so this generalizes to "any series with an interval gets a
+// band" rather than checking status or country here.
+function bandKey(key) {
+  return `${key}__band`;
+}
+
 function buildChartData(history, series, latestYear) {
   const recentHistory = history.slice(-HISTORY_WINDOW_YEARS);
   const points = recentHistory.map((h) => {
     const point = { year: h.year, observed: h.spending };
     series.forEach((s) => {
       point[s.key] = null;
+      if (s.lower) point[bandKey(s.key)] = null;
     });
     return point;
   });
@@ -44,6 +56,7 @@ function buildChartData(history, series, latestYear) {
     const last = points[points.length - 1];
     series.forEach((s) => {
       last[s.key] = last.observed;
+      if (s.lower) last[bandKey(s.key)] = [last.observed, last.observed];
     });
   }
 
@@ -52,6 +65,7 @@ function buildChartData(history, series, latestYear) {
     const point = { year: latestYear + 1 + i, observed: null };
     series.forEach((s) => {
       point[s.key] = s.values[i] ?? null;
+      if (s.lower) point[bandKey(s.key)] = [s.lower[i], s.upper[i]];
     });
     points.push(point);
   }
@@ -63,17 +77,31 @@ function formatPercent(value) {
   return value == null ? "–" : `${(value * 100).toFixed(2)}%`;
 }
 
+// The band's dataKey resolves to a [low, high] tuple rather than a scalar;
+// formatted generically off the value's shape, not off which series it
+// belongs to, so this keeps working for any current or future series that
+// carries an interval.
+function formatTooltipValue(value, name) {
+  if (Array.isArray(value)) {
+    return [`${formatPercent(value[0])} – ${formatPercent(value[1])}`, name];
+  }
+  return [formatPercent(value), name === "observed" ? "Observed" : name];
+}
+
 /**
- * `series`: array of { key, label, values } - one entry renders exactly
- * like the original single-forecast chart; two or three render as multiple
- * named lines (scenario status), sharing one observed history line.
+ * `series`: array of { key, label, values, lower?, upper? } - one entry
+ * renders exactly like the original single-forecast chart; two or three
+ * render as multiple named lines (scenario status), sharing one observed
+ * history line. A series with `lower`/`upper` also gets a shaded band
+ * behind its line - currently only ever the single trend-status series
+ * (see ForecastModal's buildSeries), never a scenario series.
  */
 export default function ForecastChart({ history, series, latestYear, isLoading }) {
   const data = buildChartData(history, series, latestYear);
 
   return (
     <div className={`forecast-chart${isLoading ? " forecast-chart--loading" : ""}`}>
-      <LineChart
+      <ComposedChart
         width={CHART_WIDTH}
         height={CHART_HEIGHT}
         data={data}
@@ -95,7 +123,7 @@ export default function ForecastChart({ history, series, latestYear, isLoading }
           width={40}
         />
         <Tooltip
-          formatter={(value, name) => [formatPercent(value), name === "observed" ? "Observed" : name]}
+          formatter={formatTooltipValue}
           labelFormatter={(year) => year}
           contentStyle={{
             fontFamily: "var(--font-ui)",
@@ -117,20 +145,34 @@ export default function ForecastChart({ history, series, latestYear, isLoading }
         {series.map((s, i) => {
           const style = SCENARIO_STYLES[i % SCENARIO_STYLES.length];
           return (
-            <Line
-              key={s.key}
-              type="monotone"
-              dataKey={s.key}
-              stroke={style.color}
-              strokeWidth={2}
-              strokeDasharray={style.dash}
-              dot={false}
-              connectNulls={false}
-              animationDuration={300}
-            />
+            <Fragment key={s.key}>
+              {s.lower && (
+                <Area
+                  type="monotone"
+                  dataKey={bandKey(s.key)}
+                  name="Confidence interval"
+                  stroke="none"
+                  fill={style.color}
+                  fillOpacity={0.15}
+                  connectNulls={false}
+                  isAnimationActive={false}
+                  legendType="none"
+                />
+              )}
+              <Line
+                type="monotone"
+                dataKey={s.key}
+                stroke={style.color}
+                strokeWidth={2}
+                strokeDasharray={style.dash}
+                dot={false}
+                connectNulls={false}
+                animationDuration={300}
+              />
+            </Fragment>
           );
         })}
-      </LineChart>
+      </ComposedChart>
     </div>
   );
 }

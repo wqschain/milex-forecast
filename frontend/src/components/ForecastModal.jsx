@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { fetchForecast } from "../api/forecast";
 import ForecastChart, { SCENARIO_STYLES } from "./ForecastChart";
 import ProvenanceBadge from "./ProvenanceBadge";
@@ -13,13 +13,27 @@ const DEBOUNCE_MS = 300;
 // ROADMAP.md): "trend"/"undetermined" carry a single forecast array,
 // "scenario" carries a named dict of them. Everything downstream (the
 // chart, the legend) works from this uniform array either way.
+//
+// forecast_lower/forecast_upper (Prophet's own prediction interval) are
+// attached to the single series whenever the backend sends them - which is
+// only for status="trend" (see main.py). Gated on the fields' presence, not
+// on status or country name, so this keeps working unchanged for any future
+// trend-only country (gets a band automatically) or any future scenario
+// country, hand-built or automated (never gets one, since scenario
+// responses never carry these fields - the scenarios themselves already
+// represent the uncertainty).
 function buildSeries(result) {
   if (!result) return [];
   if (result.status === "scenario") {
     return Object.entries(result.scenarios).map(([name, values]) => ({ key: name, label: name, values }));
   }
   const values = result.status === "undetermined" ? result.trend_forecast : result.forecast;
-  return [{ key: "forecast", label: "Forecast", values }];
+  const series = { key: "forecast", label: "Forecast", values };
+  if (result.forecast_lower && result.forecast_upper) {
+    series.lower = result.forecast_lower;
+    series.upper = result.forecast_upper;
+  }
+  return [series];
 }
 
 export default function ForecastModal({ country, onClose }) {
@@ -130,15 +144,26 @@ export default function ForecastModal({ country, onClose }) {
             {series.map((s, i) => {
               const style = SCENARIO_STYLES[i % SCENARIO_STYLES.length];
               return (
-                <span className="forecast-chart__legend-item" key={s.key}>
-                  <span
-                    className="forecast-chart__swatch forecast-chart__swatch--forecast"
-                    style={{
-                      background: `repeating-linear-gradient(to right, ${style.color} 0, ${style.color} 4px, transparent 4px, transparent 7px)`,
-                    }}
-                  />{" "}
-                  {s.label}
-                </span>
+                <Fragment key={s.key}>
+                  <span className="forecast-chart__legend-item">
+                    <span
+                      className="forecast-chart__swatch forecast-chart__swatch--forecast"
+                      style={{
+                        background: `repeating-linear-gradient(to right, ${style.color} 0, ${style.color} 4px, transparent 4px, transparent 7px)`,
+                      }}
+                    />{" "}
+                    {s.label}
+                  </span>
+                  {s.lower && (
+                    <span className="forecast-chart__legend-item">
+                      <span
+                        className="forecast-chart__swatch forecast-chart__swatch--band"
+                        style={{ backgroundColor: style.color }}
+                      />{" "}
+                      Confidence interval
+                    </span>
+                  )}
+                </Fragment>
               );
             })}
           </div>

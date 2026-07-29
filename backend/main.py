@@ -59,15 +59,30 @@ def _single_line_forecast(model, years_ahead, cap_entry):
     model object and the same cap-application code path every time, so a
     country that's flagged-but-unresearched (undetermined) can never reach
     an unbounded forecast through a second, separate path - see
-    ROADMAP.md's two-gate design."""
+    ROADMAP.md's two-gate design.
+
+    Returns a dict with "yhat" always present. Prophet's predict() already
+    computes an 80% prediction interval by default (yhat_lower/yhat_upper,
+    interval_width=0.8 - confirmed directly against a production model, not
+    assumed) - no new interval calculation needed, just pass through what
+    Prophet already produced. Included here (keyed off the model actually
+    having those columns) rather than in the endpoint, so any future
+    Prophet-backed country gets it automatically and a LinearRegression one
+    (currently none reach "trend"; Türkiye is the only linear model and it's
+    scenario-status) just omits it, with no per-country branching either
+    way."""
     if isinstance(model, LinearRegression):
         future_years = pd.DataFrame({"Year": range(2026, 2026 + years_ahead)})
-        return model.predict(future_years).tolist()
+        return {"yhat": model.predict(future_years).tolist()}
     future = model.make_future_dataframe(periods=years_ahead, freq="YE")
     if cap_entry is not None:
         future["cap"] = cap_entry["cap"]
-    forecast = model.predict(future)
-    return forecast["yhat"].tail(years_ahead).tolist()
+    forecast = model.predict(future).tail(years_ahead)
+    result = {"yhat": forecast["yhat"].tolist()}
+    if "yhat_lower" in forecast.columns:
+        result["yhat_lower"] = forecast["yhat_lower"].tolist()
+        result["yhat_upper"] = forecast["yhat_upper"].tolist()
+    return result
 
 
 @app.post("/forecast")
@@ -167,16 +182,31 @@ def forecast_spending(request: ForecastRequest):
             # ROADMAP.md's 2026-07-23 clarification). No live example
             # exists today (Ukraine, the only flagged country, has a
             # template) - this path is built and verified but has not yet
-            # had a real country reach it.
+            # had a real country reach it. Deliberately not carrying
+            # forecast_lower/forecast_upper here even though the same
+            # Prophet model produced them - undetermined is already a
+            # "flagged, unresolved" signal, and this status has no live
+            # example yet, so it isn't in scope for the trend-only interval
+            # band request (see ROADMAP.md).
             response = {
-                "country": country, "status": "undetermined", "trend_forecast": result,
+                "country": country, "status": "undetermined", "trend_forecast": result["yhat"],
                 "flagged_reason": "volatility outlier (calculate_volatility, >2 std dev above mean)",
                 "detection_status": "Flagged and growth-cap-safe, but no scenario template has been built for "
                                      "this country yet - needs individual research, the same way Ukraine and "
                                      "Türkiye originally got (see ROADMAP.md step 4/6).",
             }
         else:
-            response = {"country": country, "status": "trend", "forecast": result}
+            response = {"country": country, "status": "trend", "forecast": result["yhat"]}
+            # Prophet's own 80% prediction interval, shown as a shaded band -
+            # only for plain trend countries. Scenario countries (Ukraine,
+            # Türkiye) already carry their uncertainty as named scenario
+            # lines; layering a statistical interval on top of that would
+            # mix two different kinds of uncertainty rather than clarify
+            # anything (see ROADMAP.md). Gated on the field actually being
+            # present (i.e. the model was Prophet), not on country name.
+            if "yhat_lower" in result:
+                response["forecast_lower"] = result["yhat_lower"]
+                response["forecast_upper"] = result["yhat_upper"]
 
         if country in growth_caps:
             entry = growth_caps[country]
