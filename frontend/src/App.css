@@ -285,7 +285,7 @@ body,
 
 /* Provenance badges: whether the scenarios/growth cap shown are
    hand-researched or an automated GDELT-only estimate must be visible
-   here, not just present in the API response - see ROADMAP.md. */
+   here, not just present in the API response - see docs/ROADMAP_v2_working_notes.md. */
 .modal__badges {
   display: flex;
   flex-wrap: wrap;
@@ -330,7 +330,7 @@ body,
 /* "Undetermined" is deliberately plain - functionally correct and clearly
    labeled, but not heavily designed, since this state has only ever fired
    from a hand-crafted test fixture, never a real country reaching it
-   naturally (see ROADMAP.md). It reuses .modal__subtitle's plain text
+   naturally (see docs/ROADMAP_v2_working_notes.md). It reuses .modal__subtitle's plain text
    treatment rather than a bespoke callout. */
 .modal__undetermined-note {
   font-family: var(--font-ui);

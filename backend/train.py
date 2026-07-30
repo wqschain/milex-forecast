@@ -45,7 +45,7 @@ def evaluate_country(country_name, changepoint_prior_scale=0.05):
     # yearly_seasonality=False: this data is already one point per year (no
     # sub-year signal exists to seasonally model), so Prophet's default
     # yearly term is a meaningless artifact here, not a real pattern - see
-    # ROADMAP.md step 5 round 2. Applied here (not just on the final model)
+    # docs/ROADMAP_v2_working_notes.md step 5 round 2. Applied here (not just on the final model)
     # so model selection itself (which model wins, which scale) is
     # evaluated under the same corrected setting the final model uses -
     # otherwise the chosen model/scale would be stale, picked to fit noise
@@ -68,7 +68,7 @@ def calculate_volatility(country_name):
     return year_over_year_change.std()
 
 
-# Growth cap rollout (see ROADMAP.md step 5 round 2 finding): a Prophet
+# Growth cap rollout (see docs/ROADMAP_v2_working_notes.md step 5 round 2 finding): a Prophet
 # logistic-growth ceiling on spending as % of GDP, for countries whose
 # volatility is a statistical outlier (>2 std dev above the mean across all
 # 31 countries - the threshold decided in step 6, applied here for real
@@ -78,25 +78,25 @@ def calculate_volatility(country_name):
 #
 # GROWTH_CAPS holds hand-researched values only - each one a documented
 # judgment call grounded in a real, externally-checkable historical anchor
-# (e.g. Ukraine's UK WW2 defense-spending precedent). See ROADMAP.md.
+# (e.g. Ukraine's UK WW2 defense-spending precedent). See docs/ROADMAP_v2_working_notes.md.
 GROWTH_CAPS = {
     # 0.50 = 50% of GDP. Ukraine was already at 39.6% (2025) and still
     # rising, so the cap must sit above that; sustained wartime economies
     # have historically reached this range (UK military spending peaked
-    # near 50% of GDP in WW2). See ROADMAP.md for full reasoning.
+    # near 50% of GDP in WW2). See docs/ROADMAP_v2_working_notes.md for full reasoning.
     "Ukraine": 0.50,
 }
 
 # Countries explicitly checked and found NOT to need a growth cap - a
 # deliberate, evidence-based decision, distinct from a country simply being
 # absent from GROWTH_CAPS (which means "unresolved" and routes to the
-# fail-safe below). See ROADMAP.md, 2026-07-24, for why this distinction
+# fail-safe below). See docs/ROADMAP_v2_working_notes.md, 2026-07-24, for why this distinction
 # matters: without it, a country's already-made "no cap needed" decision
 # would silently turn into an unexplained refusal if it were ever newly
 # flagged by calculate_volatility.
 NO_CAP_NEEDED = {
     "Türkiye": ("Historical max 4.30% of GDP (1982); the 2018-2025 currency-instability period "
-                "(1.6%-2.6%) stays below that - no runaway pattern. See ROADMAP.md."),
+                "(1.6%-2.6%) stays below that - no runaway pattern. See docs/ROADMAP_v2_working_notes.md."),
 }
 
 gdelt_df = pd.read_csv("gdelt_country_year_clusters.csv")
@@ -190,7 +190,7 @@ for country, result in results_log.items():
     if result["chosen_model"] == "linear":
         # Growth cap is a Prophet-only mechanism (logistic growth). A flagged
         # country selected as linear would need a different fix; none exist
-        # currently, so this isn't built - see ROADMAP.md.
+        # currently, so this isn't built - see docs/ROADMAP_v2_working_notes.md.
         if cap is not None:
             print(f"  NOTE: '{country}' is flagged with a growth cap defined, but its chosen model is "
                   f"linear (no growth-cap mechanism for linear models) - cap not applied.")
@@ -209,7 +209,7 @@ for country, result in results_log.items():
         # here for capped countries (where it visibly pushed forecasts
         # above their own cap), but it was silently live in the yhat of
         # every other Prophet-chosen country too, just masked there by
-        # trend dominance rather than absent. See ROADMAP.md.
+        # trend dominance rather than absent. See docs/ROADMAP_v2_working_notes.md.
         if cap is not None:
             prophet_df["cap"] = cap
             final_model = Prophet(changepoint_prior_scale=result["best_prophet_scale"],
@@ -231,7 +231,7 @@ print(f"Trained and saved {len(final_models)} final models.")
 # serve uncapped), and genuinely unresolved (refuse rather than serve an
 # unconfirmed-safe forecast). Collapsing "no_cap_needed" into "missing"
 # would have reintroduced the exact gap fixed in this change - see
-# scenario_pipeline.py's determine_cap() docstring and ROADMAP.md.
+# scenario_pipeline.py's determine_cap() docstring and docs/ROADMAP_v2_working_notes.md.
 no_cap_needed_used = {c: cap_info[c][1] for c in flagged_countries if cap_info[c][1]["decision"] == "no_cap_needed"}
 growth_cap_status = {
     "capped": growth_caps_used,
@@ -245,7 +245,7 @@ uncapped_flagged = [c for c in flagged_countries if c not in resolved]
 print(f"Saved growth cap status to growth_caps.json: {len(growth_caps_used)} capped, "
       f"{len(no_cap_needed_used)} no-cap-needed, {len(uncapped_flagged)} unresolved ({uncapped_flagged})")
 
-# --- Scenario models (ROADMAP.md step 6, 2026-07-24 reversal): Ukraine and
+# --- Scenario models (docs/ROADMAP_v2_working_notes.md step 6, 2026-07-24 reversal): Ukraine and
 # Türkiye, the two founding validation cases, each get a hand-designed
 # scenario template trained for real, replacing the earlier decision to
 # ship Türkiye as caveat-only. Each country's own growth-cap decision
@@ -272,14 +272,14 @@ for country, config in SCENARIO_TEMPLATES.items():
         # Türkiye's scenario CONSTRUCTION (the template itself: which named
         # scenarios exist, their flag schedules) is individually
         # hand-researched, same as their conflict_active/currency_active
-        # magnitude. See requirement #5, ROADMAP.md.
+        # magnitude. See requirement #5, docs/ROADMAP_v2_working_notes.md.
         "scenario_source": "hand-built",
         "scenario_confidence": "high",
     }
     print(f"  Scenario model trained for '{country}': {len(config['scenarios'])} named scenarios, "
           f"cap={cap} ({meta['decision']})")
 
-# --- Automated scenario construction (ROADMAP.md step 6, 2026-07-24): for
+# --- Automated scenario construction (docs/ROADMAP_v2_working_notes.md step 6, 2026-07-24): for
 # any flagged country with NEITHER a hand-built template NOR a category
 # that routes to undetermined - mirrors determine_cap()'s exact pattern
 # (hand-built always wins, automated only fills the remainder). Currently
@@ -315,13 +315,13 @@ for country in flagged_countries:
         "magnitude_note": (
             f"Automated, GDELT-only scenario construction (category: {scenario_info['category']}) - not "
             f"individually researched or independently cross-checked, confidence: {scenario_info['confidence']}. "
-            f"See ROADMAP.md."
+            f"See docs/ROADMAP_v2_working_notes.md."
         ),
         "cap": scenario_info["cap"],
         "cap_decision": "capped",
         "cap_source": "automated",
         "cap_confidence": scenario_info["confidence"],
-        "cap_note": f"GDELT-only estimate (category: {scenario_info['category']}) - see ROADMAP.md.",
+        "cap_note": f"GDELT-only estimate (category: {scenario_info['category']}) - see docs/ROADMAP_v2_working_notes.md.",
         "scenario_source": "automated",
         "scenario_confidence": scenario_info["confidence"],
     }

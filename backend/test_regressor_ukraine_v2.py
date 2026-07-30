@@ -1,6 +1,6 @@
 """
 Step 5 proof-of-concept, round 2: two fixes tested together on Ukraine, per
-the conclusion in ROADMAP.md step 5's finding (see also test_regressor_ukraine.py,
+the conclusion in docs/ROADMAP_v2_working_notes.md step 5's finding (see also test_regressor_ukraine.py,
 kept as-is as the record of round 1's negative result).
 
 Round 1 established two separate problems with continuous spike_ratio +

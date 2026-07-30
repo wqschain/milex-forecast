@@ -1,5 +1,5 @@
 """
-Clustering step of the scenario-forecasting pipeline (see ROADMAP.md step 3).
+Clustering step of the scenario-forecasting pipeline (see docs/ROADMAP_v2_working_notes.md step 3).
 
 Groups the 1,426 country-year embeddings into natural clusters via k-means
 (scikit-learn), without predefining categories - the LLM interpretation

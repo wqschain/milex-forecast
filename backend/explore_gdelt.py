@@ -1,5 +1,5 @@
 """
-Exploratory script for the scenario-forecasting phase (see ROADMAP.md).
+Exploratory script for the scenario-forecasting phase (see docs/ROADMAP_v2_working_notes.md).
 Confirms BigQuery access to GDELT's public dataset, discovers the real
 per-country FIPS codes GDELT uses (empirically, not assumed from ISO codes,
 which do NOT match - see the Australia/Sweden note below), and estimates
@@ -82,7 +82,7 @@ if RUN_UKRAINE_SAMPLE:
         print(json.dumps(r, default=str))
 
 # --- PHASE 3B: verify the "positive-tone spike" embedding cluster wasn't
-# coincidental (see ROADMAP.md embeddings follow-up finding) ---
+# coincidental (see docs/ROADMAP_v2_working_notes.md embeddings follow-up finding) ---
 # Confirmed (2026-07-22, 99.615 GB billed): Korea 1987's top events by
 # mention volume are Seoul student protesters vs. riot police (EventCode
 # 190/"FIGHT", GoldsteinScale repeatedly -10.0) clustered Apr-Sep 1987 - the
@@ -141,7 +141,7 @@ if RUN_UNREST_VERIFICATION:
 # This is a detection-methodology gap (current features aren't sensitive
 # enough), not a data-absence gap - worth documenting as a real limitation
 # of the *current* pipeline, but distinct from currency instability's more
-# fundamental absence. See ROADMAP.md for how this is handled for now.
+# fundamental absence. See docs/ROADMAP_v2_working_notes.md for how this is handled for now.
 if RUN_POLICY_SHIFT_VERIFICATION:
     sql_policy_shift_verification = """
     SELECT SQLDATE, Year, Actor1Name, Actor2Name, EventCode, EventRootCode, QuadClass,

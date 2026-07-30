@@ -1,5 +1,5 @@
 """
-Automated event-aware scenario pipeline (ROADMAP.md step 6 rebuild).
+Automated event-aware scenario pipeline (docs/ROADMAP_v2_working_notes.md step 6 rebuild).
 
 Replaces the hand-set `conflict_active` flag (a literal hardcoded date
 range that never updates) with an end-to-end automated pipeline: detection
@@ -9,8 +9,11 @@ template selection -> LLM-drafted magnitude. Growth cap application
 unchanged - this module produces a *value* a cap could use, it doesn't
 touch how caps are applied.
 
-Not wired into train.py/main.py yet - see backend/blind_test_ukraine.py
-for the end-to-end walkthrough this was built to pass before that happens.
+Wired into train.py (as the fallback in determine_cap()/determine_scenario()
+for any flagged country with no hand-built entry) and main.py (dispatching
+to forecast_automated_scenarios() for automated scenario models) - but only
+after passing the end-to-end blind test in backend/blind_test_ukraine.py,
+kept as the record of that validation.
 
 Note: `calculate_volatility` and `test_countries` are reimplemented here
 identically to train.py rather than imported from it, because train.py has
@@ -60,7 +63,7 @@ def compute_elevated_signal(gdelt_df, country):
     trailing window. That's the deliberate fix: a rolling window gets
     contaminated by the anomaly's own recent years, pulling the "baseline"
     up to match it and making the ratio decay back toward 1.0 even while
-    the real anomaly is still ongoing (see ROADMAP.md's spike_ratio
+    the real anomaly is still ongoing (see docs/ROADMAP_v2_working_notes.md's spike_ratio
     finding). A baseline fixed once, from the country's full history, isn't
     dragged upward by a handful of elevated years the way a rolling window
     is - median is used specifically because it's robust to those years
@@ -95,7 +98,7 @@ def find_current_episode(signal_df, max_gap_years=2):
     magnitude reasoning, not part of what's being forecast forward.
 
     Recency check (added 2026-07-24, a fix, not a documented deferral -
-    see ROADMAP.md): the most recent block's last year must be within
+    see docs/ROADMAP_v2_working_notes.md): the most recent block's last year must be within
     `max_gap_years` of this signal_df's own latest year, or it isn't
     treated as "current" at all - both current_years and precedent_years
     come back empty, routing the caller to undetermined. Without this,
@@ -146,7 +149,7 @@ def categorize_episode(signal_df, current_years):
     date from its training data. This is what makes the categorization
     step a genuine test of the pipeline rather than the model's memory.
 
-    Deliberately omits avg_goldstein: ROADMAP.md's step 1 finding (written
+    Deliberately omits avg_goldstein: docs/ROADMAP_v2_working_notes.md's step 1 finding (written
     before this pipeline existed, not derived from this test) already
     established that yearly-averaged Goldstein is diluted by hundreds of
     thousands of routine events per country-year and can be misleading at
@@ -263,7 +266,7 @@ REASONING: <2-3 sentences citing how many precedent episodes were available and 
     return ceiling, confidence, response, prompt, "ok"
 
 
-# ---------- Stage 6: scenario construction (automated, ROADMAP.md 2026-07-24) ----------
+# ---------- Stage 6: scenario construction (automated, docs/ROADMAP_v2_working_notes.md 2026-07-24) ----------
 def construct_scenarios(signal_df, current_years, precedent_years, category):
     """
     LLM constructs three named scenarios directly from this country's real
@@ -279,7 +282,7 @@ def construct_scenarios(signal_df, current_years, precedent_years, category):
     hardcoded. Deliberately constrained to simple structured fields (two
     names, two small integers), not raw numeric flag arrays: draft_magnitude()'s
     first attempt at unconstrained LLM numeric output produced an
-    incoherent result (see ROADMAP.md, 2026-07-24) - the lesson carried
+    incoherent result (see docs/ROADMAP_v2_working_notes.md, 2026-07-24) - the lesson carried
     forward here is to constrain what the LLM has to get exactly right,
     not ask it to invent an arbitrary numeric sequence.
 
@@ -427,9 +430,9 @@ def determine_cap(country, hand_set_caps, no_cap_needed, spending_df, gdelt_df):
     needed" decision on record, that decision needs to be encoded
     somewhere the gate can see it, or it would silently turn into an
     unexplained refusal instead of correctly recognizing the question was
-    already answered. See ROADMAP.md.
+    already answered. See docs/ROADMAP_v2_working_notes.md.
 
-    Priority order, per the 2026-07-24 decision (ROADMAP.md): a
+    Priority order, per the 2026-07-24 decision (docs/ROADMAP_v2_working_notes.md): a
     hand-researched entry in `hand_set_caps` or `no_cap_needed` always wins
     over the automated pipeline below. A value with a real, externally-
     checkable anchor (or an explicit "checked, not needed" determination)
@@ -457,7 +460,7 @@ def determine_cap(country, hand_set_caps, no_cap_needed, spending_df, gdelt_df):
             "cap": hand_set_caps[country],
             "source": "hand-researched",
             "confidence": "high",
-            "note": "Externally verified against independent historical precedent - see ROADMAP.md.",
+            "note": "Externally verified against independent historical precedent - see docs/ROADMAP_v2_working_notes.md.",
         }
 
     if country in no_cap_needed:
@@ -491,7 +494,7 @@ def determine_cap(country, hand_set_caps, no_cap_needed, spending_df, gdelt_df):
         "cap": ceiling / 100,
         "source": "automated",
         "confidence": confidence,
-        "note": f"GDELT-only estimate (category: {category}), not independently cross-checked - see ROADMAP.md.",
+        "note": f"GDELT-only estimate (category: {category}), not independently cross-checked - see docs/ROADMAP_v2_working_notes.md.",
     }
 
 
@@ -522,7 +525,7 @@ def determine_scenario(country, hand_built_countries, spending_df, gdelt_df):
 
     Undetermined at any stage - no elevated episode, category not conflict
     or currency instability (no template exists for "other" yet, see
-    ROADMAP.md step 4), the magnitude coherence check failing, or the
+    docs/ROADMAP_v2_working_notes.md step 4), the magnitude coherence check failing, or the
     scenario-construction coherence check failing - returns None. The
     caller routes that to the existing "undetermined" status, the same as
     a country determine_cap() also couldn't resolve.
@@ -537,7 +540,7 @@ def determine_scenario(country, hand_built_countries, spending_df, gdelt_df):
 
     category, _, _ = categorize_episode(signal_df, current_years)
     if category not in ("conflict", "currency instability"):
-        return None  # "other"/unparsed - no scenario template exists for this category yet (see ROADMAP.md)
+        return None  # "other"/unparsed - no scenario template exists for this category yet (see docs/ROADMAP_v2_working_notes.md)
 
     last_observed = spending_df[spending_df["Country"] == country].dropna().sort_values("Year")["Spending"].iloc[-1] * 100
     ceiling, mag_confidence, _, _, mag_status = draft_magnitude(

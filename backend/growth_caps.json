@@ -5,7 +5,7 @@
       "cap": 0.5,
       "source": "hand-researched",
       "confidence": "high",
-      "note": "Externally verified against independent historical precedent - see ROADMAP.md."
+      "note": "Externally verified against independent historical precedent - see docs/ROADMAP_v2_working_notes.md."
     }
   },
   "no_cap_needed": {},

@@ -10,7 +10,7 @@ const DEBOUNCE_MS = 300;
 
 // Builds the chart's series list from whichever shape /forecast returned -
 // status is the only field that changes the response shape (see
-// ROADMAP.md): "trend"/"undetermined" carry a single forecast array,
+// docs/ROADMAP_v2_working_notes.md): "trend"/"undetermined" carry a single forecast array,
 // "scenario" carries a named dict of them. Everything downstream (the
 // chart, the legend) works from this uniform array either way.
 //

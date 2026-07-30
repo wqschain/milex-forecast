@@ -1,11 +1,11 @@
 """
-Embeddings step of the scenario-forecasting pipeline (see ROADMAP.md step 2).
+Embeddings step of the scenario-forecasting pipeline (see docs/ROADMAP_v2_working_notes.md step 2).
 
 Converts each of the 1,426 country-years in gdelt_country_year.csv into a
 short natural-language description and embeds it with sentence-transformers,
 so country-years can later be clustered by underlying similarity (step 3).
 
-Per the finding recorded in ROADMAP.md, the description leads with
+Per the finding recorded in docs/ROADMAP_v2_working_notes.md, the description leads with
 share-normalized event volume relative to that country's own trailing
 baseline (the strong signal), not raw Goldstein/tone averages alone (the
 weak one) - avg_goldstein and avg_tone are still included, just not as the
@@ -27,7 +27,7 @@ df = pd.read_csv("gdelt_country_year.csv").sort_values(["Country", "Year"]).rese
 
 # Share of each year's combined mention total across all 31 countries -
 # cancels out GDELT's own ~17x source-coverage growth from 2006-2016, which
-# otherwise swamps any same-country comparison (see ROADMAP.md finding).
+# otherwise swamps any same-country comparison (see docs/ROADMAP_v2_working_notes.md finding).
 yearly_total = df.groupby("Year")["total_mentions"].transform("sum")
 df["mention_share"] = df["total_mentions"] / yearly_total
 

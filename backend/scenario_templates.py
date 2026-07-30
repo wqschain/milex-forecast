@@ -1,16 +1,17 @@
 """
 Hand-designed scenario templates for the two founding validation cases
-(Ukraine: conflict, Türkiye: currency instability - see ROADMAP.md step 6).
+(Ukraine: conflict, Türkiye: currency instability - see docs/ROADMAP_v2_working_notes.md step 6).
 
 Distinct from scenario_pipeline.py's automated GDELT pipeline: these two
 countries were individually researched and hand-built (matching how
 Ukraine's was proven out in test_scenarios_ukraine.py and Türkiye's in
 test_scenarios_turkiye.py), not derived automatically. A future flagged
 country without this kind of hand research routes through
-scenario_pipeline.py's automated fallback instead (currently: a growth cap
-value only, not a full scenario template - no validated automated
-categorization has been trusted for scenario-template selection, per
-ROADMAP.md step 4's individual-review requirement).
+scenario_pipeline.py's automated fallback instead, which now builds a full
+scenario template too (construct_scenarios(), not just a growth cap value) -
+but a hand-built entry here always takes priority over it, and every
+automated result is tagged "source": "automated" so it's never presented
+with the same confidence as these two hand-researched templates.
 
 Each template's regressor magnitude is a deliberate, documented human
 judgment call, not a statistically fitted coefficient - both countries'
@@ -49,7 +50,7 @@ SCENARIO_TEMPLATES = {
             "conflict_active's magnitude is a hand-set assumption (flag=1 for 2022+, sourced "
             "from known history), not a statistically fitted coefficient - the dataset contains "
             "exactly one real conflict occurrence, insufficient to identify an effect size from "
-            "data alone. See ROADMAP.md."
+            "data alone. See docs/ROADMAP_v2_working_notes.md."
         ),
     },
     "Türkiye": {
@@ -69,7 +70,7 @@ SCENARIO_TEMPLATES = {
             "currency_active's magnitude is a hand-set assumption (flag=1 for 2018+, sourced "
             "from the lira's documented depreciation), not a statistically fitted coefficient - "
             "the backtest is structurally invalid (zero pre-2016 training examples of the flag "
-            "being active). See ROADMAP.md."
+            "being active). See docs/ROADMAP_v2_working_notes.md."
         ),
     },
 }

@@ -1,13 +1,16 @@
 """
-STATUS (2026-07-22): IN PROGRESS - result so far is negative, not yet
-resolved. See ROADMAP.md step 5's finding for full detail. Short version:
+STATUS (2026-07-22): round 1, negative result - resolved by round 2
+(backend/test_regressor_ukraine_v2.py, 2026-07-23), which adopted a growth
+cap + binary conflict flag instead of the continuous spike_ratio tested
+here. Kept as-is as the record of round 1's negative result, not updated to
+match round 2's resolution. See docs/ROADMAP_v2_working_notes.md step 5's finding for full detail. Short version:
 the regressor mechanism works (Prophet accepts and fits it), but it does
 NOT bound Ukraine's extrapolation - historical MAE improves by only 0.4%,
 and two very different future spike_ratio assumptions (1.03 vs 3.88, ~4x
 apart) move the 2040 forecast by only ~1 percentage point. Both are
 root-caused to changepoint_prior_scale=0.8 letting Prophet's own trend
 absorb the 2022 shift directly, leaving little for the regressor to add.
-Three untried next directions are recorded in ROADMAP.md: lower
+Three untried next directions are recorded in docs/ROADMAP_v2_working_notes.md: lower
 changepoint_prior_scale, add a logistic growth cap, or use a binary
 conflict-active flag instead of continuous spike_ratio. Committed as a
 record of what was tried and why it didn't work yet, not as production

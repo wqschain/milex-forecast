@@ -24,14 +24,14 @@ app.add_middleware(
 models = joblib.load("final_models.pkl")
 
 # Countries whose Prophet model was fit with growth="logistic" (see
-# train.py's GROWTH_CAPS / ROADMAP.md step 5 round 2) - predict() requires a
+# train.py's GROWTH_CAPS / docs/ROADMAP_v2_working_notes.md step 5 round 2) - predict() requires a
 # "cap" column on every dataframe passed in, not just at training time.
 # "capped" and "no_cap_needed" are both explicit resolutions (a real cap
 # value, or a deliberate "checked, doesn't need one" decision); "flagged"
 # (volatility outliers) is tracked separately so a country that's flagged
 # but NEITHER resolution applies to yet can be refused explicitly below,
 # instead of silently falling through to an unconfirmed-safe forecast. See
-# scenario_pipeline.py's determine_cap() docstring and ROADMAP.md,
+# scenario_pipeline.py's determine_cap() docstring and docs/ROADMAP_v2_working_notes.md,
 # 2026-07-24, for why collapsing "no_cap_needed" into "missing" was a real
 # gap, not just an implementation detail.
 with open("growth_caps.json") as f:
@@ -41,7 +41,7 @@ no_cap_needed = _growth_cap_status["no_cap_needed"]
 flagged_countries = set(_growth_cap_status["flagged"])
 
 # Hand-designed scenario templates (Ukraine: conflict, Türkiye: currency
-# instability - see scenario_templates.py, ROADMAP.md step 6). Both were
+# instability - see scenario_templates.py, docs/ROADMAP_v2_working_notes.md step 6). Both were
 # proven out standalone (test_scenarios_ukraine.py, test_scenarios_turkiye.py)
 # before being trained for real in train.py and wired in here.
 scenario_models = joblib.load("scenario_models.pkl")
@@ -59,7 +59,7 @@ def _single_line_forecast(model, years_ahead, cap_entry):
     model object and the same cap-application code path every time, so a
     country that's flagged-but-unresearched (undetermined) can never reach
     an unbounded forecast through a second, separate path - see
-    ROADMAP.md's two-gate design.
+    docs/ROADMAP_v2_working_notes.md's two-gate design.
 
     Returns a dict with "yhat" always present. Prophet's predict() already
     computes an 80% prediction interval by default (yhat_lower/yhat_upper,
@@ -143,7 +143,7 @@ def forecast_spending(request: ForecastRequest):
                 # Türkiye's conflict_active/currency_active provenance) and
                 # an automated one (GDELT-only, not independently
                 # cross-checked) must be visibly distinguishable - same
-                # principle as cap_source/cap_confidence. See ROADMAP.md.
+                # principle as cap_source/cap_confidence. See docs/ROADMAP_v2_working_notes.md.
                 "scenario_source": status_meta["scenario_source"],
                 "scenario_confidence": status_meta["scenario_confidence"],
             }
@@ -161,7 +161,7 @@ def forecast_spending(request: ForecastRequest):
             # (growth cap or an explicit "no cap needed" decision) that
             # doesn't have one yet - same "explicit unresolved state, never
             # a silent default" discipline as the undetermined-by-GDELT
-            # branch (see ROADMAP.md).
+            # branch (see docs/ROADMAP_v2_working_notes.md).
             logger.error(f"'{country}' is volatility-flagged with no resolved growth-cap decision - refusing "
                          f"to serve a forecast rather than risk an unbounded extrapolation.")
             raise HTTPException(
@@ -179,7 +179,7 @@ def forecast_spending(request: ForecastRequest):
             # with no hand-built scenario template - "undetermined" is
             # reserved specifically for this: a genuine lack-of-research
             # state, not a lack-of-automated-detection state (see
-            # ROADMAP.md's 2026-07-23 clarification). No live example
+            # docs/ROADMAP_v2_working_notes.md's 2026-07-23 clarification). No live example
             # exists today (Ukraine, the only flagged country, has a
             # template) - this path is built and verified but has not yet
             # had a real country reach it. Deliberately not carrying
@@ -187,13 +187,13 @@ def forecast_spending(request: ForecastRequest):
             # Prophet model produced them - undetermined is already a
             # "flagged, unresolved" signal, and this status has no live
             # example yet, so it isn't in scope for the trend-only interval
-            # band request (see ROADMAP.md).
+            # band request (see docs/ROADMAP_v2_working_notes.md).
             response = {
                 "country": country, "status": "undetermined", "trend_forecast": result["yhat"],
                 "flagged_reason": "volatility outlier (calculate_volatility, >2 std dev above mean)",
                 "detection_status": "Flagged and growth-cap-safe, but no scenario template has been built for "
                                      "this country yet - needs individual research, the same way Ukraine and "
-                                     "Türkiye originally got (see ROADMAP.md step 4/6).",
+                                     "Türkiye originally got (see docs/ROADMAP_v2_working_notes.md step 4/6).",
             }
         else:
             response = {"country": country, "status": "trend", "forecast": result["yhat"]}
@@ -202,7 +202,7 @@ def forecast_spending(request: ForecastRequest):
             # Türkiye) already carry their uncertainty as named scenario
             # lines; layering a statistical interval on top of that would
             # mix two different kinds of uncertainty rather than clarify
-            # anything (see ROADMAP.md). Gated on the field actually being
+            # anything (see docs/ROADMAP_v2_working_notes.md). Gated on the field actually being
             # present (i.e. the model was Prophet), not on country name.
             if "yhat_lower" in result:
                 response["forecast_lower"] = result["yhat_lower"]

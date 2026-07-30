@@ -1,11 +1,16 @@
 """
 Step 6 proof-of-concept: two named scenario forecasts for Türkiye, using the
-currency-instability template decided in ROADMAP.md step 6. Standalone
+currency-instability template decided in docs/ROADMAP_v2_working_notes.md step 6. Standalone
 review artifact, mirroring exactly how Ukraine's scenarios were proven out
 in backend/test_scenarios_ukraine.py before anything touched main.py or the
-frontend - same discipline applies here, not yet wired in.
+frontend - same discipline applies here, not wired in at the time this was
+written. This template was later trained and served for real via
+scenario_templates.py, after the accuracy-cost/scenario-signal tradeoff
+below was re-examined and reversed (see docs/ROADMAP_v2_working_notes.md).
+Kept as the standalone record of what was proven before that happened, not
+updated to match the production wiring.
 
-Per the corrected design (ROADMAP.md, 2026-07-23): Türkiye is a founding,
+Per the corrected design (docs/ROADMAP_v2_working_notes.md, 2026-07-23): Türkiye is a founding,
 hand-verified validation case exactly like Ukraine, not an "undetermined"
 country - the doubly-confirmed GDELT/volatility blind spot means our
 automated tools can't detect this crisis on their own, but the crisis
@@ -24,13 +29,22 @@ which could be assumed from Ukraine's precedent:
    at all requires deliberately using Prophet here regardless of it being
    the worse-fitting model by MAE. This is a real, explicit trade-off:
    scenario capability is being bought at the cost of raw historical fit.
+   CORRECTION, not part of the original run: Prophet's 0.00727 above was
+   model_selection_log.json's pre-fix value, corrupted by the
+   yearly_seasonality artifact this same file avoids below (line ~52) -
+   it should never have been the comparison point. Prophet's real MAE is
+   ~0.00294, nearly identical to linear's. This collapses the "trade-off"
+   framing in this point from a real cost to a rounding error, and is why
+   the tradeoff conclusion originally reached from these numbers was later
+   reversed - see docs/ROADMAP_v2_working_notes.md, 2026-07-24, for the
+   full correction and the numbers this file's own printed output confirmed.
 2. Whether a growth cap is needed. Checked directly: Türkiye's historical
    max is 4.30% of GDP (1982), and every year since the 2018 lira crisis
    onset is at or below that (2018-2025 range: 1.6%-2.6%) - the "instability"
    shows up as noisy fluctuation within an already-low, non-exploding band,
    not runaway growth. No growth cap applied - an explicit, evidence-based
    decision (Türkiye's own historical data checked directly), not a silent
-   omission. Per the two-gate design in ROADMAP.md, this is what "no cap
+   omission. Per the two-gate design in docs/ROADMAP_v2_working_notes.md, this is what "no cap
    needed" is supposed to look like: a deliberate, documented judgment, not
    an absence.
 3. How "stabilizes" should transition. ROADMAP's template says "reverts
@@ -51,7 +65,7 @@ since 2018" per train.py's original investigation), 0 before.
 
 yearly_seasonality=False on every model here, applied from the start this
 time rather than caught after the fact: the same artifact found and fixed
-for Ukraine (ROADMAP.md step 5 round 2) - a meaningless seasonal term on
+for Ukraine (docs/ROADMAP_v2_working_notes.md step 5 round 2) - a meaningless seasonal term on
 data that's already one point per year - applies identically here. Confirmed
 by first running without it: the forecast oscillated year-to-year and even
 went negative by 2040, which is nonsensical for a spending share and was

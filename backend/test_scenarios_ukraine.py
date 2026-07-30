@@ -1,16 +1,20 @@
 """
 Step 6 proof-of-concept: three named scenario forecasts for Ukraine, using
-the conflict template decided in ROADMAP.md step 6, built on the growth cap
+the conflict template decided in docs/ROADMAP_v2_working_notes.md step 6, built on the growth cap
 + binary conflict_active regressor already validated together in step 5
 round 2 (backend/test_regressor_ukraine_v2.py). Standalone review artifact,
-per explicit scope for this step - not wired into train.py/main.py/the
-frontend yet.
+per explicit scope for this step - deliberately not wired into
+train.py/main.py/the frontend at the time this was written; the same
+template was later trained and served for real via scenario_templates.py
+(see docs/ROADMAP_v2_working_notes.md). Kept as the standalone record of
+what was proven before that happened, not updated to match the production
+wiring.
 
 Model config matches what's already been adopted, unchanged: Ukraine's
 originally-selected changepoint_prior_scale=0.8, growth="logistic" with
-cap=0.50 (50% of GDP - see ROADMAP.md for the empirical + historical
+cap=0.50 (50% of GDP - see docs/ROADMAP_v2_working_notes.md for the empirical + historical
 grounding), yearly_seasonality=False (required for the cap to actually
-hold, not optional - see ROADMAP.md step 5 round 2), and conflict_active
+hold, not optional - see docs/ROADMAP_v2_working_notes.md step 5 round 2), and conflict_active
 (1 for 2022+, the full-scale invasion) as an added regressor whose fitted
 magnitude is a hand-set assumption, not a statistically validated
 coefficient (already decided and documented, not re-litigated here).

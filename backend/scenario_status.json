@@ -6,12 +6,12 @@
       "Conflict resolves within 3 years",
       "Gradual de-escalation"
     ],
-    "magnitude_note": "conflict_active's magnitude is a hand-set assumption (flag=1 for 2022+, sourced from known history), not a statistically fitted coefficient - the dataset contains exactly one real conflict occurrence, insufficient to identify an effect size from data alone. See ROADMAP.md.",
+    "magnitude_note": "conflict_active's magnitude is a hand-set assumption (flag=1 for 2022+, sourced from known history), not a statistically fitted coefficient - the dataset contains exactly one real conflict occurrence, insufficient to identify an effect size from data alone. See docs/ROADMAP_v2_working_notes.md.",
     "cap": 0.5,
     "cap_decision": "capped",
     "cap_source": "hand-researched",
     "cap_confidence": "high",
-    "cap_note": "Externally verified against independent historical precedent - see ROADMAP.md.",
+    "cap_note": "Externally verified against independent historical precedent - see docs/ROADMAP_v2_working_notes.md.",
     "scenario_source": "hand-built",
     "scenario_confidence": "high"
   },
@@ -21,12 +21,12 @@
       "Currency instability continues",
       "Currency stabilizes"
     ],
-    "magnitude_note": "currency_active's magnitude is a hand-set assumption (flag=1 for 2018+, sourced from the lira's documented depreciation), not a statistically fitted coefficient - the backtest is structurally invalid (zero pre-2016 training examples of the flag being active). See ROADMAP.md.",
+    "magnitude_note": "currency_active's magnitude is a hand-set assumption (flag=1 for 2018+, sourced from the lira's documented depreciation), not a statistically fitted coefficient - the backtest is structurally invalid (zero pre-2016 training examples of the flag being active). See docs/ROADMAP_v2_working_notes.md.",
     "cap": null,
     "cap_decision": "no_cap_needed",
     "cap_source": "hand-researched",
     "cap_confidence": "high",
-    "cap_note": "Historical max 4.30% of GDP (1982); the 2018-2025 currency-instability period (1.6%-2.6%) stays below that - no runaway pattern. See ROADMAP.md.",
+    "cap_note": "Historical max 4.30% of GDP (1982); the 2018-2025 currency-instability period (1.6%-2.6%) stays below that - no runaway pattern. See docs/ROADMAP_v2_working_notes.md.",
     "scenario_source": "hand-built",
     "scenario_confidence": "high"
   }
