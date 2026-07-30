@@ -16,18 +16,22 @@ I picked military spending data specifically because I wanted a subject with rea
 
 Forecasts military spending (as % of GDP) for 31 countries spanning every populated region, using SIPRI's historical expenditure data from 1980 to 2025. Rather than applying one model to every country, it evaluates two different forecasting approaches per country and selects whichever performs better, based on measured error against real held-out data.
 
-## Status: data pipeline, modeling, API, and frontend complete. Public deployment next.
+## Status
+
+**v1 (`master`): data pipeline, modeling, API, and frontend complete and deployable.**
+**v2 (`scenario-forecasting` branch, summarized below): event-aware scenario forecasting, built and live-verified, not yet merged to `master`.** `master` remains the stable, deployable version throughout — v2 is a second phase built on top of it, not a replacement.
 
 ## Project structure
 
 ```
 backend/   FastAPI service, model training, and the data pipeline
 frontend/  React app (Vite) - interactive world map + forecast UI
+docs/      Detailed working notes for in-progress project phases
 ```
 
-The two are independently runnable; `frontend/` talks to `backend/` only over HTTP (`/forecast`, `/health`).
+The two runtime pieces are independently runnable; `frontend/` talks to `backend/` only over HTTP (`/forecast`, `/health`).
 
-## What has been done so far
+## What has been done so far (v1)
 
 **1. Data cleaning (`sipri_data.xlsx` to `cleaned_data.csv`)**
 
@@ -83,13 +87,42 @@ A React app (`frontend/`, built with Vite) renders an interactive world map usin
 - The visual design is a light, editorial "printed policy report" aesthetic — a warm cream background, ink-navy for observed data and muted burgundy for forecasted data (same cool/observed vs. warm/projected logic carried through the map, hover, and chart), and a serif typeface for body text with sans reserved for UI labels.
 - Built with Claude Code (see "Why I built this" above for how this piece was developed differently from the rest of the project).
 
+## v2: event-aware scenario forecasting (`scenario-forecasting` branch, not yet merged)
+
+v1 forecasts every country as a pure function of time. That breaks down for countries whose recent history is dominated by an exceptional event: Ukraine's 2022 invasion, extrapolated blindly 15 years out, pushes forecast spending above 100% of GDP — a number with no real-world meaning. v2 is a second development phase built on top of the working v1 MVP, not a replacement for it. It lives on a separate branch specifically so `master` stays stable and deployable throughout.
+
+**What it adds:**
+- **Event data.** GDELT global event data, pulled via BigQuery and aggregated to yearly per-country summaries, normalized against a real artifact in GDELT's own historical source coverage (which grows ~17x between 2006-2016 independent of any real-world trend) so genuine spikes aren't confounded with that ramp.
+- **Growth caps.** A flagged country's forecast gets a stated, evidence-grounded ceiling instead of an unconstrained extrapolation.
+- **Named scenarios.** Flagged countries get 2-3 named forecasts, each conditional on an explicit future assumption ("conflict continues," "conflict resolves within 3 years," etc.), instead of one number pretending to be certain — standard practice in real economic and policy forecasting.
+- **An automated pipeline** (GDELT signal → LLM categorization → template selection → LLM-drafted magnitude, entirely local/free via Ollama + Mistral 7B) intended to extend scenario treatment to future flagged countries without hand-research each time.
+- **Honest provenance labeling.** Every cap and scenario carries a `source` (`"hand-researched"` vs. `"automated"`) and `confidence` field, surfaced directly in the API response and as a visible badge in the frontend UI — an automated estimate is never presented with the same confidence as a hand-verified one.
+- **A three-way `status` field** on `/forecast` (`"trend"` / `"scenario"` / `"undetermined"`) that the frontend branches on structurally — by status and by which fields are present in the response, never by hardcoded country name — so any future flagged or unflagged country renders correctly with no frontend changes required.
+- **A confidence band** for trend-only countries, surfacing Prophet's own 80% prediction interval (already computed, not newly calculated). Scenario countries deliberately don't get one: the named scenarios already represent that uncertainty, and layering a statistical band on top would mix two different kinds of uncertainty rather than clarify anything.
+
+**Two countries have scenario treatment today, both hand-researched founding cases:**
+- **Ukraine** — conflict, capped at 50% of GDP (grounded in the UK's real WWII defense-spending peak, ~46-52% of GDP), with a hand-set `conflict_active` regressor.
+- **Türkiye** — currency instability, no cap needed (its historical peak, 4.30% of GDP, already exceeds its current crisis-era spending, 1.6-2.6%). This scenario was initially rejected on a cost/benefit calculation — but that rejection was a genuine analytical error, not a case of conditions changing later: the Prophet accuracy cost it was weighed against was a stale, `yearly_seasonality`-bug-corrupted MAE (0.00727) left over from before a separate bug fix, when the correct number (0.00294) was already sitting in the same test output the whole time. Recomputed correctly, the tradeoff flips from looking like a bad trade to a roughly 300x favorable one, and the decision was reversed. It's kept in here, not just the working notes, because it's the clearest instance in this project of the standard it's built on: catching your own mistake by checking the number you actually have, not just re-running the test.
+
+**Headline finding: Türkiye is a real, structural blind spot for both automated detection methods this project tried — not a bug, and not softened by "known limitation" hand-waving.** Currency instability produced no signal under GDELT event-volume detection (Türkiye's 2018 event-volume ratio was 0.77, actually *below* its own baseline — a currency crisis has no discrete reportable event to generate volume around) *and* no signal under spending-volatility detection (Türkiye ranks 15th of 31 countries on year-over-year volatility, solidly mid-pack — a gradual multi-year currency drift doesn't produce the dispersion signature a sudden shock does). Both checks are correctly implemented; the underlying phenomenon simply has neither check's signature. Practical consequence: as built, this pipeline would never have flagged Türkiye for scenario treatment on its own — it has one today only because it was independently, manually researched. Passing an automated anomaly check is evidence a country is unremarkable *by that check's specific definition*, not evidence it's actually unremarkable.
+
+**What's proven on real data versus what's built-and-simulated-but-unverified:**
+- **Proven — real, independently-verified evidence:** the automated pipeline's detection and categorization stages were validated with a genuinely blind test against Ukraine, the one country with real, independently known ground truth to check against. The pipeline was calibrated on the other 30 countries, given no hardcoded dates, no country name, and no value reused from any earlier hand-built script; run blind, it correctly identified Ukraine's real conflict episode (2022-2025) and correctly categorized it as "conflict" — checked against the known answer only after every stage had already run.
+- **Built and mechanism-tested, but not a real-world validation — don't read these as equivalent to the above:** the same pipeline was also run against Nigeria and Australia. Neither is actually flagged in production; running the pipeline against them proves the mechanism executes end-to-end and produces self-consistent output, nothing more. There is no ground truth to check either result against, and none is claimed. (Nigeria's first run did surface a real bug — a "current episode" that was actually twenty years stale — which was fixed as a result; that's a genuine finding about the pipeline's correctness, not a validation of Nigeria's output.)
+- **Deliberately never fully trusted, by design:** the pipeline's LLM-drafted growth-cap magnitude lands in the right neighborhood on the one case with ground truth to check it against (60% of GDP vs. Ukraine's hand-researched 50% — a real ~10 percentage-point gap, stated plainly rather than rounded away) but is never allowed to override a hand-researched value where one exists, and is always labeled `"automated"` with lower confidence in the API rather than presented as equivalent to a verified one.
+
+Full step-by-step decision log — every finding, correction, and reversed decision — lives in [`docs/ROADMAP_v2_working_notes.md`](docs/ROADMAP_v2_working_notes.md).
+
 ## What's next
 
-- Possibly layer in a curated set of real historical events (an embargo, a conflict) marked on the timeline as honest context, not a causal claim
+- Merge v2 to `master` after review
+- Extend the automated scenario pipeline as/if additional countries cross the volatility threshold (only Ukraine does today; Türkiye is flagged manually)
+- Define a "policy shift" scenario template (currently has no validated real example — see working notes)
 - Deploy publicly
 
 ## Tech stack so far
 
+**v1:**
 - pandas, openpyxl for data loading and cleaning
 - scikit-learn (LinearRegression) and Prophet for forecasting
 - joblib for model persistence
@@ -97,6 +130,11 @@ A React app (`frontend/`, built with Vite) renders an interactive world map usin
 - pytest, GitHub Actions for testing and CI
 - Docker for containerization
 - React, Vite, react-simple-maps, Recharts for the frontend
+
+**v2 additions:**
+- Google BigQuery for GDELT event data
+- sentence-transformers for embeddings, scikit-learn (KMeans) for clustering
+- Ollama + Mistral 7B, run locally, for event categorization and scenario drafting
 
 ## Running locally
 
