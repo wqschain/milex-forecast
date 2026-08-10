@@ -6,33 +6,94 @@ body,
 
 .app {
   height: 100svh;
-  max-width: 1100px;
+  max-width: 1900px;
   margin: 0 auto;
-  padding: 20px 28px 16px;
+  padding: 14px 32px 10px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
+/* Deliberately not centered (unlike the old single-title header) - the
+   whole block, title through subtitle, shares the title's left edge, so
+   it reads as one framing element rather than a centered banner competing
+   with the map for attention. */
 .app__header {
-  text-align: center;
+  text-align: left;
   flex-shrink: 0;
 }
 
-.app__header h1 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 28px;
-  letter-spacing: 0.2px;
-  margin-bottom: 8px;
+/* Asymmetric masthead: title left, headline stat right. */
+.app__masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 4px;
 }
 
+/* The one deliberately dark, bold, large element on the page - color
+   inherited from index.css's h1 rule (--text-h, the darkest text tone
+   defined), sized up from its earlier 23px specifically to read as
+   clearly dominant over the now-smaller, lighter subtitle beneath it. */
+.app__masthead h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 27px;
+  letter-spacing: 0.2px;
+}
+
+.masthead-title__cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-left: 2px;
+  background: var(--accent);
+  vertical-align: text-bottom;
+  animation: cursor-blink 800ms step-end infinite;
+}
+
+@keyframes cursor-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.app__masthead-stat {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.app__masthead-stat-value {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.app__masthead-stat-label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Editorial deck-line treatment: italic, muted, and smaller than the
+   title - a clear secondary, not a competing headline. UI mechanics (how
+   to actually use the map) live in .data-strip__hint instead, since this
+   line's job is now to say something about the project, not the
+   interface. */
 .app__header p {
-  color: var(--text);
-  max-width: 620px;
-  margin: 0 auto;
-  font-size: 15px;
-  line-height: 1.5;
+  color: var(--text-muted);
+  font-style: italic;
+  max-width: 560px;
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 /* Thin factual strip: legend + dataset coverage, briefing-note in tone */
@@ -42,7 +103,7 @@ body,
   align-items: center;
   justify-content: space-between;
   gap: 6px 24px;
-  padding: 8px 16px;
+  padding: 5px 16px;
   flex-shrink: 0;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -54,7 +115,19 @@ body,
 .data-strip__legend {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 16px;
+}
+
+/* The "how to use this" mechanics, moved off the subtitle (see App.css's
+   .app__header p comment) to sit next to the legend they actually
+   explain - smaller and quieter than the legend items themselves, since
+   it's a hint, not a label. */
+.data-strip__hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
 }
 
 .legend-item {
@@ -131,7 +204,7 @@ body,
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 4px;
+  padding: 5px 4px;
   flex-shrink: 0;
   border-top: 1px solid var(--border-strong);
   font-family: var(--font-ui);
@@ -204,93 +277,249 @@ body,
   color: var(--text-muted);
 }
 
-.modal-backdrop {
+/* Always-visible edge tab that opens the panel - fixed regardless of
+   scroll/layout, so it reads as a persistent feature of the page rather
+   than something that has to be rediscovered. Covered by the overlay once
+   open (z-index below it), not hidden/removed - simplest way to guarantee
+   it's never orphaned in a weird state. */
+.comparison-tab {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  z-index: 90;
+  background: var(--ink);
+  color: var(--bg-raised);
+  border: none;
+  border-radius: 4px 0 0 4px;
+  padding: 18px 10px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: -2px 0 8px rgba(35, 32, 26, 0.15);
+}
+
+.comparison-tab:hover {
+  background: var(--accent);
+}
+
+/* Mirrors .comparison-tab exactly, but on the left edge - same trigger
+   style, same fixed/always-visible treatment, just the opposite side of
+   the screen so the two tabs don't compete for the same corner. */
+.info-tab {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  z-index: 90;
+  background: var(--ink);
+  color: var(--bg-raised);
+  border: none;
+  border-radius: 0 4px 4px 0;
+  padding: 18px 10px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 2px 0 8px rgba(35, 32, 26, 0.15);
+}
+
+.info-tab:hover {
+  background: var(--accent);
+}
+
+/* Full-screen takeover, not a partial drawer - kept permanently mounted
+   (see ComparisonPanel.jsx) and toggled purely via transform/opacity, so
+   every pinned country's fetch keeps running in the background while
+   closed instead of being torn down and re-fetched on next open. */
+.comparison-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(35, 32, 26, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 100;
-  padding: 16px;
-  animation: modal-backdrop-in 220ms ease-out;
+  background: var(--bg);
+  padding: 48px 64px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 320ms cubic-bezier(0.19, 1, 0.22, 1), opacity 320ms ease;
 }
 
-.modal {
-  position: relative;
-  width: 100%;
-  max-width: 480px;
-  background: var(--bg-raised);
-  border: 1px solid var(--border-strong);
-  border-radius: 4px;
-  padding: 30px;
-  box-shadow: 0 20px 50px rgba(35, 32, 26, 0.22);
-  animation: modal-in 380ms cubic-bezier(0.19, 1, 0.22, 1);
-  transform-origin: center;
+.comparison-overlay--open {
+  transform: translateX(0);
+  opacity: 1;
 }
 
-@keyframes modal-backdrop-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+/* Same overlay treatment as .comparison-overlay, mirrored to slide in
+   from the left (matching .info-tab's side) instead of the right. */
+.info-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg);
+  padding: 48px 64px;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 320ms cubic-bezier(0.19, 1, 0.22, 1), opacity 320ms ease;
 }
 
-@keyframes modal-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px) scale(0.94);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+.info-overlay--open {
+  transform: translateX(0);
+  opacity: 1;
 }
 
-.modal__close {
-  position: absolute;
-  top: 14px;
-  right: 18px;
+.comparison-overlay__header,
+.info-overlay__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.comparison-overlay__header h2,
+.info-overlay__header h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  margin-bottom: 4px;
+}
+
+.comparison-overlay__header p {
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.comparison-overlay__close,
+.info-overlay__close {
+  flex-shrink: 0;
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 22px;
+  font-size: 30px;
   line-height: 1;
   cursor: pointer;
 }
 
-.modal__close:hover {
+.comparison-overlay__close:hover,
+.info-overlay__close:hover {
   color: var(--text-h);
 }
 
-.modal__title {
+/* Readable report column, not full-width - the map/comparison panel favor
+   width for charts and side-by-side cards, but this is prose, so it stays
+   narrow enough to read comfortably even on a wide screen. */
+.info-overlay__body {
+  max-width: 640px;
+}
+
+.info-overlay__body section {
+  margin-bottom: 24px;
+}
+
+.info-overlay__body h3 {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 24px;
-  margin-bottom: 8px;
+  font-size: 15px;
+  color: var(--text-h);
+  margin-bottom: 6px;
 }
 
-.modal__subtitle {
-  font-family: var(--font-ui);
-  font-size: 13.5px;
+.info-overlay__body p {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
   color: var(--text);
-  margin-bottom: 22px;
 }
 
-.modal__known-value {
+.comparison-panel__empty {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-strong);
+  border-radius: 4px;
+  padding: 16px;
+  text-align: center;
+  max-width: 420px;
+}
+
+/* Cards get real room here - as many as comfortably fit per row at
+   480px+ each, wrapping rather than being squeezed into one fixed-width
+   column the way the old sidebar forced them to be. */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: 24px;
+}
+
+.forecast-card {
+  position: relative;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 24px 22px;
+  animation: card-in 320ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.forecast-card__remove {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.forecast-card__remove:hover {
+  color: var(--text-h);
+}
+
+.forecast-card__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 21px;
+  margin-bottom: 6px;
+}
+
+.forecast-card__subtitle {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 18px;
+}
+
+.forecast-card__known-value {
   color: var(--ink);
 }
 
 /* Provenance badges: whether the scenarios/growth cap shown are
    hand-researched or an automated GDELT-only estimate must be visible
    here, not just present in the API response - see docs/ROADMAP_v2_working_notes.md. */
-.modal__badges {
+.forecast-card__badges {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .provenance-badge {
@@ -330,9 +559,9 @@ body,
 /* "Undetermined" is deliberately plain - functionally correct and clearly
    labeled, but not heavily designed, since this state has only ever fired
    from a hand-crafted test fixture, never a real country reaching it
-   naturally (see docs/ROADMAP_v2_working_notes.md). It reuses .modal__subtitle's plain text
+   naturally (see docs/ROADMAP_v2_working_notes.md). It reuses .forecast-card__subtitle's plain text
    treatment rather than a bespoke callout. */
-.modal__undetermined-note {
+.forecast-card__undetermined-note {
   font-family: var(--font-ui);
   font-size: 13px;
   color: var(--text);
@@ -344,28 +573,28 @@ body,
   line-height: 1.5;
 }
 
-.modal__slider-label {
+.forecast-card__slider-label {
   display: block;
   font-family: var(--font-ui);
-  font-size: 13.5px;
+  font-size: 13px;
   margin-bottom: 8px;
 }
 
-.modal__slider-years {
+.forecast-card__slider-years {
   color: var(--accent);
 }
 
-.modal__slider {
+.forecast-card__slider {
   width: 100%;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   accent-color: var(--accent);
 }
 
 /* Fixed to the chart's own height + legend + a reserved line for the error
    message, via min-height rather than absolute positioning, so switching
-   between loading, error, and done states never resizes the modal *and*
+   between loading, error, and done states never resizes the card *and*
    the error text never overlaps the legend beneath the chart. */
-.modal__results {
+.forecast-card__results {
   min-height: 266px;
 }
 
@@ -373,12 +602,12 @@ body,
    forecast does: the legend can wrap to a second line with 3-4 items
    (Observed + up to 3 named scenarios), plus the magnitude_note sentence -
    a taller reservation so switching between loading/done/error still never
-   resizes the modal, same principle as the base .modal__results height. */
-.modal__results--scenario {
+   resizes the card, same principle as the base .forecast-card__results height. */
+.forecast-card__results--scenario {
   min-height: 352px;
 }
 
-.modal__magnitude-note {
+.forecast-card__magnitude-note {
   font-family: var(--font-ui);
   font-size: 12px;
   color: var(--text-muted);
@@ -387,17 +616,17 @@ body,
   margin-top: 10px;
 }
 
-.modal__status {
+.forecast-card__status {
   font-family: var(--font-ui);
   font-size: 13.5px;
   color: var(--text-muted);
 }
 
-.modal__error {
+.forecast-card__error {
   color: var(--danger);
 }
 
-.modal__error--overlay {
+.forecast-card__error--overlay {
   margin-top: 6px;
   text-align: center;
   font-size: 12.5px;

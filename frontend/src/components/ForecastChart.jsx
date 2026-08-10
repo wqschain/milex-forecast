@@ -31,7 +31,7 @@ export const SCENARIO_STYLES = [
 // Recharts renders a shaded range band directly from a dataKey whose value
 // is a [low, high] tuple - no stacked-area trick needed. Only series that
 // carry `lower`/`upper` (currently: the single trend-status series; never
-// scenario series - see ForecastModal's buildSeries) get a `${key}__band`
+// scenario series - see ForecastCard's buildSeries) get a `${key}__band`
 // field at all, so this generalizes to "any series with an interval gets a
 // band" rather than checking status or country here.
 function bandKey(key) {
@@ -94,7 +94,7 @@ function formatTooltipValue(value, name) {
  * render as multiple named lines (scenario status), sharing one observed
  * history line. A series with `lower`/`upper` also gets a shaded band
  * behind its line - currently only ever the single trend-status series
- * (see ForecastModal's buildSeries), never a scenario series.
+ * (see ForecastCard's buildSeries), never a scenario series.
  */
 export default function ForecastChart({ history, series, latestYear, isLoading }) {
   const data = buildChartData(history, series, latestYear);

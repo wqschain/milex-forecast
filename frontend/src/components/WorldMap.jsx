@@ -48,7 +48,13 @@ export default function WorldMap({ onSelectCountry }) {
 
   return (
     <div className="world-map" ref={containerRef}>
-      <ComposableMap projectionConfig={{ scale: 147 }}>
+      {/* Explicit width/height (rather than the library's 800x600/4:3
+          default) so the viewBox's own aspect ratio matches how wide the
+          .world-map container actually is - otherwise preserveAspectRatio
+          letterboxes the map, wasting exactly the space this change is
+          meant to reclaim. 800x450 (16:9) is a closer match and also a
+          more natural fit for an equirectangular-ish world map than 4:3. */}
+      <ComposableMap width={800} height={450} projectionConfig={{ scale: 147 }}>
         <defs>
           <pattern id="no-data-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
             <rect width="6" height="6" fill="#e8e0cc" />
