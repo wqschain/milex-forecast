@@ -1,11 +1,12 @@
 import { Fragment } from "react";
-import { Area, CartesianGrid, ComposedChart, Line, XAxis, YAxis, Tooltip } from "recharts";
+import { Area, CartesianGrid, ComposedChart, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 
-// Fixed regardless of how many years are selected - more years means more
-// points plotted within this same space, never a bigger chart. The modal's
-// content width is exactly 420px (480px max-width minus 30px padding on
-// each side); 410px leaves a small safety margin against that edge.
-const CHART_WIDTH = 410;
+// Height stays fixed regardless of how many years are selected - more
+// years means more points plotted within this same space, never a taller
+// chart. Width is responsive (see ResponsiveContainer below) - a fixed
+// pixel width overflowed on narrow (phone-width) cards, since a card's
+// actual width now varies from a single mobile column up to a wide grid
+// track, not the one fixed 420px modal this was originally sized for.
 const CHART_HEIGHT = 200;
 
 // Trailing window of history shown alongside the forecast, so the chart
@@ -101,78 +102,75 @@ export default function ForecastChart({ history, series, latestYear, isLoading }
 
   return (
     <div className={`forecast-chart${isLoading ? " forecast-chart--loading" : ""}`}>
-      <ComposedChart
-        width={CHART_WIDTH}
-        height={CHART_HEIGHT}
-        data={data}
-        margin={{ top: 8, right: 14, bottom: 0, left: -16 }}
-      >
-        <CartesianGrid stroke="var(--border)" strokeDasharray="2 4" vertical={false} />
-        <XAxis
-          dataKey="year"
-          tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "var(--text-muted)" }}
-          tickLine={false}
-          axisLine={{ stroke: "var(--border-strong)" }}
-          minTickGap={28}
-        />
-        <YAxis
-          tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
-          tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "var(--text-muted)" }}
-          tickLine={false}
-          axisLine={false}
-          width={40}
-        />
-        <Tooltip
-          formatter={formatTooltipValue}
-          labelFormatter={(year) => year}
-          contentStyle={{
-            fontFamily: "var(--font-ui)",
-            fontSize: 12,
-            border: "1px solid var(--border-strong)",
-            background: "var(--bg-raised)",
-            borderRadius: 4,
-          }}
-        />
-        <Line
-          type="monotone"
-          dataKey="observed"
-          stroke={INK}
-          strokeWidth={2}
-          dot={false}
-          connectNulls={false}
-          animationDuration={300}
-        />
-        {series.map((s, i) => {
-          const style = SCENARIO_STYLES[i % SCENARIO_STYLES.length];
-          return (
-            <Fragment key={s.key}>
-              {s.lower && (
-                <Area
+      <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+        <ComposedChart data={data} margin={{ top: 8, right: 14, bottom: 0, left: -16 }}>
+          <CartesianGrid stroke="var(--border)" strokeDasharray="2 4" vertical={false} />
+          <XAxis
+            dataKey="year"
+            tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "var(--text-muted)" }}
+            tickLine={false}
+            axisLine={{ stroke: "var(--border-strong)" }}
+            minTickGap={28}
+          />
+          <YAxis
+            tickFormatter={(v) => `${(v * 100).toFixed(0)}%`}
+            tick={{ fontSize: 11, fontFamily: "var(--font-mono)", fill: "var(--text-muted)" }}
+            tickLine={false}
+            axisLine={false}
+            width={40}
+          />
+          <Tooltip
+            formatter={formatTooltipValue}
+            labelFormatter={(year) => year}
+            contentStyle={{
+              fontFamily: "var(--font-ui)",
+              fontSize: 12,
+              border: "1px solid var(--border-strong)",
+              background: "var(--bg-raised)",
+              borderRadius: 4,
+            }}
+          />
+          <Line
+            type="monotone"
+            dataKey="observed"
+            stroke={INK}
+            strokeWidth={2}
+            dot={false}
+            connectNulls={false}
+            animationDuration={300}
+          />
+          {series.map((s, i) => {
+            const style = SCENARIO_STYLES[i % SCENARIO_STYLES.length];
+            return (
+              <Fragment key={s.key}>
+                {s.lower && (
+                  <Area
+                    type="monotone"
+                    dataKey={bandKey(s.key)}
+                    name="Confidence interval"
+                    stroke="none"
+                    fill={style.color}
+                    fillOpacity={0.15}
+                    connectNulls={false}
+                    isAnimationActive={false}
+                    legendType="none"
+                  />
+                )}
+                <Line
                   type="monotone"
-                  dataKey={bandKey(s.key)}
-                  name="Confidence interval"
-                  stroke="none"
-                  fill={style.color}
-                  fillOpacity={0.15}
+                  dataKey={s.key}
+                  stroke={style.color}
+                  strokeWidth={2}
+                  strokeDasharray={style.dash}
+                  dot={false}
                   connectNulls={false}
-                  isAnimationActive={false}
-                  legendType="none"
+                  animationDuration={300}
                 />
-              )}
-              <Line
-                type="monotone"
-                dataKey={s.key}
-                stroke={style.color}
-                strokeWidth={2}
-                strokeDasharray={style.dash}
-                dot={false}
-                connectNulls={false}
-                animationDuration={300}
-              />
-            </Fragment>
-          );
-        })}
-      </ComposedChart>
+              </Fragment>
+            );
+          })}
+        </ComposedChart>
+      </ResponsiveContainer>
     </div>
   );
 }

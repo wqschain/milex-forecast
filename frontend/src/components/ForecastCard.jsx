@@ -89,6 +89,14 @@ export default function ForecastCard({ country, onRemove }) {
   const series = buildSeries(result);
   const isScenario = result?.status === "scenario";
   const isUndetermined = result?.status === "undetermined";
+  // First-ever fetch for this card (never had a successful result) is
+  // handled as its own state, replacing the chart entirely - a dimmed,
+  // nearly-empty chart with no forecast series yet reads as broken/frozen,
+  // not "loading." Once a result has landed at least once, a refetch
+  // (slider change) instead keeps showing that last-good chart (dimmed)
+  // plus a small "Updating..." cue, so the card never blanks out again
+  // after its first successful load.
+  const hasNeverLoaded = !result;
 
   return (
     <div className="forecast-card">
@@ -127,6 +135,11 @@ export default function ForecastCard({ country, onRemove }) {
       <label className="forecast-card__slider-label" htmlFor={`years-ahead-${country.sipriName}`}>
         Forecast <span className="mono forecast-card__slider-years">{yearsAhead}</span> year
         {yearsAhead === 1 ? "" : "s"} ahead
+        {!hasNeverLoaded && status === "loading" && (
+          <span className="forecast-card__updating">
+            <span className="forecast-card__spinner" aria-hidden="true" /> Updating&hellip;
+          </span>
+        )}
       </label>
       <input
         id={`years-ahead-${country.sipriName}`}
@@ -139,47 +152,67 @@ export default function ForecastCard({ country, onRemove }) {
       />
 
       <div className={`forecast-card__results${isScenario ? " forecast-card__results--scenario" : ""}`}>
-        <ForecastChart
-          history={country.history}
-          series={series}
-          latestYear={country.latestYear}
-          isLoading={status === "loading"}
-        />
-        <div className="forecast-chart__legend">
-          <span className="forecast-chart__legend-item">
-            <span className="forecast-chart__swatch forecast-chart__swatch--observed" /> Observed
-          </span>
-          {series.map((s, i) => {
-            const style = SCENARIO_STYLES[i % SCENARIO_STYLES.length];
-            return (
-              <Fragment key={s.key}>
-                <span className="forecast-chart__legend-item">
-                  <span
-                    className="forecast-chart__swatch forecast-chart__swatch--forecast"
-                    style={{
-                      background: `repeating-linear-gradient(to right, ${style.color} 0, ${style.color} 4px, transparent 4px, transparent 7px)`,
-                    }}
-                  />{" "}
-                  {s.label}
-                </span>
-                {s.lower && (
-                  <span className="forecast-chart__legend-item">
-                    <span
-                      className="forecast-chart__swatch forecast-chart__swatch--band"
-                      style={{ backgroundColor: style.color }}
-                    />{" "}
-                    Confidence interval
-                  </span>
-                )}
-              </Fragment>
-            );
-          })}
-        </div>
-        {isScenario && result.magnitude_note && <p className="forecast-card__magnitude-note">{result.magnitude_note}</p>}
-        {status === "error" && (
-          <p className="forecast-card__status forecast-card__error forecast-card__error--overlay">
-            Failed to load forecast: {errorMessage}
-          </p>
+        {hasNeverLoaded ? (
+          status === "error" ? (
+            <div className="forecast-card__error-state" role="alert">
+              <p>
+                <strong>Couldn&rsquo;t load a forecast for {country.sipriName}.</strong>
+              </p>
+              <p className="forecast-card__error-detail">{errorMessage}</p>
+            </div>
+          ) : (
+            <div className="forecast-card__loading-state" aria-live="polite">
+              <span className="forecast-card__spinner forecast-card__spinner--large" aria-hidden="true" />
+              <p>Loading forecast&hellip;</p>
+            </div>
+          )
+        ) : (
+          <>
+            <ForecastChart
+              history={country.history}
+              series={series}
+              latestYear={country.latestYear}
+              isLoading={status === "loading"}
+            />
+            <div className="forecast-chart__legend">
+              <span className="forecast-chart__legend-item">
+                <span className="forecast-chart__swatch forecast-chart__swatch--observed" /> Observed
+              </span>
+              {series.map((s, i) => {
+                const style = SCENARIO_STYLES[i % SCENARIO_STYLES.length];
+                return (
+                  <Fragment key={s.key}>
+                    <span className="forecast-chart__legend-item">
+                      <span
+                        className="forecast-chart__swatch forecast-chart__swatch--forecast"
+                        style={{
+                          background: `repeating-linear-gradient(to right, ${style.color} 0, ${style.color} 4px, transparent 4px, transparent 7px)`,
+                        }}
+                      />{" "}
+                      {s.label}
+                    </span>
+                    {s.lower && (
+                      <span className="forecast-chart__legend-item">
+                        <span
+                          className="forecast-chart__swatch forecast-chart__swatch--band"
+                          style={{ backgroundColor: style.color }}
+                        />{" "}
+                        Confidence interval
+                      </span>
+                    )}
+                  </Fragment>
+                );
+              })}
+            </div>
+            {isScenario && result.magnitude_note && (
+              <p className="forecast-card__magnitude-note">{result.magnitude_note}</p>
+            )}
+            {status === "error" && (
+              <p className="forecast-card__status forecast-card__error forecast-card__error--overlay" role="alert">
+                Showing the last successful result &mdash; couldn&rsquo;t refresh: {errorMessage}
+              </p>
+            )}
+          </>
         )}
       </div>
     </div>

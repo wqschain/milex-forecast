@@ -4,6 +4,19 @@ body,
   height: 100%;
 }
 
+/* The comparison/info overlays sit off-screen via transform: translateX
+   when closed (see .comparison-overlay/.info-overlay) rather than
+   display:none, so their fetch-backed contents keep running in the
+   background. Even fully off-screen, position:fixed + transform still
+   expands the document's own scrollable area in some browsers - confirmed
+   directly (scrollWidth exceeded innerWidth on a narrow viewport with the
+   panels closed). Clipping at the root is the standard, robust fix,
+   regardless of which specific transformed element is the cause. */
+html,
+body {
+  overflow-x: hidden;
+}
+
 .app {
   height: 100svh;
   max-width: 1900px;
@@ -180,6 +193,55 @@ body,
   height: 100%;
 }
 
+/* Smooths scroll-wheel and +/- button zoom into an eased transition
+   instead of an instant jump - applied only while WorldMap.jsx determines
+   the current gesture isn't an active drag (see handleMove/isSmoothZoom
+   there), so panning stays 1:1 responsive to the cursor rather than
+   trailing behind it. */
+.world-map__zoomable--smooth {
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Dedicated zoom buttons, deliberately separate from scroll-wheel zoom -
+   see WorldMap.jsx for why scroll alone isn't relied on. */
+.world-map__zoom-controls {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(35, 32, 26, 0.12);
+}
+
+.world-map__zoom-controls button {
+  width: 30px;
+  height: 30px;
+  background: var(--bg-raised);
+  color: var(--text-h);
+  border: none;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.world-map__zoom-controls button:first-child {
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.world-map__zoom-controls button:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--bg-raised);
+}
+
+.world-map__zoom-controls button:disabled {
+  color: var(--text-muted);
+  cursor: default;
+}
+
 @keyframes country-pulse {
   0% {
     transform: scale(1);
@@ -275,6 +337,34 @@ body,
 
 .country-tooltip__year {
   color: var(--text-muted);
+}
+
+/* Touch-only variant (see CountryTooltip.jsx's onAdd prop) - needs real
+   pointer events to be tappable, unlike the plain hover readout above
+   which deliberately ignores the cursor so it can never block a click
+   meant for the map underneath. */
+.country-tooltip--interactive {
+  pointer-events: auto;
+  white-space: normal;
+}
+
+.country-tooltip__add {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: var(--ink);
+  color: var(--bg-raised);
+  border: none;
+  border-radius: 3px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.country-tooltip__add:hover {
+  background: var(--accent);
 }
 
 /* Always-visible edge tab that opens the panel - fixed regardless of
@@ -460,6 +550,13 @@ body,
 
 .forecast-card {
   position: relative;
+  /* Grid items default to minmax(auto, 1fr), not minmax(0, 1fr) - without
+     this, a scenario card's legend row (several named-scenario labels,
+     wider than any single grid track at phone widths) forces the card
+     itself wider than its track, overflowing the page. Applies at every
+     width, not just mobile, since the same risk exists whenever content
+     could exceed a track's size. */
+  min-width: 0;
   background: var(--bg-raised);
   border: 1px solid var(--border-strong);
   border-radius: 4px;
@@ -584,6 +681,40 @@ body,
   color: var(--accent);
 }
 
+/* Refetch (slider-change) loading cue, shown inline next to the slider
+   label - distinct from the full loading-state block below, which only
+   applies to a card's first-ever fetch. */
+.forecast-card__updating {
+  float: right;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-muted);
+  font-size: 11.5px;
+}
+
+.forecast-card__spinner {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spinner-spin 700ms linear infinite;
+}
+
+.forecast-card__spinner--large {
+  width: 24px;
+  height: 24px;
+  border-width: 3px;
+}
+
+@keyframes spinner-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .forecast-card__slider {
   width: 100%;
   margin-bottom: 20px;
@@ -596,6 +727,41 @@ body,
    the error text never overlaps the legend beneath the chart. */
 .forecast-card__results {
   min-height: 266px;
+}
+
+/* First-ever fetch (no result yet) replaces the chart area entirely with
+   one of these two states, centered within the same reserved min-height
+   so the card still doesn't resize once real data arrives. */
+.forecast-card__loading-state,
+.forecast-card__error-state {
+  height: 100%;
+  min-height: 266px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  font-family: var(--font-ui);
+}
+
+.forecast-card__loading-state p {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.forecast-card__error-state p {
+  font-size: 13px;
+  max-width: 320px;
+}
+
+.forecast-card__error-state p strong {
+  color: var(--danger);
+}
+
+.forecast-card__error-detail {
+  color: var(--text-muted);
+  font-size: 12px;
 }
 
 /* Scenario status has more to show below the chart than a single-line
@@ -642,8 +808,9 @@ body,
 
 .forecast-chart__legend {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
+  gap: 8px 20px;
   margin-top: 4px;
   font-family: var(--font-ui);
   font-size: 12px;
@@ -679,4 +846,99 @@ body,
   height: 8px;
   opacity: 0.3;
   border-radius: 1px;
+}
+
+/* ==========================================================================
+   Mobile / narrow-viewport overrides. 640px comfortably covers real phone
+   widths (tested at 375px/414px) with margin for slightly larger devices,
+   without kicking in on tablets/small laptops where the desktop layout
+   still has room to breathe.
+   ========================================================================== */
+@media (max-width: 640px) {
+  .app {
+    padding: 10px 14px 8px;
+    gap: 6px;
+  }
+
+  /* Side-by-side title/stat has no room at phone widths - stacks instead
+     of staying asymmetric and getting cramped. */
+  .app__masthead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .app__masthead h1 {
+    font-size: 21px;
+  }
+
+  .app__masthead-stat {
+    text-align: left;
+  }
+
+  .app__masthead-stat-value {
+    font-size: 18px;
+  }
+
+  .data-strip {
+    font-size: 11.5px;
+    gap: 4px 12px;
+  }
+
+  .data-strip__hint {
+    /* Still useful, but the first thing to go if the strip is genuinely
+       tight - the legend swatches and country/year count are the load-
+       bearing content here. */
+    flex-basis: 100%;
+    padding-left: 0;
+    border-left: none;
+  }
+
+  /* 30px (desktop) is under the ~44px touch-target guideline once you
+     account for how little of that is the actual tappable button versus
+     padding around rotated text - widened specifically for touch, not
+     just narrow screens (a touch laptop at 640px still benefits). */
+  .comparison-tab,
+  .info-tab {
+    padding: 20px 14px;
+    font-size: 12.5px;
+  }
+
+  .world-map__zoom-controls button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .comparison-overlay,
+  .info-overlay {
+    padding: 56px 16px 24px;
+  }
+
+  .comparison-overlay__header h2,
+  .info-overlay__header h2 {
+    font-size: 21px;
+  }
+
+  /* One column, no minimum track width - the desktop grid's 480px minimum
+     would force horizontal scrolling on any phone. */
+  .comparison-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .forecast-card {
+    padding: 16px 14px;
+  }
+
+  .info-overlay__body {
+    max-width: 100%;
+  }
+
+  .country-tooltip {
+    max-width: calc(100vw - 48px);
+  }
+
+  .country-tooltip--interactive {
+    white-space: normal;
+  }
 }
